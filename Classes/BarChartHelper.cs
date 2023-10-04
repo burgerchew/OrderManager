@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DevExpress.XtraCharts;
 using System.Data;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public static class BarChartHelper
     {

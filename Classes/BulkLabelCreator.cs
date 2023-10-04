@@ -11,7 +11,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using OrderManager.Classes;
+using OrderManagerEF.Classes;
 
 public class BulkLabelCreator
 {

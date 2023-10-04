@@ -27,24 +27,24 @@ namespace OrderManagerEF.Data
         public DbSet<StarShipITOrder> StarShipITOrders { get; set; }
         public DbSet<StarShipITOrderDetail> StarShipITOrderDetails { get; set; }
 
-        //public DbSet<AddressPart> AddressParts { get; set; }
+        public DbSet<AddressPart> AddressParts { get; set; }
 
 
-        //public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
+        public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
 
-        //public List<ScanPackReportLookup> ExecuteScanPackReportLookup(string searchTerm)
-        //{
-        //    var searchTermParam = new SqlParameter("@SearchTerm", searchTerm);
-        //    return ScanPackReportLookups.FromSqlRaw("EXEC sp_ABM_ScanPackReportLookup @SearchTerm", searchTermParam)
-        //        .ToList();
-        //}
+        public List<ScanPackReportLookup> ExecuteScanPackReportLookup(string searchTerm)
+        {
+            var searchTermParam = new SqlParameter("@SearchTerm", searchTerm);
+            return ScanPackReportLookups.FromSqlRaw("EXEC sp_ABM_ScanPackReportLookup @SearchTerm", searchTermParam)
+                .ToList();
+        }
 
-        //public DbSet<PendingBatch> PendingBatches { get; set; }
+        public DbSet<PendingBatch> PendingBatches { get; set; }
 
-        //public DbSet<BINContentsLocn1> BINContentsLocn1s { get; set; }
-        //public DbSet<BINContentsLocn11> BINContentsLocn11s { get; set; }
+        public DbSet<BINContentsLocn1> BINContentsLocn1s { get; set; }
+        public DbSet<BINContentsLocn11> BINContentsLocn11s { get; set; }
 
-        //public DbSet<LabelPrintQueue> LabelPrintQueues { get; set; }
+        public DbSet<LabelPrintQueue> LabelPrintQueues { get; set; }
 
         public DbSet<CSCOrderData> CscOrderDatas { get; set; }
 
@@ -70,19 +70,20 @@ namespace OrderManagerEF.Data
 
             // For Views (Keyless Entities)
             modelBuilder.Entity<PendingBatch>().ToView("vPendingBatches").HasNoKey();
-            //modelBuilder.Entity<LabelPrintQueue>().ToView("vLabelPrintQueue").HasNoKey();
-            //modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
-            //modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
-
-            modelBuilder.Entity<CSCOrderData>().ToView("vASP_CSC_SI").HasNoKey();
+            modelBuilder.Entity<LabelPrintQueue>().ToView("vLabelPrintQueue").HasNoKey();
+            modelBuilder.Entity<ScanPackReportLookup>().HasNoKey();
+            modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
+            modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
+            modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();
+            modelBuilder.Entity<CSCOrderData>().ToView("vASP_CSC_SSI").HasNoKey();
             modelBuilder.Entity<DSOrderData>().ToView("vASP_DS_SSI").HasNoKey();
             modelBuilder.Entity<PreOrderData>().ToView("vASP_PREORDER_SSI").HasNoKey();
-            modelBuilder.Entity<SampleOrderData>().ToView("vASP_SSI_SAMPLES").HasNoKey();
-            modelBuilder.Entity<RubiesOrderData>().ToView("vASP_SSI_RUB").HasNoKey();
+            modelBuilder.Entity<SampleOrderData>().ToView("vASP_SAMPLES_SSI").HasNoKey();
+            modelBuilder.Entity<RubiesOrderData>().ToView("vASP_RUB_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOver5OrderData>().ToView("vASP_SSI_RUBOVER5").HasNoKey();
-            modelBuilder.Entity<NZOrderData>().ToView("vASP_SSI_NZ").HasNoKey();
-            modelBuilder.Entity<HoldOrderData>().ToView("vASP_SSI_HOLD").HasNoKey();
-            modelBuilder.Entity<PrintedOrderData>().ToView("vASP_SSI_COMPLETE").HasNoKey();
+            modelBuilder.Entity<NZOrderData>().ToView("vASP_NZ_SSI").HasNoKey();
+            modelBuilder.Entity<HoldOrderData>().ToView("vASP_HOLD_SSI").HasNoKey();
+            modelBuilder.Entity<PrintedOrderData>().ToView("vASP_COMPLETE_SSI").HasNoKey();
 
             modelBuilder.Entity<StarShipITOrder>()
                 .HasMany(s => s.StarShipITOrderDetails)

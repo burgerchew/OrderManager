@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class ReportManager
     {

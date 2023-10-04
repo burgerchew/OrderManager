@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
-using OrderManager.Data;
 
-namespace OrderManager.Classes
+using OrderManagerEF.Data;
+
+namespace OrderManagerEF.Classes
 {
     public class PickSlipGenerator
     {

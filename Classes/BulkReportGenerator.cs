@@ -18,10 +18,10 @@ using DevExpress.XtraWaitForm;
 using DevExpress.XtraReports.UserDesigner;
 using DevExpress.XtraSplashScreen;
 using Microsoft.Extensions.Configuration;
+using OrderManager;
 
 
-
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class BulkReportGenerator
     {

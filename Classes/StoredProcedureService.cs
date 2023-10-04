@@ -1,12 +1,13 @@
-﻿using OrderManager.Data;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using OrderManagerEF.Data;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class StoredProcedureService
     {

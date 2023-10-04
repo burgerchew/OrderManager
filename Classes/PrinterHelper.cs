@@ -10,7 +10,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraReports.UI;
 using Microsoft.Extensions.Configuration;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class PrinterHelper
     {

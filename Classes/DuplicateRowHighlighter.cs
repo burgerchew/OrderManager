@@ -4,7 +4,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Base;
 using System.Text;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class DuplicateRowHighlighter
     {

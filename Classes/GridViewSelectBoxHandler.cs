@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.XtraGrid.Views.Base;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     using System;
     using DevExpress.XtraEditors.Repository;

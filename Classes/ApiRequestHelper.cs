@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class ApiRequestHelper
     {

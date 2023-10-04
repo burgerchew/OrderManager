@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.XtraGrid.Views.Grid;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
 
 

@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class OrderSynchroniser
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class LabelsArchive
     {

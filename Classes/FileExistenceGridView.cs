@@ -16,7 +16,7 @@ using DevExpress.Utils.TouchHelpers;
 using Microsoft.Extensions.Configuration;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
 
 

@@ -6,16 +6,9 @@ using System.Threading.Tasks;
 
 namespace OrderManagerEF.DTOs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    namespace OrderManager.Classes
-    {
 
-        public class ASPSSIResultDTO
+    public class ASPSSIResultDTO
         {
             public string CustomerCode { get; set; }
             public string CustomerTitle { get; set; }
@@ -227,4 +220,4 @@ namespace OrderManagerEF.DTOs
         }
     }
 
-}
+

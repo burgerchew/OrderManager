@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using DevExpress.XtraEditors;
 using Microsoft.Extensions.Configuration;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
     public class PrinterProgram
     {

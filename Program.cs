@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OrderManagerEF.Data;
+using OrderManager.Classes;
+using OrderManagerEF.Classes;
+using OrderManagerEF.Forms;
 
 namespace OrderManagerEF
 {
@@ -45,14 +48,17 @@ namespace OrderManagerEF
             // Feedback about where the configuration was loaded from
             XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
 
-            // ... [rest of your setup, unchanged]
-
             // Inject dbContext into TestForm
-            TestForm mainForm = new TestForm(Configuration, dbContext);
-            mainForm.Load += (s, e) => DevExpress.XtraSplashScreen.SplashScreenManager.CloseDefaultWaitForm();
+            EntryForm mainForm = new EntryForm(Configuration, dbContext);
+
+            // Use the utility method to close the splash screen when the mainForm loads
+            mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();
 
             // Run the application with TestForm
             Application.Run(mainForm);
         }
     }
-}
+
+    
+    }
+

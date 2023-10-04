@@ -9,7 +9,7 @@ using DevExpress.XtraEditors;
 using Newtonsoft.Json;
 using OrderManagerEF.Entities;
 
-namespace OrderManager.Classes;
+namespace OrderManagerEF.Classes;
 
 public class ShipmentManager
 {

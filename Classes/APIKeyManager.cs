@@ -1,7 +1,7 @@
 ﻿
 using System.Data.SqlClient;
 
-namespace OrderManager.Classes
+namespace OrderManagerEF.Classes
 {
 
 

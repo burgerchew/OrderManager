@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderManager
+namespace OrderManagerEF.Classes
 {
     public static class GridCellFormatter
     {

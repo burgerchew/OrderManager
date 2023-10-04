@@ -7,7 +7,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraPrinting;
 
-namespace OrderManager
+namespace OrderManagerEF.Classes
 {
     public class ExcelExporter
 
