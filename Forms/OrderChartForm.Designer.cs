@@ -1,4 +1,4 @@
-﻿namespace OrderManagerEF
+﻿namespace OrderManagerEF.Forms
 {
     partial class OrderChartForm
     {

@@ -14,7 +14,7 @@ using OrderManagerEF.Data;
 
 namespace OrderManagerEF.Forms
 {
-    public partial class EntryForm : DevExpress.XtraEditors.XtraForm
+    public partial class EntryForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
 
         delegate Form FormCreator(IConfiguration configuration, OMDbContext context);
@@ -35,7 +35,12 @@ namespace OrderManagerEF.Forms
             formMap = new Dictionary<string, FormCreator>
             {
                 { "navBarItem1", (c, ctx) => new CSCForm(c, ctx) },
+                { "navBarItem2", (c, ctx) => new DSForm(c, ctx) },
                 { "navBarItem3", (c, ctx) => new NZForm(c, ctx) },
+                { "navBarItem4", (c, ctx) => new SamplesForm(c, ctx) },
+                { "navBarItem5", (c, ctx) => new PreOrdersForm(c,ctx) },
+                { "navBarItem6", (c, ctx) => new WebstoreUnder5Form(c,ctx) },
+                { "navBarItem8", (c, ctx) => new WebstoreOver5Form(c,ctx) },
 
             };
         }

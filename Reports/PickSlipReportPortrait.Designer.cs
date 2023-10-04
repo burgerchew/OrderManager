@@ -663,7 +663,7 @@
             // 
             // sqlDataSource1
             // 
-            this.sqlDataSource1.ConnectionName = "Connection";
+            this.sqlDataSource1.ConnectionName = "RubiesConnectionString";
             this.sqlDataSource1.Name = "sqlDataSource1";
             storedProcQuery1.Name = "ASP_PickSlip";
             storedProcQuery1.StoredProcName = "ASP_PickSlip";

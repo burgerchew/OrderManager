@@ -557,7 +557,7 @@
             // 
             // sqlDataSource1
             // 
-            this.sqlDataSource1.ConnectionName = "OrderManager.Properties.Settings.RubiesConnectionString";
+            this.sqlDataSource1.ConnectionName = "RubiesConnectionString";
             this.sqlDataSource1.Name = "sqlDataSource1";
             storedProcQuery1.Name = "ASP_PickSlip";
             storedProcQuery1.StoredProcName = "ASP_PickSlip";
@@ -691,7 +691,7 @@
             this.GroupFooterBackground3,
             this.DetailData3_Odd,
             this.PageInfo});
-            this.Version = "22.2";
+            this.Version = "23.1";
             ((System.ComponentModel.ISupportInitialize)(this.table1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.table2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.table3)).EndInit();

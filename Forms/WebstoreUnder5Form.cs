@@ -15,8 +15,9 @@ using System.Windows.Forms;
 
 namespace OrderManagerEF
 {
-    public partial class WebstoreOver5Form : DevExpress.XtraEditors.XtraForm
+    public partial class WebstoreUnder5Form : DevExpress.XtraEditors.XtraForm
     {
+
         private readonly ExcelExporter _excelExporter;
         private readonly BulkReportGenerator _reportGenerator;
         private FileExistenceGridViewHelper _fileExistenceGridViewHelper;
@@ -28,7 +29,7 @@ namespace OrderManagerEF
         private readonly PickSlipGenerator _pickSlipGenerator;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
-        public WebstoreOver5Form(IConfiguration configuration, OMDbContext context)
+        public WebstoreUnder5Form(IConfiguration configuration, OMDbContext context)
         {
             InitializeComponent();
             _configuration = configuration;

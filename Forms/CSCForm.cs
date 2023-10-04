@@ -38,22 +38,7 @@ namespace OrderManagerEF.Forms
         {
             InitializeComponent();
             _configuration = configuration;
-
-
-
-            _reportGenerator = new BulkReportGenerator(configuration);
-
-            // Replace with your actual connection string
-            var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
             _context = context;
-
-
-            _apiKeyManager = new ApiKeyManager(connectionString);
-
-
-            _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-
-            _reportManager = new ReportManager(configuration);
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OrderManagerEF
+namespace OrderManagerEF.Forms
 {
     public partial class OrderChartForm : DevExpress.XtraEditors.XtraForm
     {

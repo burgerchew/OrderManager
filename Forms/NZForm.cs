@@ -65,7 +65,7 @@ namespace OrderManagerEF.Forms
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-            Load+=NZForm_Load;
+            Load += NZForm_Load;
         }
 
 

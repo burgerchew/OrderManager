@@ -35,27 +35,27 @@
             // 
             // progressBarControl1
             // 
-            progressBarControl1.Location = new System.Drawing.Point(61, 91);
+            progressBarControl1.Location = new System.Drawing.Point(61, 54);
             progressBarControl1.Name = "progressBarControl1";
             progressBarControl1.Size = new System.Drawing.Size(191, 39);
             progressBarControl1.TabIndex = 0;
             // 
             // MessageLabel
             // 
-            MessageLabel.Location = new System.Drawing.Point(61, 155);
+            MessageLabel.Location = new System.Drawing.Point(61, 122);
             MessageLabel.Name = "MessageLabel";
             MessageLabel.Size = new System.Drawing.Size(63, 13);
             MessageLabel.TabIndex = 1;
             MessageLabel.Text = "labelControl1";
             // 
-            // ProgressForm1
+            // ProgressForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(300, 300);
+            ClientSize = new System.Drawing.Size(310, 202);
             Controls.Add(MessageLabel);
             Controls.Add(progressBarControl1);
-            Name = "ProgressForm1";
+            Name = "ProgressForm";
             Text = "ProgressForm1";
             ((System.ComponentModel.ISupportInitialize)progressBarControl1.Properties).EndInit();
             ResumeLayout(false);
