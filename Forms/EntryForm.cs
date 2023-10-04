@@ -36,7 +36,7 @@ namespace OrderManagerEF.Forms
             {
                 { "navBarItem1", (c, ctx) => new CSCForm(c, ctx) },
                 { "navBarItem3", (c, ctx) => new NZForm(c, ctx) },
-     
+
             };
         }
 
