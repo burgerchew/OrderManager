@@ -14,6 +14,7 @@ using OrderManagerEF.Data;
 using OrderManager.Classes;
 using OrderManagerEF.Classes;
 using OrderManagerEF.Forms;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF
 {
@@ -37,28 +38,38 @@ namespace OrderManagerEF
 
             var serviceCollection = new ServiceCollection();
 
-            // Registering OMDbContext
+            // Registering OMDbContext and UserSession
             serviceCollection.AddDbContext<OMDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("RubiesConnectionString")));
+            serviceCollection.AddSingleton<UserSession>();  // <-- Register the UserSession service
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             using var dbContext = serviceProvider.GetRequiredService<OMDbContext>();
+            var userSession = serviceProvider.GetRequiredService<UserSession>();  // <-- Retrieve the UserSession instance
 
-            // Feedback about where the configuration was loaded from
-            XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
+            // Create an instance of LoginForm and show it
+            LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
 
-            // Inject dbContext into TestForm
-            EntryForm mainForm = new EntryForm(Configuration, dbContext);
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                // Feedback about where the configuration was loaded from
+                XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
 
-            // Use the utility method to close the splash screen when the mainForm loads
-            mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();
+                // Inject dbContext and UserSession into EntryForm
+                EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
 
-            // Run the application with TestForm
-            Application.Run(mainForm);
+                // Use the utility method to close the splash screen when the mainForm loads
+                mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();
+
+                // Run the application with EntryForm
+                Application.Run(mainForm);
+            }
         }
+
+
     }
 
-    
-    }
+
+}
 

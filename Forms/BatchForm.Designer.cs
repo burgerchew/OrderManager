@@ -46,7 +46,7 @@
             ribbonControl1.MaxItemId = 1;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonControl1.Size = new System.Drawing.Size(355, 146);
+            ribbonControl1.Size = new System.Drawing.Size(404, 158);
             // 
             // ribbonPage1
             // 
@@ -62,11 +62,11 @@
             // gridControl1
             // 
             gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridControl1.Location = new System.Drawing.Point(0, 146);
+            gridControl1.Location = new System.Drawing.Point(0, 158);
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(355, 180);
+            gridControl1.Size = new System.Drawing.Size(404, 216);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -79,10 +79,11 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(355, 326);
+            ClientSize = new System.Drawing.Size(404, 374);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "BatchForm";
+            Ribbon = ribbonControl1;
             Text = "BatchForm";
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();

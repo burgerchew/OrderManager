@@ -28,6 +28,7 @@ using Microsoft.Data.SqlClient;
 using DevExpress.XtraGrid.Views.Grid;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF.Forms
 {
@@ -45,14 +46,19 @@ namespace OrderManagerEF.Forms
         private readonly PickSlipGenerator _pickSlipGenerator;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
+        private readonly UserSession _userSession;
 
 
-        public CSCForm(IConfiguration configuration, OMDbContext context)
+        public CSCForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
 
             // Set _configuration only once
             _configuration = configuration;
+            _context = context;
+            _userSession = userSession;
+
+
 
             // Use _configuration for any further needs
             var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
@@ -60,11 +66,12 @@ namespace OrderManagerEF.Forms
             VisibleChanged += CSC_VisibleChanged;
             _excelExporter = new ExcelExporter(gridView1);
             _reportGenerator = new BulkReportGenerator(_configuration); // Use the already set _configuration
-            _context = context;
+
             _apiKeyManager = new ApiKeyManager(connectionString);
             SetUpHttpClient(_location);
             _pickSlipGenerator = new PickSlipGenerator(_configuration, _context); // Use the already set _configuration and _context
             _reportManager = new ReportManager(_configuration); // Use the already set _configuration
+  
         }
 
 

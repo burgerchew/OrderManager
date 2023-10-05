@@ -11,36 +11,38 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraNavBar;
 using OrderManagerEF.Data;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF.Forms
 {
     public partial class EntryForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
 
-        delegate Form FormCreator(IConfiguration configuration, OMDbContext context);
+        delegate Form FormCreator(IConfiguration configuration, OMDbContext context, UserSession userSession);
 
         // Create a dictionary to map form names to their constructors
         private readonly Dictionary<string, FormCreator> formMap;
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
-        public EntryForm(IConfiguration configuration, OMDbContext context)
+        private readonly UserSession _userSession;
+        public EntryForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
             navBarControl1.LinkClicked += NavBarControl1_LinkClicked;
-            _configuration = configuration;
+            _userSession = userSession;
 
             // Initialize the formMap dictionary
             formMap = new Dictionary<string, FormCreator>
             {
-                { "navBarItem1", (c, ctx) => new CSCForm(c, ctx) },
-                { "navBarItem2", (c, ctx) => new DSForm(c, ctx) },
-                { "navBarItem3", (c, ctx) => new NZForm(c, ctx) },
-                { "navBarItem4", (c, ctx) => new SamplesForm(c, ctx) },
-                { "navBarItem5", (c, ctx) => new PreOrdersForm(c,ctx) },
-                { "navBarItem6", (c, ctx) => new WebstoreUnder5Form(c,ctx) },
-                { "navBarItem8", (c, ctx) => new WebstoreOver5Form(c,ctx) },
+                { "navBarItem1", (c, ctx,us) => new CSCForm(c, ctx,us) },
+                { "navBarItem2", (c, ctx,u) => new DSForm(c, ctx) },
+                { "navBarItem3", (c, ctx,u) => new NZForm(c, ctx) },
+                { "navBarItem4", (c, ctx,u) => new SamplesForm(c, ctx) },
+                { "navBarItem5", (c, ctx,u) => new PreOrdersForm(c,ctx) },
+                { "navBarItem6", (c, ctx, u) => new WebstoreUnder5Form(c,ctx) },
+                { "navBarItem8", (c, ctx, u) => new WebstoreOver5Form(c,ctx) },
 
             };
         }
@@ -51,7 +53,7 @@ namespace OrderManagerEF.Forms
             // Lookup the form to open based on the clicked link's name
             if (formMap.TryGetValue(e.Link.Item.Name, out FormCreator formCreator))
             {
-                Form formToOpen = formCreator(_configuration, _context);
+                Form formToOpen = formCreator(_configuration, _context,_userSession);
 
                 if (formToOpen != null)
                 {
