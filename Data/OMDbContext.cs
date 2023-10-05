@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
-using OrderManagerEF.DTOs.OrderManager.Classes;
 using OrderManagerEF.Entities;
 using PendingBatch = OrderManagerEF.DTOs.PendingBatch;
 
@@ -21,6 +20,10 @@ namespace OrderManagerEF.Data
             : base(options)
         {
         }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserActivity> UserActivities { get; set; }
 
         public DbSet<LabelsArchive> LabelArchives { get; set; }
 

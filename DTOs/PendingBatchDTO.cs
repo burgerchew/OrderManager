@@ -8,7 +8,7 @@ namespace OrderManagerEF.DTOs
 {
     public class PendingBatch
     {
-        public int SalesOrder { get; set; }
+        public string SalesOrder { get; set; }
         public string OrderNumber { get; set; }
         public string CustomerCode { get; set; }
         public string StarShipITAccount { get; set; }

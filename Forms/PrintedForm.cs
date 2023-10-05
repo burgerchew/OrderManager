@@ -178,11 +178,11 @@ namespace OrderManagerEF
                 lookupTable.Rows.Add(newRow);
             }
 
-            repositoryItemLookUpEdit1.DataSource = lookupTable;
-            repositoryItemLookUpEdit1.ValueMember = "ID";
-            repositoryItemLookUpEdit1.DisplayMember = "Value";
+            //repositoryItemLookUpEdit1.DataSource = lookupTable;
+            //repositoryItemLookUpEdit1.ValueMember = "ID";
+            //repositoryItemLookUpEdit1.DisplayMember = "Value";
 
-            gridView.Columns["ZEmployeeGroup"].ColumnEdit = repositoryItemLookUpEdit1;
+            //gridView.Columns["ZEmployeeGroup"].ColumnEdit = repositoryItemLookUpEdit1;
         }
 
         private void GridView_CellValueChanged(object sender, CellValueChangedEventArgs e)

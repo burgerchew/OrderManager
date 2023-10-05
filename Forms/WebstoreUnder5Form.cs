@@ -418,13 +418,6 @@ namespace OrderManagerEF
             // Show the custom splash screen
             SplashScreenManager.ShowForm(typeof(ProgressForm));
 
-            // Call the modified method in your BulkReportGenerator class to generate and save the reports
-            //_reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences,
-            //    progress =>
-            //    {
-            //        SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress);
-            //    });
-
 
             _reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences,
                 progress => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress),

@@ -50,25 +50,23 @@ namespace OrderManagerEF.Forms
         public CSCForm(IConfiguration configuration, OMDbContext context)
         {
             InitializeComponent();
+
+            // Set _configuration only once
             _configuration = configuration;
+
+            // Use _configuration for any further needs
+            var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
             VisibleChanged += CSC_VisibleChanged;
             _excelExporter = new ExcelExporter(gridView1);
-
-
-            _reportGenerator = new BulkReportGenerator(configuration);
-
-            // Replace with your actual connection string
-            var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+            _reportGenerator = new BulkReportGenerator(_configuration); // Use the already set _configuration
             _context = context;
-
-
             _apiKeyManager = new ApiKeyManager(connectionString);
-
             SetUpHttpClient(_location);
-            _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-
-            _reportManager = new ReportManager(configuration);
+            _pickSlipGenerator = new PickSlipGenerator(_configuration, _context); // Use the already set _configuration and _context
+            _reportManager = new ReportManager(_configuration); // Use the already set _configuration
         }
+
 
 
         private void CSC_Load(object sender, EventArgs e)
@@ -104,35 +102,48 @@ namespace OrderManagerEF.Forms
         }
 
 
+
         private void LoadData()
         {
-            LoadPickSlipData();
-            var data = _context.CscOrderDatas.ToList();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-            // Update the FileStatus property for each item in the data list.
-            UpdateFileStatusForData(data);
-
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-            gridView1.RefreshData();
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.CscOrderDatas.ToList();
 
-            gridControl1.MainView = newView;
-            AddPreviewLinkColumn(newView);
-            gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
-            HighlightDuplicateRows(newView);
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
 
-            _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
+
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
+
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
+
+                _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
+                gridView1.KeyDown += gridView1_KeyDown;
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
         }
 
-        private void UpdateFileStatusForData(List<CSCOrderData> data)
+
+    private void UpdateFileStatusForData(List<CSCOrderData> data)
         {
             foreach (var item in data) item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
         }
@@ -215,10 +226,6 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void barButtonItem1_ItemClick_1(object sender, ItemClickEventArgs e)
-        {
-            _excelExporter.ExportToXls();
-        }
 
 
         private void FilterDuplicateRows(FileExistenceGridView gridView)
@@ -403,22 +410,6 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            ProcessAndPrintSelectedRows();
-        }
-
-        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
-        }
-
-        private void barButtonItem11_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var newForm = new BatchForm(_configuration, _context);
-            newForm.Show();
-        }
-
         private bool CheckZShipmentID(FileExistenceGridView gridView)
         {
             // Assuming ZshipmentID is the column name
@@ -545,36 +536,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private async void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            try
-            {
-                // Sync and update orders
-                await SyncAndUpdateOrders();
-
-                // Refresh the GridView
-                var gridView = gridControl1.FocusedView as GridView;
-
-                // Fetch the updated data from the database
-                var data = _context.CscOrderDatas.ToList();
-
-                // Set the fetched data as the grid's data source
-                gridView.GridControl.DataSource = data;
-
-                // Refresh the grid view to reflect the changes
-                gridView.RefreshData();
-
-                XtraMessageBox.Show("Sync and update operation was a success!", "Success", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                // Log error
-                XtraMessageBox.Show($"An error occurred during the sync and update operation: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+      
 
         public async Task DebugSyncAndUpdateOrdersNew()
         {
@@ -641,42 +603,12 @@ namespace OrderManagerEF.Forms
                 }
         }
 
-        private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            // Show the SplashScreen
-            SplashScreenManager.ShowDefaultWaitForm();
-
-            try
-            {
-                // Call the stored procedure
-                UpdateBinSortCSC();
-
-                // Refresh the GridView
-                var gridView = gridControl1.FocusedView as GridView;
-
-                // Fetch the updated data from the database
-                var data = _context.CscOrderDatas.ToList();
-
-                // Set the fetched data as the grid's data source
-                gridView.GridControl.DataSource = data;
-
-                // Refresh the grid view to reflect the changes
-                gridView.RefreshData();
-            }
-            finally
-            {
-                // If SplashScreen was shown, close it
-                if (SplashScreenManager.Default != null) SplashScreenManager.CloseForm(false);
-            }
-
-            // Show a message box indicating the sorting by BinNumber has been completed
-            XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
-        }
+       
 
 
         private void UpdateBinSortCSC()
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubigesConnectionString")))
 
             {
                 using (var command = new SqlCommand("ASP_PickSortListCSC", connection))
@@ -755,6 +687,210 @@ namespace OrderManagerEF.Forms
                         command.ExecuteNonQuery();
                     }
             }
+        }
+
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            _excelExporter.ExportToXls();
+        }
+
+        private async void barButtonItem2_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // Sync and update orders
+                await SyncAndUpdateOrders();
+
+                // Refresh the GridView
+                var gridView = gridControl1.FocusedView as GridView;
+
+                // Fetch the updated data from the database
+                var data = _context.CscOrderDatas.ToList();
+
+                // Set the fetched data as the grid's data source
+                gridView.GridControl.DataSource = data;
+
+                // Refresh the grid view to reflect the changes
+                gridView.RefreshData();
+
+                XtraMessageBox.Show("Sync and update operation was a success!", "Success", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                XtraMessageBox.Show($"An error occurred during the sync and update operation: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        {
+                  var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                     if (gridView != null) FilterZShipmentID(gridView);
+        }
+
+        private void barButtonItem5_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintCSC";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                var columnMappings = new Dictionary<string, string>
+            {
+                { "AccountingRef", "SalesOrder" },
+                { "TradingRef", "OrderNumber" },
+                { "CustomerCode", "CustomerCode" },
+                { "EntryDateTime", "Date" }
+            };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        private void barButtonItem6_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                // Assuming you have a connection string called "connectionString" and a table called "myTable"
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSC";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result =
+                            XtraMessageBox.Show(
+                                "Are you sure you want to run the job and download " + rowCount + " labels ?",
+                                "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintCSC");
+                            jobRunner.RunJob();
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("Job started successfully! Number of labels queued " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The CSC Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting job: {ex.Message}");
+            }
+        }
+
+        private void barButtonItem7_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            // Show the SplashScreen
+            SplashScreenManager.ShowDefaultWaitForm();
+
+            try
+            {
+                // Call the stored procedure
+                UpdateBinSortCSC();
+
+                // Refresh the GridView
+                var gridView = gridControl1.FocusedView as GridView;
+
+                // Fetch the updated data from the database
+                var data = _context.CscOrderDatas.ToList();
+
+                // Set the fetched data as the grid's data source
+                gridView.GridControl.DataSource = data;
+
+                // Refresh the grid view to reflect the changes
+                gridView.RefreshData();
+            }
+            finally
+            {
+                // If SplashScreen was shown, close it
+                if (SplashScreenManager.Default != null) SplashScreenManager.CloseForm(false);
+            }
+
+            // Show a message box indicating the sorting by BinNumber has been completed
+            XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
+        }
+
+        private void barButtonItem8_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+            if (gridView.SelectedRowsCount == 0)
+            {
+                XtraMessageBox.Show("Please select one or more rows");
+                return;
+            }
+
+            var selectedRowHandles = gridView.GetSelectedRows();
+            var salesOrderReferences = new List<string>();
+
+            foreach (var rowHandle in selectedRowHandles)
+            {
+                var salesOrderReference = gridView.GetRowCellValue(rowHandle, "AccountingRef").ToString();
+                salesOrderReferences.Add(salesOrderReference);
+            }
+
+            CancelOrder(
+                salesOrderReferences); // Assuming this method is taking care of order cancellation logic with the DB.
+
+            // Show a confirmation message
+            XtraMessageBox.Show("These orders have been moved to the Hold Tab.");
+
+            // Fetch the updated data from the database
+            var data = _context.CscOrderDatas.ToList();
+
+            // Set the fetched data as the grid's data source and refresh the grid view
+            gridView.GridControl.DataSource = data;
+            gridView.RefreshData();
+        }
+
+        private void barButtonItem11_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            ProcessAndPrintSelectedRows();
+        }
+
+        private void barButtonItem10_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
         }
     }
 }
