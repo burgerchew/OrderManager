@@ -50,10 +50,8 @@ namespace OrderManagerEF
 
         private void LoadScanPackReportOverview()
         {
-            var result = _context.Set<ScanPackReportOverview>()
-                .FromSqlRaw("EXEC [dbo].[ASP_ScanPackReportOverview]")
-                .ToList();
-
+            var result = _context.vScanPackReportOverviews.ToList();
+            
             gridControl1.DataSource = result;
         }
 

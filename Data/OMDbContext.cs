@@ -35,6 +35,7 @@ namespace OrderManagerEF.Data
         public DbSet<AddressPart> AddressParts { get; set; }
 
 
+        public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
         public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
 
         public List<ScanPackReportLookup> ExecuteScanPackReportLookup(string searchTerm)
@@ -76,13 +77,14 @@ namespace OrderManagerEF.Data
             // For Views (Keyless Entities)
             modelBuilder.Entity<PendingBatch>().ToView("vPendingBatches").HasNoKey();
             modelBuilder.Entity<LabelPrintQueue>().ToView("vLabelPrintQueue").HasNoKey();
+            modelBuilder.Entity<ScanPackReportOverview>().ToView("vScanPackReportOverview").HasNoKey();
             modelBuilder.Entity<ScanPackReportLookup>().HasNoKey();
             modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
             modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
             modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();
             modelBuilder.Entity<CSCOrderData>().ToView("vASP_CSC_SSI").HasNoKey();
             modelBuilder.Entity<DSOrderData>().ToView("vASP_DS_SSI").HasNoKey();
-            modelBuilder.Entity<PreOrderData>().ToView("vASP_PREORDER_SSI").HasNoKey();
+            modelBuilder.Entity<PreOrderData>().ToView("vASP_PREORDERS_SSI").HasNoKey();
             modelBuilder.Entity<SampleOrderData>().ToView("vASP_SAMPLES_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOrderData>().ToView("vASP_RUB_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOver5OrderData>().ToView("vASP_SSI_RUBOVER5").HasNoKey();

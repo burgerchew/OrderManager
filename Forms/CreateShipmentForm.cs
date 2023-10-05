@@ -40,10 +40,11 @@ namespace OrderManagerEF
         public CreateShipmentForm(IConfiguration configuration, OMDbContext context)
         {
             InitializeComponent();
-            InitializeData();
-            AddRadioCheckBoxColumn();
+      
             _configuration = configuration;
             _context = context;
+            InitializeData();
+            AddRadioCheckBoxColumn();
         }
 
         private void InitializeData()
@@ -81,7 +82,7 @@ namespace OrderManagerEF
                 // Assuming the methods ApplyShipmentIdFilter and PopulateExtraDataLookup are still relevant,
                 // let's call them as they are. If they need to be refactored too, please provide their content.
                 ApplyShipmentIdFilter();
-                PopulateExtraDataLookup(detailView);
+                PopulateExtraDataLookup(gridControl1.MainView as GridView);
             }
             catch (Exception ex)
             {

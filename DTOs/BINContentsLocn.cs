@@ -14,11 +14,11 @@ namespace OrderManagerEF.DTOs
         public int BaseQuantity { get; set; }
         public string BinNumber { get; set; }
         public string PickType { get; set; }
-        public decimal FreeStock { get; set; }
+        public int FreeStock { get; set; }
         public string Barcode { get; set; }
-        public decimal QuantityOnHand { get; set; }
-        public decimal CustomerOrders { get; set; }
-        public decimal SupplierOrders { get; set; }
+        public int QuantityOnHand { get; set; }
+        public int CustomerOrders { get; set; }
+        public int SupplierOrders { get; set; }
         public int TotalAllocatedInBins { get; set; }
     }
 
@@ -30,11 +30,11 @@ namespace OrderManagerEF.DTOs
         public int BaseQuantity { get; set; }
         public string BinNumber { get; set; }
         public string PickType { get; set; }
-        public decimal FreeStock { get; set; }
+        public int FreeStock { get; set; }
         public string Barcode { get; set; }
-        public decimal QuantityOnHand { get; set; }
-        public decimal CustomerOrders { get; set; }
-        public decimal SupplierOrders { get; set; }
+        public int QuantityOnHand { get; set; }
+        public int CustomerOrders { get; set; }
+        public int SupplierOrders { get; set; }
         public int TotalAllocatedInBins { get; set; }
     }
 

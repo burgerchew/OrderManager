@@ -33,13 +33,6 @@ namespace OrderManagerEF
             this.WindowState = FormWindowState.Maximized;
             this.VisibleChanged += new EventHandler(this.PickandPack_VisibleChanged);
 
-            // Add a new column for the image
-            var imageColumn = gridView1.Columns.AddVisible("ImageColumn", "Image");
-            imageColumn.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            imageColumn.ColumnEdit = new RepositoryItemImageEdit();
-
-            // Subscribe to the CustomUnboundColumnData event
-            gridView1.CustomUnboundColumnData += gridView1_CustomUnboundColumnData;
 
         }
 
@@ -58,7 +51,10 @@ namespace OrderManagerEF
             // Assuming gridControl or some other control is being populated
             gridControl1.DataSource = data;
 
-            AddGroupSum();
+    
+
+
+          AddGroupSum();
         }
         private void AddGroupSum()
         {
@@ -83,9 +79,6 @@ namespace OrderManagerEF
                 view.FindFilterText = SKU;
             }
         }
-
-
-
 
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevExpress.XtraEditors;
 
 namespace OrderManagerEF.Classes
 {
@@ -17,6 +18,12 @@ namespace OrderManagerEF.Classes
 
         public void AddSumToGroupedColumn(string columnName, string groupedColumnName)
         {
+            if (gridView.Columns[columnName] == null)
+            {
+                XtraMessageBox.Show($"The column '{columnName}' does not exist in the GridView.");
+                return;
+            }
+
             gridView.OptionsView.ShowFooter = true;
             gridView.Columns[columnName].SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
             gridView.Columns[columnName].SummaryItem.DisplayFormat = "{0:n2}";
@@ -33,6 +40,7 @@ namespace OrderManagerEF.Classes
             // Expand all groups
             gridView.ExpandAllGroups();
         }
+
 
     }
 
