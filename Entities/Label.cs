@@ -23,6 +23,8 @@ namespace OrderManagerEF.Entities
         public string Location { get; set; }
         public bool? Selected { get; set; }
 
+        public string ExtraData { get; set; }
+
 
     }
 }

@@ -34,11 +34,15 @@
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            gridControl1 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
             SuspendLayout();
             // 
             // ribbonControl1
@@ -78,11 +82,6 @@
             ribbonPageGroup3.Name = "ribbonPageGroup3";
             ribbonPageGroup3.Text = "ribbonPageGroup3";
             // 
-            // ribbonPage3
-            // 
-            ribbonPage3.Name = "ribbonPage3";
-            ribbonPage3.Text = "ribbonPage3";
-            // 
             // ribbonPage4
             // 
             ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4 });
@@ -94,21 +93,45 @@
             ribbonPageGroup4.Name = "ribbonPageGroup4";
             ribbonPageGroup4.Text = "ribbonPageGroup4";
             // 
+            // ribbonPage3
+            // 
+            ribbonPage3.Name = "ribbonPage3";
+            ribbonPage3.Text = "ribbonPage3";
+            // 
             // ribbonPage5
             // 
             ribbonPage5.Name = "ribbonPage5";
             ribbonPage5.Text = "ribbonPage5";
+            // 
+            // gridControl1
+            // 
+            gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            gridControl1.Location = new System.Drawing.Point(0, 158);
+            gridControl1.MainView = gridView1;
+            gridControl1.MenuManager = ribbonControl1;
+            gridControl1.Name = "gridControl1";
+            gridControl1.Size = new System.Drawing.Size(712, 425);
+            gridControl1.TabIndex = 1;
+            gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            // 
+            // gridView1
+            // 
+            gridView1.GridControl = gridControl1;
+            gridView1.Name = "gridView1";
             // 
             // CSCForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(712, 583);
+            Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "CSCForm";
             Ribbon = ribbonControl1;
             Text = "CSCForm";
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -125,5 +148,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage3;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage5;
+        private DevExpress.XtraGrid.GridControl gridControl1;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
     }
 }

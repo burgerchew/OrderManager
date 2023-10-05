@@ -46,7 +46,7 @@
             ribbonControl1.MaxItemId = 1;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonControl1.Size = new System.Drawing.Size(298, 146);
+            ribbonControl1.Size = new System.Drawing.Size(483, 146);
             // 
             // ribbonPage1
             // 
@@ -66,7 +66,7 @@
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(298, 122);
+            gridControl1.Size = new System.Drawing.Size(483, 273);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -79,7 +79,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(298, 268);
+            ClientSize = new System.Drawing.Size(483, 419);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "LabelPrintQueueForm";

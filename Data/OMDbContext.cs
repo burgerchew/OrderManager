@@ -6,9 +6,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
 using OrderManagerEF.DTOs.OrderManager.Classes;
 using OrderManagerEF.Entities;
+using PendingBatch = OrderManagerEF.DTOs.PendingBatch;
 
 namespace OrderManagerEF.Data
 {
@@ -20,7 +22,7 @@ namespace OrderManagerEF.Data
         {
         }
 
-        //public DbSet<LabelsArchive> LabelArchives { get; set; }
+        public DbSet<LabelsArchive> LabelArchives { get; set; }
 
         public DbSet<Label> Labels { get; set; }
 

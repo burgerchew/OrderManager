@@ -33,6 +33,9 @@
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -45,8 +48,8 @@
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
             ribbonControl1.MaxItemId = 1;
             ribbonControl1.Name = "ribbonControl1";
-            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonControl1.Size = new System.Drawing.Size(426, 146);
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
+            ribbonControl1.Size = new System.Drawing.Size(426, 158);
             // 
             // ribbonPage1
             // 
@@ -62,11 +65,11 @@
             // gridControl1
             // 
             gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridControl1.Location = new System.Drawing.Point(0, 146);
+            gridControl1.Location = new System.Drawing.Point(0, 158);
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(426, 278);
+            gridControl1.Size = new System.Drawing.Size(426, 266);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -74,6 +77,22 @@
             // 
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            // 
+            // ribbonPage2
+            // 
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2 });
+            ribbonPage2.Name = "ribbonPage2";
+            ribbonPage2.Text = "ribbonPage2";
+            // 
+            // ribbonPageGroup2
+            // 
+            ribbonPageGroup2.Name = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "ribbonPageGroup2";
+            // 
+            // ribbonPage3
+            // 
+            ribbonPage3.Name = "ribbonPage3";
+            ribbonPage3.Text = "ribbonPage3";
             // 
             // PackingDetailForm
             // 
@@ -83,6 +102,7 @@
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "PackingDetailForm";
+            Ribbon = ribbonControl1;
             Text = "PackingDetailForm";
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
@@ -98,5 +118,8 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage2;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage3;
     }
 }
