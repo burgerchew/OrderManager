@@ -615,7 +615,7 @@ namespace OrderManagerEF.Forms
 
         private void UpdateBinSortCSC()
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubigesConnectionString")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
 
             {
                 using (var command = new SqlCommand("ASP_PickSortListCSC", connection))

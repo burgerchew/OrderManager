@@ -42,8 +42,18 @@ namespace OrderManagerEF.Forms
                 { "navBarItem4", (c, ctx,u) => new SamplesForm(c, ctx) },
                 { "navBarItem5", (c, ctx,u) => new PreOrdersForm(c,ctx) },
                 { "navBarItem6", (c, ctx, u) => new WebstoreUnder5Form(c,ctx) },
-                { "navBarItem8", (c, ctx, u) => new WebstoreOver5Form(c,ctx) },
-
+                { "navBarItem7", (c, ctx, u) => new PrintedForm(c,ctx) },
+                { "navBarItem9", (c, ctx, u) => new LabelPrintQueueForm(c,ctx) },
+                { "navBarItem10", (c, ctx, u) => new PackingForm(c,ctx) },
+                { "navBarItem11", (c, ctx, u) => new HoldForm(c,ctx) },
+                { "navBarItem12", (c, ctx, u) => new Import1Form(c,ctx) },
+                { "navBarItem13", (c, ctx, u) => new CreateShipmentForm(c,ctx) },
+                { "navBarItem14", (c, ctx, u) => new CreateLabelForm1(c,ctx) },
+                { "navBarItem15", (c, ctx, u) => new ArchiveLabelForm(c,ctx) },
+                { "navBarItem15", (c, ctx, u) => new ReplenForm(c,ctx) },
+                { "navBarItem17", (c, ctx, u) => new PickandPackForm(c,ctx) },
+                { "navBarItem18", (c, ctx, u) => new MajorsForm(c,ctx) },
+                { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
             };
         }
 
@@ -53,7 +63,7 @@ namespace OrderManagerEF.Forms
             // Lookup the form to open based on the clicked link's name
             if (formMap.TryGetValue(e.Link.Item.Name, out FormCreator formCreator))
             {
-                Form formToOpen = formCreator(_configuration, _context,_userSession);
+                Form formToOpen = formCreator(_configuration, _context, _userSession);
 
                 if (formToOpen != null)
                 {
