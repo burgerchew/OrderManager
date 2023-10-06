@@ -130,6 +130,7 @@
             barButtonItem9.Caption = "Show Ready Orders";
             barButtonItem9.Id = 9;
             barButtonItem9.Name = "barButtonItem9";
+            barButtonItem9.ItemClick += barButtonItem9_ItemClick;
             // 
             // barButtonItem10
             // 

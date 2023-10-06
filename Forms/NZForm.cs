@@ -65,16 +65,39 @@ namespace OrderManagerEF.Forms
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-            Load += NZForm_Load;
+           BarButtonClicks();
         }
 
 
 
 
-
+        private void BarButtonClicks()
+        {   //Export to Excel
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            //Sync IDs
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Show IDS
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Create Batch
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+            //Show Batch
+            barButtonItem5.ItemClick += barButtonItem5_ItemClick;
+            //Process Batch
+            barButtonItem6.ItemClick += barButtonItem6_ItemClick;
+            //Sort By BinNumber
+            barButtonItem7.ItemClick += barButtonItem7_ItemClick;
+            //Hold Order
+            barButtonItem8.ItemClick += barButtonItem8_ItemClick;
+            //Show Ready Orders
+            barButtonItem9.ItemClick += barButtonItem9_ItemClick;
+            //Show Duplicates
+            barButtonItem10.ItemClick += barButtonItem10_ItemClick;
+            //Select and Process
+            barButtonItem11.ItemClick += barButtonItem11_ItemClick;
+        }
         private void LoadData()
         {
-            //LoadPickSlipData();
+            LoadPickSlipData();
 
 
             var data = _context.NzOrderDatas.ToList();
@@ -217,7 +240,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
@@ -258,12 +281,12 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
         {
             FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
         }
 
-        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem11_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -352,13 +375,13 @@ namespace OrderManagerEF.Forms
             XtraMessageBox.Show($"{salesOrderReferences.Count} pickslip reports were saved successfully.");
         }
 
-        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
         {
             var newForm = new BatchForm(_configuration, _context);
             newForm.Show();
         }
 
-        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
         {
             string tableName = "LabelstoPrintNZ";
             var manager = new LabelQueueManager(tableName, _configuration);
@@ -439,7 +462,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -449,7 +472,7 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -461,7 +484,7 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private async void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
+        private async void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
@@ -548,6 +571,56 @@ namespace OrderManagerEF.Forms
             }
         }
 
+        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Show the SplashScreen
+            SplashScreenManager.ShowDefaultWaitForm();
+            try
+            {
+                // Call the stored procedure
+                UpdateBinSortNZ();
+
+                // Refresh the GridView
+                var gridView = gridControl1.FocusedView as GridView;
+
+                // Refresh the GridView
+                // Fetch the updated data from the database using the new EF Core method
+                var data = _context.DSOrderDatas.ToList();
+
+                // Set the fetched data as the grid's data source and refresh the grid view
+                gridView.GridControl.DataSource = data;
+                gridView.RefreshData();
+
+            }
+
+            finally
+            {
+                // If SplashScreen was shown, close it
+                if (SplashScreenManager.Default != null)
+                {
+                    SplashScreenManager.CloseForm(false);
+                }
+            }
+
+            // Show a message box indicating all reports were saved
+            XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
+
+        }
+
+
+        private void UpdateBinSortNZ()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
+
+            {
+                using (var command = new SqlCommand("ASP_PickSortListNZ", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
         private void CancelOrder(List<string> salesOrderReferences)
         {
@@ -570,7 +643,7 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 

@@ -71,7 +71,7 @@ namespace OrderManagerEF.Forms
             SetUpHttpClient(_location);
             _pickSlipGenerator = new PickSlipGenerator(_configuration, _context); // Use the already set _configuration and _context
             _reportManager = new ReportManager(_configuration); // Use the already set _configuration
-  
+
         }
 
 
@@ -150,7 +150,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-    private void UpdateFileStatusForData(List<CSCOrderData> data)
+        private void UpdateFileStatusForData(List<CSCOrderData> data)
         {
             foreach (var item in data) item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
         }
@@ -461,19 +461,6 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-            if (gridView != null) FilterZShipmentID(gridView);
-        }
-
-        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-            if (gridView != null) gridView.ToggleFileExistenceFilter();
-        }
 
         private void SetUpHttpClient(string location)
         {
@@ -543,7 +530,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-      
+
 
         public async Task DebugSyncAndUpdateOrdersNew()
         {
@@ -610,7 +597,7 @@ namespace OrderManagerEF.Forms
                 }
         }
 
-       
+
 
 
         private void UpdateBinSortCSC()
@@ -733,9 +720,9 @@ namespace OrderManagerEF.Forms
 
         private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
-                  var gridView = gridControl1.FocusedView as FileExistenceGridView;
+            var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
-                     if (gridView != null) FilterZShipmentID(gridView);
+            if (gridView != null) FilterZShipmentID(gridView);
         }
 
         private void barButtonItem5_ItemClick_1(object sender, ItemClickEventArgs e)
@@ -898,6 +885,13 @@ namespace OrderManagerEF.Forms
         private void barButtonItem10_ItemClick_1(object sender, ItemClickEventArgs e)
         {
             FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
+        }
+
+        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+            if (gridView != null) gridView.ToggleFileExistenceFilter();
         }
     }
 }

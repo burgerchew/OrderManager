@@ -26,7 +26,7 @@ using System.Windows.Forms;
 
 namespace OrderManagerEF
 {
-public partial class PreOrdersForm : DevExpress.XtraBars.Ribbon.RibbonForm
+    public partial class PreOrdersForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
 
         private ExcelExporter _excelExporter;

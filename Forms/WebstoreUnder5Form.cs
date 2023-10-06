@@ -63,12 +63,39 @@ namespace OrderManagerEF
             SetUpHttpClient(_location);
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+            BarButtonClicks();
         }
 
         private void WebstoreUnder5_Load(object sender, EventArgs e)
         {
             LoadData();
         }
+
+        private void BarButtonClicks()
+        {   //Export to Excel
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            //Sync IDs
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Show IDS
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Create Batch
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+            //Show Batch
+            barButtonItem5.ItemClick += barButtonItem5_ItemClick;
+            //Process Batch
+            barButtonItem6.ItemClick += barButtonItem6_ItemClick;
+            //Sort By BinNumber
+            barButtonItem7.ItemClick += barButtonItem7_ItemClick;
+            //Hold Order
+            barButtonItem8.ItemClick += barButtonItem8_ItemClick;
+            //Show Ready Orders
+            barButtonItem9.ItemClick += barButtonItem9_ItemClick;
+            //Show Duplicates
+            barButtonItem10.ItemClick += barButtonItem10_ItemClick;
+            //Select and Process
+            barButtonItem11.ItemClick += barButtonItem11_ItemClick;
+        }
+
 
         private void LoadData()
         {
@@ -200,28 +227,6 @@ namespace OrderManagerEF
             column.UnboundExpression = "'Preview'";
         }
 
-        //private void Hyperlink_OpenLink(object sender, OpenLinkEventArgs e)
-        //{
-        //    var gridView = gridControl1.MainView as GridView;
-        //    if (gridView != null)
-        //    {
-        //        var salesOrderReference = gridView.GetFocusedRowCellValue("AccountingRef").ToString();
-
-
-
-        //        // Create an instance of BulkReportGenerator
-        //        var reportGenerator = new BulkReportGenerator(_configuration);
-
-        //        // Call the GenerateReportPortrait method
-        //        var report = reportGenerator.GenerateReportPortrait(salesOrderReference);
-
-        //        var printTool = new ReportPrintTool(report);
-        //        printTool.ShowPreviewDialog();
-        //    }
-
-        //    // Prevent the link from being opened in a browser or another default action
-        //    e.Handled = true;
-        //}
 
         private void Hyperlink_OpenLink(object sender, OpenLinkEventArgs e)
         {

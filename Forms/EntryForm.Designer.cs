@@ -413,12 +413,12 @@
             // 
             ribbonPageGroup1.ItemLinks.Add(barButtonItem1);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
-            ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Tabs";
             // 
             // ribbonPageGroup2
             // 
             ribbonPageGroup2.Name = "ribbonPageGroup2";
-            ribbonPageGroup2.Text = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "Search";
             // 
             // repositoryItemRibbonSearchEdit2
             // 
