@@ -24,6 +24,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF
 {
@@ -41,14 +42,14 @@ namespace OrderManagerEF
         private readonly PickSlipGenerator _pickSlipGenerator;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
+        private readonly UserSession _userSession;
 
-
-        public PreOrdersForm(IConfiguration configuration, OMDbContext context)
+        public PreOrdersForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
-
+            _userSession = userSession;
 
             this.VisibleChanged += new EventHandler(this.Preorders_VisibleChanged);
             _excelExporter = new ExcelExporter(gridView1);
@@ -457,13 +458,6 @@ namespace OrderManagerEF
             // Show the custom splash screen
             SplashScreenManager.ShowForm(typeof(ProgressForm));
 
-            // Call the modified method in your BulkReportGenerator class to generate and save the reports
-            //_reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences, progress =>
-
-            //{
-            //    SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress);
-            //});
-
 
             _reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences,
                 progress => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress),
@@ -473,11 +467,9 @@ namespace OrderManagerEF
             // Ensure the splash screen is closed
             SplashScreenUtility.CloseSplashScreenIfNeeded();
 
-            //// Close the custom splash screen
-            //SplashScreenManager.CloseForm();
 
+            var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
 
-            var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
 
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";

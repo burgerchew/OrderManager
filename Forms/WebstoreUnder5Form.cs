@@ -25,6 +25,8 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using DevExpress.XtraGrid.Views.Grid;
 using System.IO;
+using DevExpress.XtraEditors.Mask;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF
 {
@@ -41,9 +43,10 @@ namespace OrderManagerEF
         private readonly PickSlipGenerator _pickSlipGenerator;
         private FileExistenceGridViewHelper _fileExistenceGridViewHelper;
         private readonly OMDbContext _context;
+        private readonly UserSession _userSession;
         private readonly StoredProcedureService _storedProcedureService;
 
-        public WebstoreUnder5Form(IConfiguration configuration, OMDbContext context)
+        public WebstoreUnder5Form(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             VisibleChanged += WebstoreUnder5_VisibleChanged;
@@ -53,6 +56,7 @@ namespace OrderManagerEF
             _reportGenerator = new BulkReportGenerator(configuration);
             _configuration = configuration;
             _context = context;
+            _userSession = userSession;
 
             // Replace with your actual connection string
             var connectionString =
@@ -440,11 +444,9 @@ namespace OrderManagerEF
             // Ensure the splash screen is closed
             SplashScreenUtility.CloseSplashScreenIfNeeded();
 
-            //// Close the custom splash screen
-            //SplashScreenManager.CloseForm();
 
-
-            var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
+            //var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
+            var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
 
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";

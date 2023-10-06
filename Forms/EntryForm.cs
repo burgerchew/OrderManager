@@ -44,12 +44,12 @@ namespace OrderManagerEF.Forms
             formMap = new Dictionary<string, FormCreator>
             {
                 { "navBarItem1", (c, ctx,us) => new CSCForm(c, ctx,us) },
-                { "navBarItem2", (c, ctx,u) => new DSForm(c, ctx) },
-                { "navBarItem3", (c, ctx,u) => new NZForm(c, ctx) },
-                { "navBarItem4", (c, ctx,u) => new SamplesForm(c, ctx) },
-                { "navBarItem5", (c, ctx,u) => new PreOrdersForm(c,ctx) },
-                { "navBarItem6", (c, ctx, u) => new WebstoreUnder5Form(c,ctx) },
-                { "navBarItem8", (c, ctx, u) => new WebstoreOver5Form(c,ctx) },
+                { "navBarItem2", (c, ctx,us) => new DSForm(c, ctx,us) },
+                { "navBarItem3", (c, ctx,us) => new NZForm(c, ctx,us) },
+                { "navBarItem4", (c, ctx,us) => new SamplesForm(c, ctx,us) },
+                { "navBarItem5", (c, ctx,us) => new PreOrdersForm(c, ctx, us) },
+                { "navBarItem6", (c, ctx, us) => new WebstoreUnder5Form(c, ctx, us) },
+                { "navBarItem8", (c, ctx, us) => new WebstoreOver5Form(c, ctx, us) },
                 { "navBarItem7", (c, ctx, u) => new PrintedForm(c,ctx) },
                 { "navBarItem9", (c, ctx, u) => new LabelPrintQueueForm(c,ctx) },
                 { "navBarItem10", (c, ctx, u) => new PackingForm(c,ctx) },
@@ -62,8 +62,9 @@ namespace OrderManagerEF.Forms
                 { "navBarItem17", (c, ctx, u) => new PickandPackForm(c,ctx) },
                 { "navBarItem18", (c, ctx, u) => new MajorsForm(c,ctx) },
                 { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
-                { "navBarItem20", (c, ctx, u) => new PrinterSelectionForm(c) },
+                { "navBarItem20", (c, ctx, u) => new PrinterSelectionForm(c,ctx,u) },
                 { "navBarItem21", (c, ctx, u) => new ReportSettingForm(c,ctx) },
+                { "navBarItem22", (c, ctx, us) => new ActivityLogForm(c, ctx, us) },
             };
 
             InitSearchForm();

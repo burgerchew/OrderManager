@@ -10,38 +10,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OrderManagerEF.Data;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF.Forms
 {
-    public partial class PrinterSelectionForm : DevExpress.XtraEditors.XtraForm
+    public partial class PrinterSelectionForm : XtraForm
     {
         private string _selectedPrinter;
         private readonly IConfiguration _configuration;
         private int _previousSelectedIndex = -1;
-        public PrinterSelectionForm(IConfiguration configuration)
+        private readonly OMDbContext _context;
+        private readonly UserSession _userSession;
+        public PrinterSelectionForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
+            _context = context;
+            _userSession = userSession;
             Load += PrinterSelectionForm_Load;
-            //comboBoxEdit1_EditValueChanged += comboBoxEdit1_EditValueChanged;
+            comboBoxEdit1.EditValueChanged += comboBoxEdit1_EditValueChanged;
+
         }
 
 
         private void PrinterSelectionForm_Load(object sender, EventArgs e)
         {
-            if (PrinterHelper.PopulatePrinterComboBox(comboBoxEdit1) && comboBoxEdit1.Properties.Items.Count > 0)
+            if (PrinterHelperEF.PopulatePrinterComboBox(comboBoxEdit1) && comboBoxEdit1.Properties.Items.Count > 0)
             {
                 // Get the default printer name
-                string defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
+                string userPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
 
                 // Set the selected printer in the combobox
-                if (string.IsNullOrEmpty(defaultPrinterName))
+                if (string.IsNullOrEmpty(userPrinterName))
                 {
                     comboBoxEdit1.SelectedIndex = 0;
                 }
                 else
                 {
-                    int index = comboBoxEdit1.Properties.Items.IndexOf(defaultPrinterName);
+                    int index = comboBoxEdit1.Properties.Items.IndexOf(userPrinterName);
                     if (index >= 0)
                     {
                         comboBoxEdit1.SelectedIndex = index;
@@ -54,7 +61,6 @@ namespace OrderManagerEF.Forms
             }
         }
 
-
         private void comboBoxEdit1_EditValueChanged(object sender, EventArgs e)
         {
             if (comboBoxEdit1.SelectedIndex != _previousSelectedIndex)
@@ -66,12 +72,11 @@ namespace OrderManagerEF.Forms
 
 
 
-
         private void simpleButton1_Click_1(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(_selectedPrinter))
             {
-                PrinterHelper.SaveDefaultPrinter(_configuration, _selectedPrinter);
+                PrinterHelperEF.SaveUserPrinter(_context, _userSession.CurrentUser.Id, _selectedPrinter);
                 XtraMessageBox.Show("Printer settings saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -79,5 +84,6 @@ namespace OrderManagerEF.Forms
                 XtraMessageBox.Show("Please select a printer before saving.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }

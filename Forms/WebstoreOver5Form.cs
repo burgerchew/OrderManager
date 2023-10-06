@@ -26,6 +26,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using OrderManagerEF.DTOs;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF
 {
@@ -43,13 +44,14 @@ namespace OrderManagerEF
         private readonly PickSlipGenerator _pickSlipGenerator;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
+        private readonly UserSession _userSession;
 
-        public WebstoreOver5Form(IConfiguration configuration, OMDbContext context)
+        public WebstoreOver5Form(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
-
+            _userSession = userSession;    
 
             VisibleChanged += WebstoreOver5_VisibleChanged;
 
@@ -440,11 +442,9 @@ namespace OrderManagerEF
             // Ensure the splash screen is closed
             SplashScreenUtility.CloseSplashScreenIfNeeded();
 
-            //// Close the custom splash screen
-            //SplashScreenManager.CloseForm();
 
+            var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
 
-            var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
 
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";

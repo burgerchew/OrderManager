@@ -97,6 +97,8 @@
             navBarItem18 = new DevExpress.XtraNavBar.NavBarItem();
             navBarGroup5 = new DevExpress.XtraNavBar.NavBarGroup();
             navBarItem19 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem20 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem21 = new DevExpress.XtraNavBar.NavBarItem();
             bar5 = new DevExpress.XtraBars.Bar();
             bar1 = new DevExpress.XtraBars.Bar();
             bar2 = new DevExpress.XtraBars.Bar();
@@ -118,8 +120,7 @@
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             repositoryItemRibbonSearchEdit4 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
-            navBarItem20 = new DevExpress.XtraNavBar.NavBarItem();
-            navBarItem21 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem22 = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
@@ -150,7 +151,7 @@
             navBarControl1.ActiveGroup = navBarGroup1;
             navBarControl1.Dock = System.Windows.Forms.DockStyle.Left;
             navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] { navBarGroup1, navBarGroup2, navBarGroup3, navBarGroup4, navBarGroup5 });
-            navBarControl1.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] { navBarItem1, navBarItem2, navBarItem3, navBarItem4, navBarItem5, navBarItem6, navBarItem7, navBarItem8, navBarItem9, navBarItem10, navBarItem11, navBarItem12, navBarItem13, navBarItem14, navBarItem15, navBarItem16, navBarItem17, navBarItem18, navBarItem19, navBarItem20, navBarItem21 });
+            navBarControl1.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] { navBarItem1, navBarItem2, navBarItem3, navBarItem4, navBarItem5, navBarItem6, navBarItem7, navBarItem8, navBarItem9, navBarItem10, navBarItem11, navBarItem12, navBarItem13, navBarItem14, navBarItem15, navBarItem16, navBarItem17, navBarItem18, navBarItem19, navBarItem20, navBarItem21, navBarItem22 });
             navBarControl1.Location = new System.Drawing.Point(0, 158);
             navBarControl1.Name = "navBarControl1";
             navBarControl1.OptionsNavPane.ExpandedWidth = 212;
@@ -280,13 +281,23 @@
             // 
             navBarGroup5.Caption = "Settings";
             navBarGroup5.Expanded = true;
-            navBarGroup5.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem19), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem20), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem21) });
+            navBarGroup5.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem19), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem20), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem21), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem22) });
             navBarGroup5.Name = "navBarGroup5";
             // 
             // navBarItem19
             // 
             navBarItem19.Caption = "Users";
             navBarItem19.Name = "navBarItem19";
+            // 
+            // navBarItem20
+            // 
+            navBarItem20.Caption = "Default Printer";
+            navBarItem20.Name = "navBarItem20";
+            // 
+            // navBarItem21
+            // 
+            navBarItem21.Caption = "Report Settings";
+            navBarItem21.Name = "navBarItem21";
             // 
             // bar5
             // 
@@ -463,15 +474,10 @@
             repositoryItemRibbonSearchEdit4.Name = "repositoryItemRibbonSearchEdit4";
             repositoryItemRibbonSearchEdit4.NullText = "Search";
             // 
-            // navBarItem20
+            // navBarItem22
             // 
-            navBarItem20.Caption = "Default Printer";
-            navBarItem20.Name = "navBarItem20";
-            // 
-            // navBarItem21
-            // 
-            navBarItem21.Caption = "Report Settings";
-            navBarItem21.Name = "navBarItem21";
+            navBarItem22.Caption = "Activity Log";
+            navBarItem22.Name = "navBarItem22";
             // 
             // EntryForm
             // 
@@ -548,5 +554,6 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraNavBar.NavBarItem navBarItem20;
         private DevExpress.XtraNavBar.NavBarItem navBarItem21;
+        private DevExpress.XtraNavBar.NavBarItem navBarItem22;
     }
 }

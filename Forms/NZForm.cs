@@ -25,6 +25,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using Newtonsoft.Json.Linq;
 using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF.Forms
 {
@@ -42,12 +43,14 @@ namespace OrderManagerEF.Forms
         private readonly PickSlipGenerator _pickSlipGenerator;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
+        private readonly UserSession _userSession;
 
-        public NZForm(IConfiguration configuration, OMDbContext context)
+        public NZForm(IConfiguration configuration, OMDbContext context, UserSession userSession )
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
+            _userSession = userSession;
             VisibleChanged += NZ_VisibleChanged;
 
 
@@ -367,7 +370,8 @@ namespace OrderManagerEF.Forms
             //SplashScreenManager.CloseForm();
 
 
-            var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
+            var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
+
 
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";

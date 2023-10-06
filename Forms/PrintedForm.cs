@@ -60,13 +60,20 @@ namespace OrderManagerEF
             //AddPreviewLinkColumn(newView);
 
             newView.CellValueChanged += GridView_CellValueChanged;
+            BarButtonClicks();
         }
 
-
-
-        private void Printed_Load(object sender, EventArgs e)
-        {
-            LoadData();
+        private void BarButtonClicks()
+        {   //Export to Excel
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            //No Stock Order
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Redo Order
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Late Order
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+      
+       
         }
 
         private void Printed_VisibleChanged(object sender, EventArgs e)
@@ -78,7 +85,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
             {
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
@@ -204,12 +211,12 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
             _excelExporter.ExportToXls();
         }
 
-        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
         {
             {
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
@@ -242,39 +249,9 @@ namespace OrderManagerEF
             }
         }
 
+    
+
         private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            {
-                var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-                if (gridView.SelectedRowsCount == 0)
-                {
-                    XtraMessageBox.Show("Please select one or more rows to redo orders");
-                    return;
-                }
-
-
-                var selectedRowHandles = gridView.GetSelectedRows();
-                var salesOrderReferences = new List<string>();
-
-                foreach (var rowHandle in selectedRowHandles)
-                {
-                    var salesOrderReference = gridView.GetRowCellValue(rowHandle, "AccountingRef").ToString();
-                    salesOrderReferences.Add(salesOrderReference);
-                }
-
-                UpdateZemployeeGroup(salesOrderReferences);
-                // Refresh the GridView
-                XtraMessageBox.Show("Orders have now been hidden on the scanners and are available to process again. ");
-                var data = _context.PrintedOrderDatas.ToList();
-
-
-                // Populate the grid control with the fetched data
-                gridView.GridControl.DataSource = data;
-            }
-        }
-
-        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
             if (gridView != null)

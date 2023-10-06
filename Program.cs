@@ -48,26 +48,28 @@ namespace OrderManagerEF
             using var dbContext = serviceProvider.GetRequiredService<OMDbContext>();
             var userSession = serviceProvider.GetRequiredService<UserSession>();  // <-- Retrieve the UserSession instance
 
-            //// Create an instance of LoginForm and show it
-            //LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
+            // Create an instance of LoginForm and show it
+            LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
 
-            //if (loginForm.ShowDialog() == DialogResult.OK)
-            //{
-            //    // Feedback about where the configuration was loaded from
-            //    XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                // Feedback about where the configuration was loaded from
+                XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
 
-            //    // Inject dbContext and UserSession into EntryForm
-            //    EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
+                // Inject dbContext and UserSession into EntryForm
+                EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
 
-            //    // Use the utility method to close the splash screen when the mainForm loads
-            //    mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();
+                // Use the utility method to close the splash screen when the mainForm loads
+                mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();
 
-            //    // Run the application with EntryForm
-            //    Application.Run(mainForm);
-            //}
+                // Run the application with EntryForm
+                Application.Run(mainForm);
+            }
 
-            EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);
-            Application.Run(mainForm);
+
+            ////Bypass Login for testing
+            //EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);
+            //Application.Run(mainForm);
         }
 
 

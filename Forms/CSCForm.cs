@@ -390,10 +390,10 @@ namespace OrderManagerEF.Forms
 
             // Ensure the splash screen is closed
             SplashScreenUtility.CloseSplashScreenIfNeeded();
-            //// Close the custom splash screen
-            //SplashScreenManager.CloseForm();
 
-            var defaultPrinterName = PrinterHelper.GetDefaultPrinter(_configuration);
+
+            var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
+
 
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
