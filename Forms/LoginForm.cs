@@ -31,6 +31,8 @@ namespace OrderManagerEF.Forms
             _configuration = configuration;
             _context = context;
             _userSession = userSession; // Set the user session
+            textEdit1.Text = "daniel";
+            textEdit2.Text = "OM123!";
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)

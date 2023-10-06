@@ -43,8 +43,97 @@ namespace OrderManagerEF
 
             _configuration = configuration;
             _context = context;
-            InitializeData();
-            AddRadioCheckBoxColumn();
+            //InitializeData();
+            //AddRadioCheckBoxColumn();
+            Load += CreateShipmentForm_Load;
+   
+
+            BarButtonClick();
+        }
+
+
+        private void BarButtonClick()
+        {
+            //Toggle Shipments
+            barCheckItem1.CheckedChanged += barCheckItem1_CheckedChanged;
+            //AddressMode
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Create Shipments
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Delete Shipments
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+        }
+
+
+        private void CreateShipmentForm_Load(object sender, EventArgs e)
+        {
+            ConfigureMasterDetailGrid();
+
+            ApplyShipmentIdFilter();
+            PopulateExtraDataLookup(gridControl1.MainView as GridView);
+        }
+
+        private void ConfigureMasterDetailGrid()
+        {
+            // Load data with details included
+            var orders =  _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
+
+            // Bind master data (orders) to grid
+            gridControl1.DataSource = orders;
+
+            // Configure master GridView
+            GridView masterView = gridControl1.MainView as GridView;
+            masterView.OptionsDetail.EnableMasterViewMode = true;
+
+            masterView.MasterRowExpanded += MasterView_MasterRowExpanded;
+
+            // Handle the master-detail relationship
+            masterView.MasterRowGetChildList += (sender, e) =>
+            {
+                GridView view = sender as GridView;
+                StarShipITOrder order = view.GetRow(e.RowHandle) as StarShipITOrder;
+                e.ChildList = order.StarShipITOrderDetails.ToList(); // Cast to list
+            };
+
+            masterView.MasterRowGetRelationName += (sender, e) => { e.RelationName = "StarShipITOrderDetails"; };
+
+            masterView.MasterRowGetRelationCount += (sender, e) => { e.RelationCount = 1; };
+
+            // Create and configure detail GridView
+            GridView detailView = new GridView(gridControl1);
+            gridControl1.LevelTree.Nodes.Add("StarShipITOrderDetails", detailView);
+            detailView.PopulateColumns();
+            detailView.OptionsView.ShowGroupPanel = false;
+        }
+
+
+        private void MasterView_MasterRowExpanded(object sender, CustomMasterRowEventArgs e)
+        {
+            GridView masterView = sender as GridView;
+            GridView detailView = masterView.GetDetailView(e.RowHandle, e.RelationIndex) as GridView;
+
+            if (detailView != null)
+            {
+                detailView.OptionsBehavior.Editable = true;
+                // Subscribe to the RowUpdated event for the detail view
+                detailView.RowUpdated += GridView1_RowUpdated;
+            }
+        }
+
+        private void GridView1_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
+        {
+            // Check the type of the updated row and update it in the database
+            if (e.Row is StarShipITOrder header)
+            {
+                _context.StarShipITOrders.Update(header);
+            }
+            else if (e.Row is StarShipITOrderDetail detail)
+            {
+                _context.StarShipITOrderDetails.Update(detail);
+            }
+
+            // Save changes to database
+            _context.SaveChanges();
         }
 
         private void InitializeData()
@@ -54,6 +143,7 @@ namespace OrderManagerEF
                 // Fetch data using EF and DbContext
                 var shipments = _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
 
+
                 // Set up the main view's data source with the fetched shipments
                 var masterBindingSource = new BindingSource { DataSource = shipments };
 
@@ -61,11 +151,11 @@ namespace OrderManagerEF
 
                 // Set up the master-detail relationship
                 var detailView = new GridView(gridControl1);
-                gridControl1.LevelTree.Nodes.Add("ShipmentDetails", detailView);
+                gridControl1.LevelTree.Nodes.Add("StarShipITOrderDetails", detailView);
                 detailView.PopulateColumns();
                 detailView.ViewCaption = "Shipment Details";
 
-                // Attach event handlers
+                //// Attach event handlers
 
                 detailView.MasterRowExpanded += gridView1_MasterRowExpanded;
                 detailView.RowUpdated += gridView1_RowUpdated;
@@ -502,7 +592,7 @@ namespace OrderManagerEF
         }
 
 
-        private async void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        private async void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedShipments = _context.StarShipITOrders
                                            .Include(s => s.StarShipITOrderDetails) // To load related data
@@ -777,7 +867,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Confirm the user wants to delete all rows
             DialogResult result = XtraMessageBox.Show("Are you sure you want to delete all rows?", "Confirmation", MessageBoxButtons.YesNo);

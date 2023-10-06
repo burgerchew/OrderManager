@@ -41,7 +41,7 @@ namespace OrderManagerEF.Forms
         private void LoadData()
         {
 
-            var data = _context.LabelArchives.ToList();
+            var data = _context.Users.ToList();
             // Bind the data to the GridControl
             gridControl1.DataSource = data;
         }

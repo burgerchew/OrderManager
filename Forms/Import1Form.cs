@@ -43,6 +43,8 @@ namespace OrderManagerEF
 
             // Add and validate data
             ValidateAndSetDisplayText();
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+
         }
 
 
@@ -121,7 +123,7 @@ namespace OrderManagerEF
         }
 
 
-        private void barButtonItem1_ItemClick_1(object sender, ItemClickEventArgs e)
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.MainView as GridView;
 
@@ -140,7 +142,7 @@ namespace OrderManagerEF
 
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    using (var command = new SqlCommand("dbo.CopyTransHeadersToOrdersNoCursor", connection))
+                    using (var command = new SqlCommand("dbo.spInsertStarShipITOrder", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@AccountingRef", accountingref);

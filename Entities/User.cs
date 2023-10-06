@@ -13,6 +13,7 @@ namespace OrderManagerEF.Entities
         public string Password { get; set; } // IMPORTANT: Store hashed passwords, not plaintext!
         public ICollection<UserActivity> Activities { get; set; }
 
+        public string UserType { get; set; }
         public string PrinterName { get; set; }
     }
 
