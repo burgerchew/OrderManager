@@ -63,13 +63,11 @@ namespace OrderManagerEF
             SetUpHttpClient(_location);
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+
+
             BarButtonClicks();
         }
 
-        private void WebstoreUnder5_Load(object sender, EventArgs e)
-        {
-            LoadData();
-        }
 
         private void BarButtonClicks()
         {   //Export to Excel
@@ -99,32 +97,42 @@ namespace OrderManagerEF
 
         private void LoadData()
         {
-            LoadPickSlipData();
-            var data = _context.RubiesOrderDatas.ToList();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-            // Update the FileStatus property for each item in the data list.
-            UpdateFileStatusForData(data);
-
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-            gridView1.RefreshData();
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.RubiesOrderDatas.ToList();
 
-            gridControl1.MainView = newView;
-            AddPreviewLinkColumn(newView);
-            gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
-            HighlightDuplicateRows(newView);
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
 
-            _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
+
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
+
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
+
+                _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
+                gridView1.KeyDown += gridView1_KeyDown;
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
         }
-
 
         private List<ASP_SSI_Result> LoadDataFromStoredProcedure()
         {
@@ -282,13 +290,13 @@ namespace OrderManagerEF
         }
 
 
-        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
         {
             var newForm = new BatchForm(_configuration, _context);
             newForm.Show();
         }
 
-        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
@@ -333,7 +341,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
         {
             var tableName = "LabelstoPrintRUB";
             var manager = new LabelQueueManager(tableName, _configuration);
@@ -369,7 +377,7 @@ namespace OrderManagerEF
             manager.CloseConnection();
         }
 
-        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem11_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -460,7 +468,7 @@ namespace OrderManagerEF
 
 
 
-        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
         {
             FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
         }
@@ -509,21 +517,21 @@ namespace OrderManagerEF
         }
 
 
-        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
             if (gridView != null) FilterZShipmentID(gridView);
         }
 
-        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
             if (gridView != null) gridView.ToggleFileExistenceFilter();
         }
 
-        private async void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
+        private async void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
@@ -580,7 +588,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Show the SplashScreen
             SplashScreenManager.ShowDefaultWaitForm();
@@ -611,7 +619,7 @@ namespace OrderManagerEF
             XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
         }
 
-        private void barButtonItem11_ItemClick(object sender, ItemClickEventArgs e)
+        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 

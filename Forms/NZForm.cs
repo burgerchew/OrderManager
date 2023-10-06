@@ -33,6 +33,7 @@ namespace OrderManagerEF.Forms
         private ExcelExporter _excelExporter;
         private readonly BulkReportGenerator _reportGenerator;
         private HttpClient client;
+        private bool _dataLoaded;
         private readonly ApiKeyManager _apiKeyManager;
         private readonly string _location = "NZ"; // Define your location
         private readonly IConfiguration _configuration;
@@ -47,7 +48,7 @@ namespace OrderManagerEF.Forms
             InitializeComponent();
             _configuration = configuration;
             _context = context;
-
+            VisibleChanged += NZ_VisibleChanged;
 
 
             _excelExporter = new ExcelExporter(gridView1);
@@ -65,11 +66,18 @@ namespace OrderManagerEF.Forms
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+
            BarButtonClicks();
         }
 
-
-
+        private void NZ_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible && !_dataLoaded)
+            {
+                LoadData();
+                _dataLoaded = true;
+            }
+        }
 
         private void BarButtonClicks()
         {   //Export to Excel
@@ -97,36 +105,44 @@ namespace OrderManagerEF.Forms
         }
         private void LoadData()
         {
-            LoadPickSlipData();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-
-            var data = _context.NzOrderDatas.ToList();
-
-            gridControl1.DataSource = data;
-
-
-            // Update the FileStatus property for each item in the data list.
-            UpdateFileStatusForData(data);
-
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-            gridView1.RefreshData();
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                    { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.NzOrderDatas.ToList();
 
-            gridControl1.MainView = newView;
-            AddPreviewLinkColumn(newView);
-            gridControl1.DataSource = data;  // Here, we set the data directly instead of updatedDataTable
-            HighlightDuplicateRows(newView);
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
 
-            _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
+
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
+
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
+
+                _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
+                gridView1.KeyDown += gridView1_KeyDown;
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
         }
+
+
 
         private void UpdateFileStatusForData(List<NZOrderData> data)
         {
@@ -137,10 +153,6 @@ namespace OrderManagerEF.Forms
         }
 
 
-        private void NZForm_Load(object sender, EventArgs e)
-        {
-            LoadData();
-        }
 
         private void LoadPickSlipData()
         {

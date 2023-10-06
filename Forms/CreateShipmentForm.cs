@@ -40,7 +40,7 @@ namespace OrderManagerEF
         public CreateShipmentForm(IConfiguration configuration, OMDbContext context)
         {
             InitializeComponent();
-      
+
             _configuration = configuration;
             _context = context;
             InitializeData();

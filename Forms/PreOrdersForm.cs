@@ -1,4 +1,5 @@
 ﻿using DevExpress.Data.Filtering;
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
@@ -65,6 +66,34 @@ namespace OrderManagerEF
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+          BarButtonClicks();
+
+        }
+
+
+        private void BarButtonClicks()
+        {   //Export to Excel
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            //Sync IDs
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Show IDS
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Create Batch
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+            //Show Batch
+            barButtonItem5.ItemClick += barButtonItem5_ItemClick;
+            //Process Batch
+            barButtonItem6.ItemClick += barButtonItem6_ItemClick;
+            //Sort By BinNumber
+            barButtonItem7.ItemClick += barButtonItem7_ItemClick;
+            //Hold Order
+            barButtonItem8.ItemClick += barButtonItem8_ItemClick;
+            //Show Ready Orders
+            barButtonItem9.ItemClick += barButtonItem9_ItemClick;
+            //Show Duplicates
+            barButtonItem10.ItemClick += barButtonItem10_ItemClick;
+            //Select and Process
+            barButtonItem11.ItemClick += barButtonItem11_ItemClick;
         }
 
         private void LoadData()
@@ -225,15 +254,7 @@ namespace OrderManagerEF
             _excelExporter.ExportToXls();
         }
         //Show IDS
-        private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
-            if (gridView != null)
-            {
-                FilterZShipmentID(gridView);
-            }
-        }
 
         private bool CheckZShipmentID(FileExistenceGridView gridView)
         {
@@ -279,8 +300,19 @@ namespace OrderManagerEF
         }
 
 
+
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+            if (gridView != null)
+            {
+                FilterZShipmentID(gridView);
+            }
+        }
+
         //create batch
-        private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem4_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string tableName = "LabelstoPrintRUB";
             var manager = new LabelQueueManager(tableName, _configuration);
@@ -319,13 +351,13 @@ namespace OrderManagerEF
             manager.CloseConnection();
         }
         //Show Batch
-        private void barButtonItem4_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem5_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var newForm = new BatchForm(_configuration, _context);
             newForm.Show();
         }
         //Process Batch
-        private void barButtonItem5_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem6_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             try
             {
@@ -368,7 +400,7 @@ namespace OrderManagerEF
             }
         }
         //Process Pickslips
-        private void barButtonItem8_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem11_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
 
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
@@ -464,7 +496,7 @@ namespace OrderManagerEF
             XtraMessageBox.Show($"{salesOrderReferences.Count} reports were saved successfully.");
         }
         //Show Ready
-        private void barButtonItem6_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem9_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -539,8 +571,8 @@ namespace OrderManagerEF
                 }
             }
         }
-
-        private async void barButtonItem9_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        //Sync and Update
+        private async void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             try
             {
@@ -565,7 +597,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem10_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem12_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
             if (gridView != null)
@@ -603,7 +635,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem11_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem8_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -658,6 +690,10 @@ namespace OrderManagerEF
         }
 
 
+        private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
+        }
 
     }
 

@@ -25,6 +25,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using System.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using OrderManagerEF.DTOs;
 
 namespace OrderManagerEF
 {
@@ -97,27 +98,41 @@ namespace OrderManagerEF
         }
         private void LoadData()
         {
-            LoadPickSlipData();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-            var data = _context.SampleOrderDatas.ToList();
-
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-            gridView1.RefreshData();
-
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                    { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.SampleOrderDatas.ToList();
 
-            gridControl1.MainView = newView;
-            AddPreviewLinkColumn(newView);
-            HighlightDuplicateRows(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
 
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
+
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
+
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
+
+    
+                gridView1.KeyDown += gridView1_KeyDown;
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
         }
 
 
@@ -135,10 +150,11 @@ namespace OrderManagerEF
 
         }
 
-        private void Samples_Load(object sender, EventArgs e)
+        private void UpdateFileStatusForData(List<SampleOrderData> data)
         {
-            LoadData();
+            foreach (var item in data) item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
         }
+
 
         private void Samples_VisibleChanged(object sender, EventArgs e)
         {
@@ -445,6 +461,57 @@ namespace OrderManagerEF
             }
 
             return allRowsHaveShipmentID;
+        }
+
+        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Show the SplashScreen
+            SplashScreenManager.ShowDefaultWaitForm();
+            try
+            {
+                // Call the stored procedure
+                UpdateBinSortRUB();
+
+                // Refresh the GridView
+                var gridView = gridControl1.FocusedView as GridView;
+
+                // Refresh the GridView
+                // Fetch the updated data from the database using the new EF Core method
+                var data = _context.DSOrderDatas.ToList();
+
+                // Set the fetched data as the grid's data source and refresh the grid view
+                gridView.GridControl.DataSource = data;
+                gridView.RefreshData();
+
+            }
+
+            finally
+            {
+                // If SplashScreen was shown, close it
+                if (SplashScreenManager.Default != null)
+                {
+                    SplashScreenManager.CloseForm(false);
+                }
+            }
+
+            // Show a message box indicating all reports were saved
+            XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
+
+        }
+
+
+        private void UpdateBinSortRUB()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
+
+            {
+                using (var command = new SqlCommand("ASP_PickSortListRUB", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         private void FilterZShipmentID(FileExistenceGridView gridView)

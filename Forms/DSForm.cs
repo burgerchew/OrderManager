@@ -65,9 +65,12 @@ namespace OrderManagerEF.Forms
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+  
             BarButtonClicks();
 
         }
+
+ 
 
         private void BarButtonClicks()
         {   //Export to Excel
@@ -103,46 +106,48 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void DS_Load(object sender, EventArgs e)
-        {
-            // LoadPickSlipData();
-            LoadData();
-        }
-
 
 
         private void LoadData()
         {
-            var data = _context.DSOrderDatas.ToList();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-            gridControl1.DataSource = data;
-
-            // Update the FileStatus property for each item in the data list.
-            UpdateFileStatusForData(data);
-
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-            gridView1.RefreshData();
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                    { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.DSOrderDatas.ToList();
 
-            gridControl1.MainView = newView;
-            AddPreviewLinkColumn(newView);
-            gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
-            HighlightDuplicateRows(newView);
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
 
-            _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
 
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
 
-            // Set focus to gridControl1
-            gridControl1.Focus();
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
 
+                _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
+                gridView1.KeyDown += gridView1_KeyDown;
+
+                // Set focus to gridControl1
+                gridControl1.Focus();
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
         }
 
         private void UpdateFileStatusForData(List<DSOrderData> data)

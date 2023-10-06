@@ -76,11 +76,6 @@ namespace OrderManagerEF.Forms
 
 
 
-        private void CSC_Load(object sender, EventArgs e)
-        {
-            LoadData();
-        }
-
         private void CSC_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible && !_dataLoaded)

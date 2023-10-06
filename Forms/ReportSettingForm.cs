@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OrderManagerEF.Data;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace OrderManagerEF
@@ -18,18 +19,31 @@ namespace OrderManagerEF
     {
         private ReportManager _reportManager;
         private readonly IConfiguration _configuration;
+        private readonly OMDbContext _context;
 
-        public ReportSettingForm(IConfiguration configuration)
+        public ReportSettingForm(IConfiguration configuration, OMDbContext context)
         {
             InitializeComponent();
             _configuration = configuration;
-
+            _context = context;
             _reportManager = new ReportManager(_configuration);
             LoadReportSetting();
         }
 
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void LoadReportSetting()
+        {
+            ReportSetting reportSetting = _reportManager.GetReportSetting();
+
+            if (reportSetting != null)
+            {
+                textEdit1.Text = reportSetting.LabelPath;
+                textEdit2.Text = reportSetting.PickSlipPath;
+                textEdit3.Text = reportSetting.ErrorPath;
+            }
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
         {
             // Assuming you have textEditLabelPath and textEditSalesOrderNumber as your text edit fields in the form
             string labelPath = textEdit1.Text;
@@ -75,21 +89,6 @@ namespace OrderManagerEF
                 _reportManager.UpdateReportSetting(reportSetting);
                 XtraMessageBox.Show("Report setting has been updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-
         }
-
-        private void LoadReportSetting()
-        {
-            ReportSetting reportSetting = _reportManager.GetReportSetting();
-
-            if (reportSetting != null)
-            {
-                textEdit1.Text = reportSetting.LabelPath;
-                textEdit2.Text = reportSetting.PickSlipPath;
-                textEdit3.Text = reportSetting.ErrorPath;
-            }
-        }
-
     }
 }

@@ -51,7 +51,7 @@ namespace OrderManagerEF
         private void LoadScanPackReportOverview()
         {
             var result = _context.vScanPackReportOverviews.ToList();
-            
+
             gridControl1.DataSource = result;
         }
 
@@ -85,7 +85,7 @@ namespace OrderManagerEF
                     }
 
                     // Run your operation
-                    var detailForm = new PackingDetailForm(_configuration, _context,OrderRef);
+                    var detailForm = new PackingDetailForm(_configuration, _context, OrderRef);
                     detailForm.Show();
                     e.Handled = true;
 

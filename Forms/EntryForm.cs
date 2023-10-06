@@ -29,7 +29,7 @@ namespace OrderManagerEF.Forms
         private readonly OMDbContext _context;
         private readonly UserSession _userSession;
         private List<Form> openedForms = new List<Form>();
-        private string OrderRef = "DefaultSearchText";
+        private string OrderRef = "Search SO Number";
 
 
         public EntryForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
@@ -62,6 +62,8 @@ namespace OrderManagerEF.Forms
                 { "navBarItem17", (c, ctx, u) => new PickandPackForm(c,ctx) },
                 { "navBarItem18", (c, ctx, u) => new MajorsForm(c,ctx) },
                 { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
+                { "navBarItem20", (c, ctx, u) => new PrinterSelectionForm(c) },
+                { "navBarItem21", (c, ctx, u) => new ReportSettingForm(c,ctx) },
             };
 
             InitSearchForm();
