@@ -47,6 +47,7 @@
             simpleButton1.Size = new System.Drawing.Size(75, 23);
             simpleButton1.TabIndex = 1;
             simpleButton1.Text = "Search";
+            simpleButton1.Click += simpleButton1_Click_1;
             // 
             // SearchForm
             // 

@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
 using OrderManagerEF.Entities;
@@ -87,7 +87,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<PreOrderData>().ToView("vASP_PREORDERS_SSI").HasNoKey();
             modelBuilder.Entity<SampleOrderData>().ToView("vASP_SAMPLES_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOrderData>().ToView("vASP_RUB_SSI").HasNoKey();
-            modelBuilder.Entity<RubiesOver5OrderData>().ToView("vASP_SSI_RUBOVER5").HasNoKey();
+            modelBuilder.Entity<RubiesOver5OrderData>().ToView("vASP_RUB_SSI_OVER5").HasNoKey();
             modelBuilder.Entity<NZOrderData>().ToView("vASP_NZ_SSI").HasNoKey();
             modelBuilder.Entity<HoldOrderData>().ToView("vASP_HOLD_SSI").HasNoKey();
             modelBuilder.Entity<PrintedOrderData>().ToView("vASP_COMPLETE_SSI").HasNoKey();

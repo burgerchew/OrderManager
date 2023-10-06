@@ -23,25 +23,19 @@ namespace OrderManagerEF
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
-        public PackingDetailForm(IConfiguration configuration, string OrderRef, OMDbContext context)
+        public PackingDetailForm(IConfiguration configuration, OMDbContext context,string OrderRef)
         {
             InitializeComponent();
             _configuration = configuration;
+            _context = context;
             this.WindowState = FormWindowState.Maximized;
             // Assign the Form_Load event
             Load += PackingDetailForm_Load;
-            //ribbonPageGroup2.ItemLinks.Add(CreateSearchBar(OrderRef));
-            //ribbonPageGroup2.ItemLinks.Add(CreateButton(OrderRef));
+     
             this.gridView1.CustomDrawCell += gridView1_CustomDrawCell;
-            // Assign the OrderRef value to the Text property of the textEdit1
-            BarEditItem searchBar = CreateSearchBar(OrderRef);
-            ribbonPageGroup2.ItemLinks.Add(searchBar);
-
-            BarButtonItem searchButton = CreateButton(searchBar);
-            ribbonPageGroup2.ItemLinks.Add(searchButton);
 
 
-            var data = context.ExecuteScanPackReportLookup(OrderRef);
+            var data = _context.ExecuteScanPackReportLookup(OrderRef);
             gridControl1.DataSource = data;
         }
 
@@ -64,7 +58,7 @@ namespace OrderManagerEF
                     var SKU = hyperlink.EditValue.ToString();
 
                     // Create an instance of the PickandPack form
-                    var pickAndPackForm = new PickandPackForm(_configuration, _context);
+                    var pickAndPackForm = new PickandPackForm(_configuration, _context ?? throw new ArgumentNullException(nameof(_context)));
 
                     // Set the search text and click the search button
                     pickAndPackForm.SetSearchTextAndClickButton(SKU);

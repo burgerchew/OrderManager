@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace OrderManagerEF
 {
-    public partial class MajorsForm : XtraForm
+    public partial class MajorsForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         // Set up a flag to keep track of whether data has been loaded yet.
         private bool _dataLoaded = false;
@@ -47,7 +47,7 @@ namespace OrderManagerEF
             // Assuming gridControl or some other control is being populated
             gridControl1.DataSource = data;
 
-           AddGroupSum();
+            AddGroupSum();
         }
 
         private void AddGroupSum()

@@ -9,9 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraBars;
 using DevExpress.XtraNavBar;
 using OrderManagerEF.Data;
 using OrderManagerEF.Entities;
+using DevExpress.XtraEditors.Repository;
+using OrderManagerEF.Classes;
 
 namespace OrderManagerEF.Forms
 {
@@ -25,6 +28,10 @@ namespace OrderManagerEF.Forms
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
         private readonly UserSession _userSession;
+        private List<Form> openedForms = new List<Form>();
+        private string OrderRef = "DefaultSearchText";
+
+
         public EntryForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
@@ -56,6 +63,117 @@ namespace OrderManagerEF.Forms
                 { "navBarItem18", (c, ctx, u) => new MajorsForm(c,ctx) },
                 { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
             };
+
+            InitSearchForm();
+        }
+
+        private void InitSearchForm()
+        {
+            BarEditItem searchBar = CreateSearchBar(OrderRef);
+            ribbonPageGroup2.ItemLinks.Add(searchBar);
+
+            BarButtonItem searchButton = CreateButton(searchBar);
+            ribbonPageGroup2.ItemLinks.Add(searchButton);
+        }
+
+
+        private BarEditItem CreateSearchBar(string OrderRef)
+        {
+            BarEditItem searchItem = new BarEditItem();
+
+            // Now, you can set its value like this:
+            searchItem.EditValue = OrderRef;
+            RepositoryItemTextEdit edit = new RepositoryItemTextEdit();
+            edit.AutoHeight = false;
+            searchItem.Width = 200; // Set the width of the BarEditItem, not the RepositoryItemTextEdit
+
+
+            searchItem.Edit = edit;
+
+            searchItem.EditValueChanged += (s, e) =>
+            {
+                string searchTerm = searchItem.EditValue.ToString();
+                PerformSearch(searchTerm); // Call PerformSearch method whenever the search term changes
+            };
+
+            return searchItem;
+        }
+
+        private List<SearchResult> PerformSearch(string searchText)
+        {
+            List<SearchResult> searchResults = new List<SearchResult>();
+
+            // Iterate through all the forms in the application
+            foreach (Form form in Application.OpenForms)
+            {
+                // Check if the form contains a DevExpress GridView
+                DevExpress.XtraGrid.GridControl gridControl = form.Controls.OfType<DevExpress.XtraGrid.GridControl>().FirstOrDefault();
+                if (gridControl != null)
+                {
+                    // Get the GridView
+                    DevExpress.XtraGrid.Views.Grid.GridView gridView = gridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                    // Iterate through all rows in the GridView
+                    for (int i = 0; i < gridView.RowCount; i++)
+                    {
+                        // Iterate through all columns in the GridView
+                        for (int j = 0; j < gridView.Columns.Count; j++)
+                        {
+                            // Get the cell value
+                            string cellValue = gridView.GetRowCellValue(i, gridView.Columns[j])?.ToString();
+
+                            // Check if the cell value contains the search text
+                            if (!string.IsNullOrEmpty(cellValue) && cellValue.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                // Add the search result to the list
+                                searchResults.Add(new SearchResult
+                                {
+                                    Form = form,
+                                    RowHandle = i,
+                                    Column = gridView.Columns[j]
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return searchResults;
+        }
+
+        private BarButtonItem CreateButton(BarEditItem searchBar)
+        {
+            BarButtonItem button = new BarButtonItem();
+            button.Caption = "Search";
+
+            button.ItemClick += (s, e) =>
+            {
+                string searchText = searchBar.EditValue.ToString();
+                List<SearchResult> searchResults = PerformSearch(searchText);
+
+                if (searchResults.Count > 0)
+                {
+                    SearchResult firstResult = searchResults[0];
+                    firstResult.Form.BringToFront();
+
+                    DevExpress.XtraGrid.GridControl gridControl = firstResult.Form.Controls.OfType<DevExpress.XtraGrid.GridControl>().FirstOrDefault();
+                    DevExpress.XtraGrid.Views.Grid.GridView gridView = gridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+
+                    gridView.FocusedRowHandle = firstResult.RowHandle;
+                    gridView.FocusedColumn = firstResult.Column;
+
+                    gridView.ClearSelection();
+                    gridView.SelectRow(firstResult.RowHandle);
+
+                    gridView.RefreshRow(firstResult.RowHandle);
+                }
+                else
+                {
+                    XtraMessageBox.Show("No results found.", "Search");
+                }
+            };
+
+            return button;
         }
 
 
@@ -68,6 +186,16 @@ namespace OrderManagerEF.Forms
 
                 if (formToOpen != null)
                 {
+
+                    // Remove form from list once closed
+                    formToOpen.FormClosed += (sender, e) =>
+                    {
+                        openedForms.Remove(formToOpen);
+                    };
+
+                    // Add the form to the list
+                    openedForms.Add(formToOpen);
+
                     // Set the main form as the MDI parent
                     formToOpen.MdiParent = this;
 
@@ -82,5 +210,29 @@ namespace OrderManagerEF.Forms
             }
         }
 
+
+        public void CloseAllOpenedForms()
+        {
+            // Copy the list to an array
+            Form[] formsToClose = openedForms.ToArray();
+
+            // Iterate over the copied array to close the forms
+            foreach (var form in formsToClose)
+            {
+                if (form != null && !form.IsDisposed)
+                {
+                    form.Close();
+                }
+            }
+
+            // Clear the list after closing all forms
+            openedForms.Clear();
+        }
+
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CloseAllOpenedForms();
+        }
     }
 }

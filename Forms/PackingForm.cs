@@ -85,7 +85,7 @@ namespace OrderManagerEF
                     }
 
                     // Run your operation
-                    var detailForm = new PackingDetailForm(_configuration, OrderRef, _context);
+                    var detailForm = new PackingDetailForm(_configuration, _context,OrderRef);
                     detailForm.Show();
                     e.Handled = true;
 

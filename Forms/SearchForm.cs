@@ -62,7 +62,8 @@ namespace OrderManagerEF
             return searchResults;
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+
+        private void simpleButton1_Click_1(object sender, EventArgs e)
         {
             string searchText = textEdit1.Text;
             List<SearchResult> searchResults = PerformSearch(searchText);
@@ -96,7 +97,5 @@ namespace OrderManagerEF
                 XtraMessageBox.Show("No results found.", "Search");
             }
         }
-
-
     }
 }
