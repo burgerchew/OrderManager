@@ -615,10 +615,45 @@ namespace OrderManagerEF
             RefreshGridView();
         }
 
+        //private async Task<List<ShipmentResponse>> ProcessShipments1(List<StarShipITOrder> orders)
+        //{
+        //    var shipmentResponses = new List<ShipmentResponse>();
+        //    var ordersGroupedByLocation = orders.GroupBy(o => o.ExtraData);
+
+        //    SplashScreenManager.ShowForm(typeof(ProgressForm));
+        //    int totalRows = orders.Count;
+
+        //    Progress<int> progress = new Progress<int>(value =>
+        //    {
+        //        if (SplashScreenManager.Default != null)
+        //        {
+        //            SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, value);
+        //        }
+        //    });
+
+        //    foreach (var ordersGroup in ordersGroupedByLocation)
+        //    {
+        //        var extraData = ordersGroup.Key;
+        //        var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
+
+        //        var shipmentManager = new ShipmentManager(starshipItApiKey, ocpApimSubscriptionKey);
+        //        var ordersInGroup = ordersGroup.ToList();
+        //        var orderDetailsInGroup = ordersInGroup.Select(o => o.StarShipITOrderDetails).ToList();
+
+        //        var singleGroupResponses = await shipmentManager.CreateShipments(ordersInGroup, orderDetailsInGroup, progress, totalRows);
+        //        shipmentResponses.AddRange(singleGroupResponses);
+        //    }
+
+        //    SplashScreenManager.CloseForm();
+
+        //    return shipmentResponses;
+        //}
+
         private async Task<List<ShipmentResponse>> ProcessShipments(List<StarShipITOrder> orders)
         {
             var shipmentResponses = new List<ShipmentResponse>();
             var ordersGroupedByLocation = orders.GroupBy(o => o.ExtraData);
+            var mapper = new StarShipOrderMapper();
 
             SplashScreenManager.ShowForm(typeof(ProgressForm));
             int totalRows = orders.Count;
@@ -635,19 +670,24 @@ namespace OrderManagerEF
             {
                 var extraData = ordersGroup.Key;
                 var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
-
                 var shipmentManager = new ShipmentManager(starshipItApiKey, ocpApimSubscriptionKey);
-                var ordersInGroup = ordersGroup.ToList();
-                var orderDetailsInGroup = ordersInGroup.Select(o => o.StarShipITOrderDetails).ToList();
 
-                //var singleGroupResponses = await shipmentManager.CreateShipments(ordersInGroup, orderDetailsInGroup, progress, totalRows);
-                //shipmentResponses.AddRange(singleGroupResponses);
+                var mappedOrders = ordersGroup.Select(mapper.MapToOrder).ToList();
+
+                // Here's the change: For each StarShipITOrder, map its details to a list of OrderDetail
+                var mappedOrderDetailsGrouped = ordersGroup.Select(o => mapper.MapToOrderDetails(o.StarShipITOrderDetails.ToList()).ToList()).ToList();
+
+                var singleGroupResponses = await shipmentManager.CreateShipments(mappedOrders, mappedOrderDetailsGrouped, progress, totalRows);
+                shipmentResponses.AddRange(singleGroupResponses);
             }
 
             SplashScreenManager.CloseForm();
-
             return shipmentResponses;
         }
+
+
+
+
 
         private int ProcessResponses(List<ShipmentResponse> responses)
         {

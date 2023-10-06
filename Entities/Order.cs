@@ -24,6 +24,8 @@ namespace OrderManagerEF.Entities
         public string Country { get; set; }
         public string DeliveryInstructions { get; set; }
 
+       // public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
 
     }
 
@@ -38,6 +40,8 @@ namespace OrderManagerEF.Entities
         public int QuantityToShip { get; set; }
         public double Weight { get; set; }
         public decimal Value { get; set; }
+
+        //public virtual Order Order { get; set; }
     }
 }
 
