@@ -62,6 +62,8 @@ namespace OrderManagerEF
             Resize += (sender, e) => UpdateProgressBarLocation();
             gridView1.RowCellStyle += gridView1_RowCellStyle;
             Load += CreateLabel1_Load;
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
         }
 
 
@@ -256,93 +258,9 @@ namespace OrderManagerEF
         }
 
 
-
-
-
-
-
-
-
-
-        private async void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        private async void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (semaphore.CurrentCount == 0) return;
-
-            await semaphore.WaitAsync();
-
-            try
-            {
-                var checkedRowHandles = new Dictionary<string, List<int>>();
-
-                for (var i = 0; i < gridView1.RowCount; i++)
-                {
-                    var isChecked = Convert.ToBoolean(gridView1.GetRowCellValue(i, "selected"));
-
-                    if (isChecked)
-                    {
-                        // Check if the addressvalidated_value field is true for the current row
-                        bool addressValidated =
-                            Convert.ToBoolean(gridView1.GetRowCellValue(i, "addressvalidated_value"));
-
-                        if (addressValidated)
-                        {
-                            var extraData = gridView1.GetRowCellValue(i, "location").ToString();
-
-                            if (!checkedRowHandles.ContainsKey(extraData))
-                                checkedRowHandles[extraData] = new List<int>();
-
-                            checkedRowHandles[extraData].Add(i);
-                        }
-                        else
-                        {
-                            // Optionally, show a message to the user informing them that the submission is not allowed
-                            XtraMessageBox.Show(
-                                "Submission not allowed. The address has not been validated. Please unselect the row",
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-
-                // Ensure the splash screen is closed
-                SplashScreenUtility.CloseSplashScreenIfNeeded();
-
-                // Show the custom splash screen
-                SplashScreenManager.ShowForm(typeof(ProgressForm));
-
-                // Create a Progress<int> instance that will update the splash screen progress
-                Progress<int> progress = new Progress<int>(value =>
-                {
-                    if (SplashScreenManager.Default != null)
-                    {
-                        SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, value);
-                    }
-                });
-
-                foreach (var extraData in checkedRowHandles.Keys)
-                {
-                    // Retrieve API keys for the desired location.
-                    var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
-
-                    var apiRequestSender = new BulkLabelCreator(_configuration, gridView1, starshipItApiKey, ocpApimSubscriptionKey,
-                        checkedRowHandles[extraData].ToArray(), progressBarControl1, this);
-                    await apiRequestSender.BulkLabelSendApiRequestAsyncLimitProgress(progress);
-                }
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-            finally
-            {
-                semaphore.Release();
-
-                // Close the splash screen
-                if (SplashScreenManager.Default != null)
-                {
-                    SplashScreenManager.CloseForm();
-                }
-            }
+          
         }
 
 
@@ -350,7 +268,7 @@ namespace OrderManagerEF
 
 
 
-        private async void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        private async void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Get the selected rows
             int[] selectedRowHandles = gridView1.GetSelectedRows();
@@ -382,7 +300,7 @@ namespace OrderManagerEF
                         Reprint = sourceLabel.Reprint,
                         Location = sourceLabel.Location,
                         Selected = sourceLabel.Selected,
-                   
+
                     };
 
                     // Add to LabelsArchive and remove from Labels
@@ -452,7 +370,8 @@ namespace OrderManagerEF
         }
 
 
-        private async void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
+
+        private async void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Check if a row is selected
             if (gridView1.GetSelectedRows().Length == 0)
@@ -532,7 +451,85 @@ namespace OrderManagerEF
             }
         }
 
+        private async void barButtonItem1_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            if (semaphore.CurrentCount == 0) return;
 
+            await semaphore.WaitAsync();
 
+            try
+            {
+                var checkedRowHandles = new Dictionary<string, List<int>>();
+
+                for (var i = 0; i < gridView1.RowCount; i++)
+                {
+                    var isChecked = Convert.ToBoolean(gridView1.GetRowCellValue(i, "Selected"));
+
+                    if (isChecked)
+                    {
+                        // Check if the addressvalidated_value field is true for the current row
+                        bool addressValidated =
+                            Convert.ToBoolean(gridView1.GetRowCellValue(i, "AddressValidatedValue"));
+
+                        if (addressValidated)
+                        {
+                            var extraData = gridView1.GetRowCellValue(i, "Location").ToString();
+
+                            if (!checkedRowHandles.ContainsKey(extraData))
+                                checkedRowHandles[extraData] = new List<int>();
+
+                            checkedRowHandles[extraData].Add(i);
+                        }
+                        else
+                        {
+                            // Optionally, show a message to the user informing them that the submission is not allowed
+                            XtraMessageBox.Show(
+                                "Submission not allowed. The address has not been validated. Please unselect the row",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                // Ensure the splash screen is closed
+                SplashScreenUtility.CloseSplashScreenIfNeeded();
+
+                // Show the custom splash screen
+                SplashScreenManager.ShowForm(typeof(ProgressForm));
+
+                // Create a Progress<int> instance that will update the splash screen progress
+                Progress<int> progress = new Progress<int>(value =>
+                {
+                    if (SplashScreenManager.Default != null)
+                    {
+                        SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, value);
+                    }
+                });
+
+                foreach (var extraData in checkedRowHandles.Keys)
+                {
+                    // Retrieve API keys for the desired location.
+                    var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
+
+                    var apiRequestSender = new BulkLabelCreator(_configuration, gridView1, starshipItApiKey, ocpApimSubscriptionKey,
+                        checkedRowHandles[extraData].ToArray(), progressBarControl1, this);
+                    await apiRequestSender.BulkLabelSendApiRequestAsyncLimitProgress(progress);
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                semaphore.Release();
+
+                // Close the splash screen
+                if (SplashScreenManager.Default != null)
+                {
+                    SplashScreenManager.CloseForm();
+                }
+            }
+        }
     }
 }

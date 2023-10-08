@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             progressBarControl1 = new DevExpress.XtraEditors.ProgressBarControl();
-            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -54,6 +54,26 @@
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
             ribbonControl1.Size = new System.Drawing.Size(666, 158);
             // 
+            // barButtonItem1
+            // 
+            barButtonItem1.Caption = "Create Labels";
+            barButtonItem1.Id = 1;
+            barButtonItem1.Name = "barButtonItem1";
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick_1;
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Delete Shipment";
+            barButtonItem2.Id = 2;
+            barButtonItem2.Name = "barButtonItem2";
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            // 
+            // barButtonItem3
+            // 
+            barButtonItem3.Caption = "Archive Label";
+            barButtonItem3.Id = 3;
+            barButtonItem3.Name = "barButtonItem3";
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2 });
@@ -66,6 +86,12 @@
             ribbonPageGroup1.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
             ribbonPageGroup1.Text = "ribbonPageGroup1";
+            // 
+            // ribbonPageGroup2
+            // 
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup2.Name = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "ribbonPageGroup2";
             // 
             // gridControl1
             // 
@@ -90,30 +116,6 @@
             progressBarControl1.Name = "progressBarControl1";
             progressBarControl1.Size = new System.Drawing.Size(100, 18);
             progressBarControl1.TabIndex = 3;
-            // 
-            // barButtonItem1
-            // 
-            barButtonItem1.Caption = "Create Labels";
-            barButtonItem1.Id = 1;
-            barButtonItem1.Name = "barButtonItem1";
-            // 
-            // barButtonItem2
-            // 
-            barButtonItem2.Caption = "Delete Shipment";
-            barButtonItem2.Id = 2;
-            barButtonItem2.Name = "barButtonItem2";
-            // 
-            // ribbonPageGroup2
-            // 
-            ribbonPageGroup2.ItemLinks.Add(barButtonItem3);
-            ribbonPageGroup2.Name = "ribbonPageGroup2";
-            ribbonPageGroup2.Text = "ribbonPageGroup2";
-            // 
-            // barButtonItem3
-            // 
-            barButtonItem3.Caption = "Archive Label";
-            barButtonItem3.Id = 3;
-            barButtonItem3.Name = "barButtonItem3";
             // 
             // CreateLabelForm1
             // 

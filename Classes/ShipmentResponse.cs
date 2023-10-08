@@ -13,6 +13,8 @@ namespace OrderManagerEF.Classes
         public bool Success { get; set; }
 
         public string ExtraData { get; set; }
+
+        public string Location { get; set; }
         public string order_number { get; set; }
 
     }

@@ -228,7 +228,7 @@ public class BulkLabelCreator
 
         }
     }
-    public async Task BulkLabelSendApiRequestAsyncLimitProgress(IProgress<int> progress)
+    public async Task BulkLabelSendApiRequestAsyncLimitProgress_(IProgress<int> progress)
     {
         _form.Invoke(new Action(() => _form.Refresh()));
 
@@ -337,6 +337,112 @@ public class BulkLabelCreator
             XtraMessageBox.Show("Labels for this account saved successfully");
         }
     }
+
+
+    public async Task BulkLabelSendApiRequestAsyncLimitProgress(IProgress<int> progress)
+    {
+        _form.Invoke(new Action(() => _form.Refresh()));
+
+        for (int i = 0; i < rowHandles.Length; i++)
+        {
+            try
+            {
+                var rowHandle = rowHandles[i];
+
+                var order_id = _gridView.GetRowCellValue(rowHandle, "OrderId");
+                var reprint = _gridView.GetRowCellValue(rowHandle, "Reprint");
+                var weight = _gridView.GetRowCellValue(rowHandle, "Weight");
+                var height = _gridView.GetRowCellValue(rowHandle, "Height");
+                var width = _gridView.GetRowCellValue(rowHandle, "Width");
+                var length = _gridView.GetRowCellValue(rowHandle, "Length");
+                var order_number = _gridView.GetRowCellValue(rowHandle, "OrderNumber");
+
+                var data = new
+                {
+                    order_id,
+                    reprint,
+                    packages = new[]
+                    {
+                    new
+                    {
+                        weight,
+                        height,
+                        width,
+                        length
+                    }
+                }
+                };
+
+                var apiUrl = "https://api.starshipit.com/api/orders/shipment";
+
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("StarShipIT-Api-Key", _starshipItApiKey);
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _ocpApimSubscriptionKey);
+
+                    HttpResponseMessage response = await _apiRequestHelper.SendRequestWithExponentialBackoff(client,
+                        () =>
+                        {
+                            var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);
+                            request.Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                            return request;
+                        });
+
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        try
+                        {
+                            var jsonDocument = JsonDocument.Parse(jsonResponse);
+                            var base64EncodedPdfsArray = jsonDocument.RootElement.GetProperty("labels");
+                            var base64EncodedPdf = base64EncodedPdfsArray[0].GetString();
+                            var pdfBytes = Convert.FromBase64String(base64EncodedPdf);
+                            var pdfFileName = $"{order_number}.pdf";
+
+                            var reportManager = new ReportManager(_configuration);
+                            var setting = reportManager.GetReportSetting();
+
+                            if (setting == null) throw new Exception("LabelPath setting not found");
+
+                            var pdfFilePath = Path.Combine(setting.LabelPath, pdfFileName);
+                            File.WriteAllBytes(pdfFilePath, pdfBytes);
+                        }
+                        catch (Exception ex)
+                        {
+                            XtraMessageBox.Show($"Error parsing JSON response: {ex.Message}", "JSON Parsing Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show($"API responded with status code {response.StatusCode} ({response.ReasonPhrase}): {jsonResponse}",
+                            "API Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            // Report progress after each request.
+            progress.Report((i + 1) * 100 / rowHandles.Length);
+        }
+
+        // Calculate the final progress percentage.
+        int finalProgress = (rowHandles.Length * 100) / rowHandles.Length;
+
+        // Show a message box to notify the user that all labels have been saved successfully ONLY if the final progress is 100%.
+        if (finalProgress == 100)
+        {
+            XtraMessageBox.Show("Labels for this account saved successfully");
+        }
+    }
+
+
 
 
 }

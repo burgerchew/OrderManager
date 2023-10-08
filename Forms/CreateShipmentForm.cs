@@ -545,6 +545,7 @@ namespace OrderManagerEF
                 Width = width,
                 Height = height,
                 Length = length,
+                Location =extraData,
                 Selected = selected,
                 ExtraData = extraData
             };
@@ -649,6 +650,7 @@ namespace OrderManagerEF
                 foreach (var resp in singleGroupResponses)
                 {
                     resp.ExtraData = extraData;
+                    resp.Location = extraData;
                 }
 
 
@@ -701,6 +703,7 @@ namespace OrderManagerEF
                                     Height = (decimal?)package.Height,
                                     Length = (decimal?)package.Length,
                                     Width = (decimal?)package.Width,
+                                    Location = response.Location,
                                     Selected = true,
                                     ExtraData = response.ExtraData
 
