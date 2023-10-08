@@ -43,7 +43,6 @@ namespace OrderManagerEF
             _context = context;
             InitializeComponent();
             BindTableAdapterToBindingSource();
-            BindGridControlToBindingSource();
 
             //gridView1.RowClick += gridView_RowClick;
             semaphore = new SemaphoreSlim(1, 1);
@@ -62,7 +61,9 @@ namespace OrderManagerEF
             UpdateProgressBarLocation(); // Call this after the progress bar has been added to the form
             Resize += (sender, e) => UpdateProgressBarLocation();
             gridView1.RowCellStyle += gridView1_RowCellStyle;
+            Load += CreateLabel1_Load;
         }
+
 
         private void UpdateProgressBarLocation()
         {
@@ -142,10 +143,6 @@ namespace OrderManagerEF
             gridControl1.DataSource = labels;
         }
 
-        private void BindGridControlToBindingSource()
-        {
-            gridControl1.DataSource = bindingSource;
-        }
 
 
         private void CreateLabel1_Load(object sender, EventArgs e)
@@ -384,7 +381,8 @@ namespace OrderManagerEF
                         Length = sourceLabel.Length,
                         Reprint = sourceLabel.Reprint,
                         Location = sourceLabel.Location,
-                        Selected = sourceLabel.Selected
+                        Selected = sourceLabel.Selected,
+                   
                     };
 
                     // Add to LabelsArchive and remove from Labels

@@ -581,7 +581,7 @@ namespace OrderManagerEF
             {
                 connection.Open();
 
-                using (var command = new SqlCommand("UPDATE Orders SET ShipmentID = @orderId WHERE OrderNumber = @orderNumber and reference = @reference", connection))
+                using (var command = new SqlCommand("UPDATE StarShipITOrders SET ShipmentID = @orderId WHERE OrderNumber = @orderNumber and reference = @reference", connection))
                 {
                     command.Parameters.AddWithValue("@orderId", orderId);
                     command.Parameters.AddWithValue("@orderNumber", orderNumber);
@@ -615,39 +615,6 @@ namespace OrderManagerEF
             RefreshGridView();
         }
 
-        //private async Task<List<ShipmentResponse>> ProcessShipments1(List<StarShipITOrder> orders)
-        //{
-        //    var shipmentResponses = new List<ShipmentResponse>();
-        //    var ordersGroupedByLocation = orders.GroupBy(o => o.ExtraData);
-
-        //    SplashScreenManager.ShowForm(typeof(ProgressForm));
-        //    int totalRows = orders.Count;
-
-        //    Progress<int> progress = new Progress<int>(value =>
-        //    {
-        //        if (SplashScreenManager.Default != null)
-        //        {
-        //            SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, value);
-        //        }
-        //    });
-
-        //    foreach (var ordersGroup in ordersGroupedByLocation)
-        //    {
-        //        var extraData = ordersGroup.Key;
-        //        var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
-
-        //        var shipmentManager = new ShipmentManager(starshipItApiKey, ocpApimSubscriptionKey);
-        //        var ordersInGroup = ordersGroup.ToList();
-        //        var orderDetailsInGroup = ordersInGroup.Select(o => o.StarShipITOrderDetails).ToList();
-
-        //        var singleGroupResponses = await shipmentManager.CreateShipments(ordersInGroup, orderDetailsInGroup, progress, totalRows);
-        //        shipmentResponses.AddRange(singleGroupResponses);
-        //    }
-
-        //    SplashScreenManager.CloseForm();
-
-        //    return shipmentResponses;
-        //}
 
         private async Task<List<ShipmentResponse>> ProcessShipments(List<StarShipITOrder> orders)
         {
@@ -678,7 +645,18 @@ namespace OrderManagerEF
                 var mappedOrderDetailsGrouped = ordersGroup.Select(o => mapper.MapToOrderDetails(o.StarShipITOrderDetails.ToList()).ToList()).ToList();
 
                 var singleGroupResponses = await shipmentManager.CreateShipments(mappedOrders, mappedOrderDetailsGrouped, progress, totalRows);
+
+                foreach (var resp in singleGroupResponses)
+                {
+                    resp.ExtraData = extraData;
+                }
+
+
                 shipmentResponses.AddRange(singleGroupResponses);
+
+
+
+
             }
 
             SplashScreenManager.CloseForm();
@@ -713,7 +691,19 @@ namespace OrderManagerEF
                                 // Replace your TableAdapter insert method with an EF Add method
                                 var newLabel = new Label
                                 {
-                                    // Set all required properties here
+                                    OrderId = orderResponse.order_id,
+                                    OrderDate = orderResponse.OrderDate,
+                                    Reference = orderResponse.Reference,
+                                    OrderNumber = orderResponse.order_number,
+                                    AddressValidatedKey = "ADDRESSVALIDATED",
+                                    AddressValidatedValue = addressValidatedValue,
+                                    Weight = (decimal?)package.Height,
+                                    Height = (decimal?)package.Height,
+                                    Length = (decimal?)package.Length,
+                                    Width = (decimal?)package.Width,
+                                    Selected = true,
+                                    ExtraData = response.ExtraData
+
                                 };
                                 _context.Labels.Add(newLabel);
 
@@ -921,7 +911,7 @@ namespace OrderManagerEF
                     {
                         connection.Open();
 
-                        using (SqlCommand command = new SqlCommand("sp_delete_order_tables", connection))
+                        using (SqlCommand command = new SqlCommand("[sp_delete_starshipit_order_tables]", connection))
                         {
                             command.CommandType = CommandType.StoredProcedure;
                             command.ExecuteNonQuery();

@@ -64,7 +64,8 @@ namespace OrderManagerEF.Forms
                 { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
                 { "navBarItem20", (c, ctx, u) => new PrinterSelectionForm(c,ctx,u) },
                 { "navBarItem21", (c, ctx, u) => new ReportSettingForm(c,ctx) },
-                { "navBarItem22", (c, ctx, us) => new ActivityLogForm(c, ctx, us) },
+                { "navBarItem22", (c, ctx, us) => new ActivityLogForm(c, ctx, us) },     
+                { "navBarItem23", (c, ctx, us) => new ApiKeyForm(c,ctx,us) },
             };
 
             InitSearchForm();

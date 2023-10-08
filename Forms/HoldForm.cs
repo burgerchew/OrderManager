@@ -36,7 +36,7 @@ namespace OrderManagerEF
 
             this.VisibleChanged += new EventHandler(this.Hold_VisibleChanged);
             Load += Hold_Load;
-
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
 
         }
 
@@ -49,13 +49,6 @@ namespace OrderManagerEF
 
 
         }
-
-        private List<ASP_SSI_Result> LoadDataFromStoredProcedure()
-        {
-            return _storedProcedureService.ExecuteStoredProcedure("ASP_HOLD");
-        }
-
-
 
 
 
@@ -74,7 +67,7 @@ namespace OrderManagerEF
             }
         }
 
-        private void barButtonItem1_ItemClick_1(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             {
 

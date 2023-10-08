@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Data.SqlClient;
+using DevExpress.Utils;
 
 namespace OrderManagerEF
 {
@@ -43,8 +44,31 @@ namespace OrderManagerEF
 
             // Add and validate data
             ValidateAndSetDisplayText();
+            SetupMultiSelectForGridView(gridView1);
             barButtonItem1.ItemClick += barButtonItem1_ItemClick;
 
+        }
+
+        private void SetupMultiSelectForGridView(GridView gridView)
+        {
+            if (gridView == null) return;
+
+            // Allow multi-row selection
+            gridView.OptionsSelection.MultiSelect = true;
+
+            // Specify selection mode (Row, Cell, CheckBoxRowSelect)
+            gridView.OptionsSelection.MultiSelectMode = GridMultiSelectMode.RowSelect;
+
+            // If you want to select with checkboxes
+            gridView.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DefaultBoolean.True;
+            gridView.OptionsSelection.ShowCheckBoxSelectorInGroupRow = DefaultBoolean.True;
+            gridView.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
+
+            // If you want to only allow selection by clicking the checkbox
+            // gridView.OptionsSelection.CheckBoxSelectorField = "YourFieldName";
+
+            // Enable indicator (the area on the left side of the row)
+            gridView.OptionsView.ShowIndicator = true;
         }
 
 

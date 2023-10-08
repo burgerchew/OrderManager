@@ -34,6 +34,7 @@ namespace OrderManagerEF.Data
 
         public DbSet<AddressPart> AddressParts { get; set; }
 
+        public DbSet<StarShipITAPIKeyManager> StarShipITAPIKeyManager { get; set; }
 
         public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
         public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
