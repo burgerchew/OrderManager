@@ -73,6 +73,7 @@ namespace OrderManagerEF
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
              BarButtonClicks();
+          
         }
 
 
@@ -101,13 +102,6 @@ namespace OrderManagerEF
             barButtonItem11.ItemClick += barButtonItem11_ItemClick;
         }
 
-
-
-        private List<ASP_SSI_Result> LoadDataFromStoredProcedure()
-        {
-            return _storedProcedureService.ExecuteStoredProcedure("ASP_RUB_SSI_OVER5");
-        }
-
         private void UpdateFileStatusForData(List<RubiesOver5OrderData> data)
         {
             foreach (var item in data)
@@ -132,6 +126,7 @@ namespace OrderManagerEF
 
                 // Populate the grid control with the fetched data
                 gridView1.GridControl.DataSource = data;
+       
                 gridView1.RefreshData();
 
                 var newView = new FileExistenceGridView(_configuration)
@@ -204,6 +199,7 @@ namespace OrderManagerEF
             if (Visible && !_dataLoaded)
             {
                 LoadData();
+                InitializeHyperLink();
                 _dataLoaded = true;
             }
         }
@@ -689,7 +685,30 @@ namespace OrderManagerEF
             gridView.RefreshData();
         }
 
+        private void InitializeHyperLink()
+        {
+            var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
 
+            repositoryItemHyperLinkEdit1.OpenLink += (sender, e) =>
+            {
+                var hyperlink = sender as HyperLinkEdit;
+                if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.EditValue?.ToString()))
+                {
+                    var OrderRef = hyperlink.EditValue.ToString();
+
+                    // Run your operation
+                    var detailForm = new OrderLookupForm(_configuration, _context, OrderRef);
+                    detailForm.Show();
+                    e.Handled = true; // Mark event as handled
+                }
+            };
+
+            var gridView = gridControl1.MainView as FileExistenceGridView;
+            if (gridView != null)
+            {
+                gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
+            }
+        }
 
         private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
         {

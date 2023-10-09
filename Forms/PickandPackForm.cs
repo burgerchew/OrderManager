@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Extensions.Configuration;
 using OrderManagerEF.Classes;
@@ -55,13 +56,33 @@ namespace OrderManagerEF
         }
         private void AddGroupSum()
         {
-
             GridView gridView = (GridView)gridControl1.MainView;
+
+            // Clear any existing grouping
+            gridView.ClearGrouping();
+
+            // Group by 'ProductCode' and 'PickType'
+            GridColumn colProductCode = gridView.Columns["ProductCode"];
+            if (colProductCode != null)
+            {
+                colProductCode.GroupIndex = 0;
+            }
+
+            GridColumn colPickType = gridView.Columns["PickType"];
+            if (colPickType != null)
+            {
+                colPickType.GroupIndex = 1;
+            }
+
             GridViewSumHelper gridViewSumHelper = new GridViewSumHelper(gridView);
 
-            // Group by 'ProductCode' and sum 'ActualQuantity'
+            // Sum 'ActualQuantity' for the grouped 'ProductCode'
             gridViewSumHelper.AddSumToGroupedColumn("ActualQuantity", "ProductCode");
+
+            // Optionally, if you want to sum 'ActualQuantity' for the grouped 'PickType' as well:
+            // gridViewSumHelper.AddSumToGroupedColumn("ActualQuantity", "PickType");
         }
+
 
         public void SetSearchTextAndClickButton(string SKU)
         {

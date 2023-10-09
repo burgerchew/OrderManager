@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraScheduler.Reporting;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace OrderManagerEF.Forms
 {
@@ -33,6 +36,9 @@ namespace OrderManagerEF.Forms
             var data = _context.ExecuteOrderLookupResult(OrderRef);
             gridControl1.DataSource = data;
             InitializeHyperLink();
+            LoadParamValues();
+            gridView1.CustomDrawGroupRow += gridView_CustomDrawGroupRow;
+
         }
 
         private void InitializeHyperLink()
@@ -64,5 +70,55 @@ namespace OrderManagerEF.Forms
             // Assuming "SKU" is the name of your grid column where you want to put the hyperlink
             gridView1.Columns["SKU"].ColumnEdit = repositoryItemHyperLinkEdit1;
         }
+
+        private void LoadParamValues()
+        {
+
+            var gridView = gridControl1.FocusedView as GridView;  // Assuming you're working with a GridView
+            if (gridView != null)
+            {
+                GroupByParamValues(gridView);
+                gridView.ExpandAllGroups();
+            }
+
+
+        }
+
+
+        private void GroupByParamValues(GridView view)
+        {
+            // Clear any existing grouping
+            view.ClearGrouping();
+
+            GridColumn colDefaultBinQtyCheck = view.Columns["DefaultBinQtyCheck"];
+            if (colDefaultBinQtyCheck != null)
+            {
+                colDefaultBinQtyCheck.GroupIndex = 0;  
+            }
+
+        }
+
+        private void gridView_CustomDrawGroupRow(object sender, DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventArgs e)
+        {
+            GridView view = sender as GridView;
+            GridGroupRowInfo info = e.Info as GridGroupRowInfo;
+
+            if (info != null && info.Column.FieldName == "DefaultBinQtyCheck")
+            {
+                string groupValue = view.GetGroupRowDisplayText(e.RowHandle);
+
+                if (groupValue.Contains("EnoughQtytoInvoice"))
+                {
+                    info.Appearance.BackColor = Color.Green;
+                    info.Appearance.ForeColor = Color.White;
+                }
+                else if (groupValue.Contains("TransferRequired"))
+                {
+                    info.Appearance.BackColor = Color.Red;
+                    info.Appearance.ForeColor = Color.White;
+                }
+            }
+        }
+
     }
 }
