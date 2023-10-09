@@ -78,9 +78,12 @@ namespace OrderManagerEF.Forms
             if (Visible && !_dataLoaded)
             {
                 LoadData();
+        
                 _dataLoaded = true;
             }
         }
+
+
 
         private void BarButtonClicks()
         {   //Export to Excel
@@ -137,6 +140,7 @@ namespace OrderManagerEF.Forms
 
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
                 gridView1.KeyDown += gridView1_KeyDown;
+                InitSoHyperLink();
             }
             finally
             {
@@ -146,7 +150,30 @@ namespace OrderManagerEF.Forms
         }
 
 
+        private void InitSoHyperLink()
+        {
+            var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
 
+            repositoryItemHyperLinkEdit1.OpenLink += (sender, e) =>
+            {
+                var hyperlink = sender as HyperLinkEdit;
+                if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.EditValue?.ToString()))
+                {
+                    var OrderRef = hyperlink.EditValue.ToString();
+
+                    // Run your operation
+                    var detailForm = new OrderLookupForm(_configuration, _context, OrderRef);
+                    detailForm.Show();
+                    e.Handled = true; // Mark event as handled
+                }
+            };
+
+            var gridView = gridControl1.MainView as FileExistenceGridView;
+            if (gridView != null)
+            {
+                gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
+            }
+        }
         private void UpdateFileStatusForData(List<NZOrderData> data)
         {
             foreach (var item in data)

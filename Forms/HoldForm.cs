@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OrderManagerEF.Forms;
 
 namespace OrderManagerEF
 {
@@ -35,7 +37,6 @@ namespace OrderManagerEF
             _context = context;
 
             this.VisibleChanged += new EventHandler(this.Hold_VisibleChanged);
-            Load += Hold_Load;
             barButtonItem1.ItemClick += barButtonItem1_ItemClick;
 
         }
@@ -52,17 +53,12 @@ namespace OrderManagerEF
 
 
 
-        private void Hold_Load(object sender, EventArgs e)
-        {
-            LoadData();
-
-        }
-
         private void Hold_VisibleChanged(Object sender, EventArgs e)
         {
             if (this.Visible && !_dataLoaded)
             {
                 LoadData();
+                InitSoHyperLink();
                 _dataLoaded = true;
             }
         }
@@ -98,6 +94,31 @@ namespace OrderManagerEF
                 // Populate the grid control with the fetched data
                 gridView1.GridControl.DataSource = data;
                 gridView1.RefreshData();
+            }
+        }
+
+        private void InitSoHyperLink()
+        {
+            var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
+
+            repositoryItemHyperLinkEdit1.OpenLink += (sender, e) =>
+            {
+                var hyperlink = sender as HyperLinkEdit;
+                if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.EditValue?.ToString()))
+                {
+                    var OrderRef = hyperlink.EditValue.ToString();
+
+                    // Run your operation
+                    var detailForm = new OrderLookupForm(_configuration, _context, OrderRef);
+                    detailForm.Show();
+                    e.Handled = true; // Mark event as handled
+                }
+            };
+
+            var gridView = gridControl1.MainView as FileExistenceGridView;
+            if (gridView != null)
+            {
+                gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
             }
         }
 

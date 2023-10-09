@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CSCForm));
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -73,6 +74,8 @@
             // 
             barButtonItem1.Caption = "Export Data";
             barButtonItem1.Id = 1;
+            barButtonItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
             barButtonItem1.Name = "barButtonItem1";
             barButtonItem1.ItemClick += barButtonItem1_ItemClick;
             // 
@@ -80,6 +83,8 @@
             // 
             barButtonItem2.Caption = "Sync IDs";
             barButtonItem2.Id = 2;
+            barButtonItem2.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
+            barButtonItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.LargeImage");
             barButtonItem2.Name = "barButtonItem2";
             barButtonItem2.ItemClick += barButtonItem2_ItemClick_1;
             // 
@@ -87,6 +92,8 @@
             // 
             barButtonItem3.Caption = "Show IDs";
             barButtonItem3.Id = 3;
+            barButtonItem3.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
+            barButtonItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.LargeImage");
             barButtonItem3.Name = "barButtonItem3";
             barButtonItem3.ItemClick += barButtonItem3_ItemClick;
             // 
@@ -94,6 +101,8 @@
             // 
             barButtonItem4.Caption = "Create Batch";
             barButtonItem4.Id = 4;
+            barButtonItem4.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.Image");
+            barButtonItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.LargeImage");
             barButtonItem4.Name = "barButtonItem4";
             barButtonItem4.ItemClick += barButtonItem4_ItemClick;
             // 
@@ -101,6 +110,8 @@
             // 
             barButtonItem5.Caption = "Show Batch";
             barButtonItem5.Id = 5;
+            barButtonItem5.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.Image");
+            barButtonItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.LargeImage");
             barButtonItem5.Name = "barButtonItem5";
             barButtonItem5.ItemClick += barButtonItem5_ItemClick_1;
             // 
@@ -108,6 +119,8 @@
             // 
             barButtonItem6.Caption = "Process Batch";
             barButtonItem6.Id = 6;
+            barButtonItem6.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem6.ImageOptions.Image");
+            barButtonItem6.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem6.ImageOptions.LargeImage");
             barButtonItem6.Name = "barButtonItem6";
             barButtonItem6.ItemClick += barButtonItem6_ItemClick_1;
             // 
@@ -115,6 +128,8 @@
             // 
             barButtonItem7.Caption = "Sort By BinNumber";
             barButtonItem7.Id = 7;
+            barButtonItem7.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem7.ImageOptions.Image");
+            barButtonItem7.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem7.ImageOptions.LargeImage");
             barButtonItem7.Name = "barButtonItem7";
             barButtonItem7.ItemClick += barButtonItem7_ItemClick_1;
             // 
@@ -122,6 +137,8 @@
             // 
             barButtonItem8.Caption = "Hold an Order";
             barButtonItem8.Id = 8;
+            barButtonItem8.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem8.ImageOptions.Image");
+            barButtonItem8.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem8.ImageOptions.LargeImage");
             barButtonItem8.Name = "barButtonItem8";
             barButtonItem8.ItemClick += barButtonItem8_ItemClick_1;
             // 
@@ -129,6 +146,8 @@
             // 
             barButtonItem9.Caption = "Show Ready Orders";
             barButtonItem9.Id = 9;
+            barButtonItem9.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem9.ImageOptions.Image");
+            barButtonItem9.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem9.ImageOptions.LargeImage");
             barButtonItem9.Name = "barButtonItem9";
             barButtonItem9.ItemClick += barButtonItem9_ItemClick;
             // 
@@ -136,6 +155,8 @@
             // 
             barButtonItem10.Caption = "Check Duplicates";
             barButtonItem10.Id = 10;
+            barButtonItem10.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem10.ImageOptions.Image");
+            barButtonItem10.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem10.ImageOptions.LargeImage");
             barButtonItem10.Name = "barButtonItem10";
             barButtonItem10.ItemClick += barButtonItem10_ItemClick_1;
             // 
@@ -143,6 +164,8 @@
             // 
             barButtonItem11.Caption = "Select and Process";
             barButtonItem11.Id = 11;
+            barButtonItem11.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.Image");
+            barButtonItem11.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.LargeImage");
             barButtonItem11.Name = "barButtonItem11";
             barButtonItem11.ItemClick += barButtonItem11_ItemClick_1;
             // 

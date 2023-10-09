@@ -141,7 +141,7 @@ namespace OrderManagerEF.Forms
 
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
                 gridView1.KeyDown += gridView1_KeyDown;
-
+                InitSoHyperLink();
                 // Set focus to gridControl1
                 gridControl1.Focus();
             }
@@ -149,6 +149,31 @@ namespace OrderManagerEF.Forms
             {
                 // Close the splash screen once data is loaded
                 SplashScreenManager.CloseForm(false);
+            }
+        }
+
+        private void InitSoHyperLink()
+        {
+            var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
+
+            repositoryItemHyperLinkEdit1.OpenLink += (sender, e) =>
+            {
+                var hyperlink = sender as HyperLinkEdit;
+                if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.EditValue?.ToString()))
+                {
+                    var OrderRef = hyperlink.EditValue.ToString();
+
+                    // Run your operation
+                    var detailForm = new OrderLookupForm(_configuration, _context, OrderRef);
+                    detailForm.Show();
+                    e.Handled = true; // Mark event as handled
+                }
+            };
+
+            var gridView = gridControl1.MainView as FileExistenceGridView;
+            if (gridView != null)
+            {
+                gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
             }
         }
 

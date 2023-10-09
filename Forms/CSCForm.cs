@@ -136,7 +136,7 @@ namespace OrderManagerEF.Forms
 
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
                 gridView1.KeyDown += gridView1_KeyDown;
-                InitializeHyperLink();
+                InitSoHyperLink();
             }
             finally
             {
@@ -890,7 +890,7 @@ namespace OrderManagerEF.Forms
             if (gridView != null) gridView.ToggleFileExistenceFilter();
         }
 
-        private void InitializeHyperLink()
+        private void InitSoHyperLink()
         {
             var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
 

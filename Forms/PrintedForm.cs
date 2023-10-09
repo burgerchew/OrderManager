@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraGrid.Views.Base;
+using OrderManagerEF.Forms;
 
 namespace OrderManagerEF
 {
@@ -61,6 +62,7 @@ namespace OrderManagerEF
 
             newView.CellValueChanged += GridView_CellValueChanged;
             BarButtonClicks();
+            InitSoHyperLink();
         }
 
         private void BarButtonClicks()
@@ -214,6 +216,31 @@ namespace OrderManagerEF
         private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
             _excelExporter.ExportToXls();
+        }
+
+        private void InitSoHyperLink()
+        {
+            var repositoryItemHyperLinkEdit1 = new RepositoryItemHyperLinkEdit();
+
+            repositoryItemHyperLinkEdit1.OpenLink += (sender, e) =>
+            {
+                var hyperlink = sender as HyperLinkEdit;
+                if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.EditValue?.ToString()))
+                {
+                    var OrderRef = hyperlink.EditValue.ToString();
+
+                    // Run your operation
+                    var detailForm = new OrderLookupForm(_configuration, _context, OrderRef);
+                    detailForm.Show();
+                    e.Handled = true; // Mark event as handled
+                }
+            };
+
+            var gridView = gridControl1.MainView as FileExistenceGridView;
+            if (gridView != null)
+            {
+                gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
+            }
         }
 
         private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)

@@ -27,6 +27,7 @@ namespace OrderManagerEF
             this.VisibleChanged += new EventHandler(this.LabelPrintQueue_VisibleChanged);
             _configuration = configuration;
             _context = context;
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
 
         }
 
@@ -35,6 +36,7 @@ namespace OrderManagerEF
             if (this.Visible && !_dataLoaded)
             {
                 LoadData();
+                ApplyPrintedFilter();
                 _dataLoaded = true;
             }
         }
@@ -47,9 +49,14 @@ namespace OrderManagerEF
 
             // Assuming you have a grid or other control to display the data
             // Set the fetched data as the DataSource
-            gridControl1.DataSource = labelPrintQueueData;  // Replace 'yourGridControl' with the actual name of your control
+            gridControl1.DataSource = labelPrintQueueData;  
         }
 
+        private void ApplyPrintedFilter()
+        {
+            // Apply a filter to show only the rows where ShipmentID is null or blank
+            gridView1.ActiveFilterString = "[Printed] IS NULL OR [Printed] = 'FALSE'";
+        }
 
 
         private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
