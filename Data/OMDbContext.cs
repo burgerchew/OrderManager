@@ -36,8 +36,9 @@ namespace OrderManagerEF.Data
 
         public DbSet<StarShipITAPIKeyManager> StarShipITAPIKeyManager { get; set; }
 
-        public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
         public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
+
+        public virtual DbSet<ReplenishmentResult> ReplenishmentResults { get; set; }
 
         public List<ScanPackReportLookup> ExecuteScanPackReportLookup(string searchTerm)
         {
@@ -45,6 +46,21 @@ namespace OrderManagerEF.Data
             return ScanPackReportLookups.FromSqlRaw("EXEC sp_ABM_ScanPackReportLookup @SearchTerm", searchTermParam)
                 .ToList();
         }
+
+        public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
+
+        public async Task<List<ReplenishmentResult>> GetReplenishmentDataAsync(int sourceLocationNo, string orderType, int dateRange, int retailBinThreshold)
+        {
+            var sourceLocationNoParam = new SqlParameter("@SourceLocationNo", sourceLocationNo);
+            var orderTypeParam = new SqlParameter("@OrderType", orderType);
+            var dateRangeParam = new SqlParameter("@DateRange", dateRange);
+            var retailBinThresholdParam = new SqlParameter("@RetailBinThreshold", retailBinThreshold);
+
+            return await ReplenishmentResults.FromSqlRaw("EXEC sp_ASP_MasterReplenCTE @SourceLocationNo, @OrderType, @DateRange, @RetailBinThreshold",
+                    sourceLocationNoParam, orderTypeParam, dateRangeParam, retailBinThresholdParam)
+                .ToListAsync();
+        }
+
 
         public DbSet<PendingBatch> PendingBatches { get; set; }
 
@@ -80,6 +96,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<LabelPrintQueue>().ToView("vLabelPrintQueue").HasNoKey();
             modelBuilder.Entity<ScanPackReportOverview>().ToView("vScanPackReportOverview").HasNoKey();
             modelBuilder.Entity<ScanPackReportLookup>().HasNoKey();
+            modelBuilder.Entity<ReplenishmentResult>().HasNoKey();
             modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
             modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
             modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();

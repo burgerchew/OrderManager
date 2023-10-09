@@ -100,6 +100,7 @@
             navBarItem20 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem21 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem22 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem23 = new DevExpress.XtraNavBar.NavBarItem();
             bar5 = new DevExpress.XtraBars.Bar();
             bar1 = new DevExpress.XtraBars.Bar();
             bar2 = new DevExpress.XtraBars.Bar();
@@ -121,7 +122,6 @@
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             repositoryItemRibbonSearchEdit4 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
-            navBarItem23 = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
@@ -305,6 +305,11 @@
             navBarItem22.Caption = "Activity Log";
             navBarItem22.Name = "navBarItem22";
             // 
+            // navBarItem23
+            // 
+            navBarItem23.Caption = "StarShipITApiKeys";
+            navBarItem23.Name = "navBarItem23";
+            // 
             // bar5
             // 
             bar5.BarName = "Custom 2";
@@ -420,13 +425,13 @@
             // 
             ribbonPageCategory1.Name = "ribbonPageCategory1";
             ribbonPageCategory1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonPageCategory1.Text = "ribbonPageCategory1";
+            ribbonPageCategory1.Text = "Menu";
             // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2 });
             ribbonPage1.Name = "ribbonPage1";
-            ribbonPage1.Text = "ribbonPage1";
+            ribbonPage1.Text = "Menu";
             // 
             // ribbonPageGroup1
             // 
@@ -479,11 +484,6 @@
             repositoryItemRibbonSearchEdit4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, true, editorButtonImageOptions7, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, DevExpress.Utils.ToolTipAnchor.Default), new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, editorButtonImageOptions8, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
             repositoryItemRibbonSearchEdit4.Name = "repositoryItemRibbonSearchEdit4";
             repositoryItemRibbonSearchEdit4.NullText = "Search";
-            // 
-            // navBarItem23
-            // 
-            navBarItem23.Caption = "StarShipITApiKeys";
-            navBarItem23.Name = "navBarItem23";
             // 
             // EntryForm
             // 
