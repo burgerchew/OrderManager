@@ -47,6 +47,7 @@ namespace OrderManagerEF.Data
                 .ToList();
         }
 
+
         public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
 
         public async Task<List<ReplenishmentResult>> GetReplenishmentDataAsync(int sourceLocationNo, string orderType, int dateRange, int retailBinThreshold)
@@ -61,6 +62,15 @@ namespace OrderManagerEF.Data
                 .ToListAsync();
         }
 
+
+        public virtual DbSet<OrderLookupResult> OrderLookupResults { get; set; }
+
+        public List<OrderLookupResult> ExecuteOrderLookupResult(string searchTerm)
+        {
+            var searchTermParam = new SqlParameter("@SearchTerm", searchTerm);
+            return OrderLookupResults.FromSqlRaw("EXEC ASP_OrderCheckBinParam @SearchTerm", searchTermParam)
+                .ToList();
+        }
 
         public DbSet<PendingBatch> PendingBatches { get; set; }
 
@@ -97,6 +107,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<ScanPackReportOverview>().ToView("vScanPackReportOverview").HasNoKey();
             modelBuilder.Entity<ScanPackReportLookup>().HasNoKey();
             modelBuilder.Entity<ReplenishmentResult>().HasNoKey();
+            modelBuilder.Entity<OrderLookupResult>().HasNoKey();
             modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
             modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
             modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();
