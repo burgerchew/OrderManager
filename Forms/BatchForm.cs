@@ -31,6 +31,8 @@ namespace OrderManagerEF.Forms
 
             // Bind the fetched data to the grid or whatever control you are using
             gridControl1.DataSource = batches; // replace 'yourGridControl' with the actual control's name
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
         }
 
 

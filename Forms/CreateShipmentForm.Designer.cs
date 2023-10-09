@@ -32,12 +32,12 @@
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            barCheckItem1 = new DevExpress.XtraBars.BarCheckItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            barCheckItem1 = new DevExpress.XtraBars.BarCheckItem();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -71,11 +71,17 @@
             barButtonItem4.Id = 4;
             barButtonItem4.Name = "barButtonItem4";
             // 
+            // barCheckItem1
+            // 
+            barCheckItem1.Caption = "Toogle Shipments";
+            barCheckItem1.Id = 5;
+            barCheckItem1.Name = "barCheckItem1";
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2 });
             ribbonPage1.Name = "ribbonPage1";
-            ribbonPage1.Text = "ribbonPage1";
+            ribbonPage1.Text = "Menu";
             // 
             // ribbonPageGroup1
             // 
@@ -106,12 +112,6 @@
             // 
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
-            // 
-            // barCheckItem1
-            // 
-            barCheckItem1.Caption = "Toogle Shipments";
-            barCheckItem1.Id = 5;
-            barCheckItem1.Name = "barCheckItem1";
             // 
             // CreateShipmentForm
             // 

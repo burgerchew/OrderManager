@@ -46,7 +46,7 @@ namespace OrderManagerEF
             //InitializeData();
             //AddRadioCheckBoxColumn();
             Load += CreateShipmentForm_Load;
-   
+
 
             BarButtonClick();
         }
@@ -76,7 +76,7 @@ namespace OrderManagerEF
         private void ConfigureMasterDetailGrid()
         {
             // Load data with details included
-            var orders =  _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
+            var orders = _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
 
             // Bind master data (orders) to grid
             gridControl1.DataSource = orders;
@@ -545,7 +545,7 @@ namespace OrderManagerEF
                 Width = width,
                 Height = height,
                 Length = length,
-                Location =extraData,
+                Location = extraData,
                 Selected = selected,
                 ExtraData = extraData
             };

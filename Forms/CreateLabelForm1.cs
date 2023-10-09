@@ -260,7 +260,7 @@ namespace OrderManagerEF
 
         private async void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
-          
+
         }
 
 

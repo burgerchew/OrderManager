@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -41,12 +43,24 @@
             // ribbonControl1
             // 
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.MaxItemId = 1;
+            ribbonControl1.MaxItemId = 3;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
             ribbonControl1.Size = new System.Drawing.Size(404, 158);
+            // 
+            // barButtonItem1
+            // 
+            barButtonItem1.Caption = "Delete Batch";
+            barButtonItem1.Id = 1;
+            barButtonItem1.Name = "barButtonItem1";
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Delete Row";
+            barButtonItem2.Id = 2;
+            barButtonItem2.Name = "barButtonItem2";
             // 
             // ribbonPage1
             // 
@@ -56,6 +70,8 @@
             // 
             // ribbonPageGroup1
             // 
+            ribbonPageGroup1.ItemLinks.Add(barButtonItem1);
+            ribbonPageGroup1.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
             ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
@@ -99,5 +115,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
     }
 }

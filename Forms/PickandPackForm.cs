@@ -51,9 +51,6 @@ namespace OrderManagerEF
             // Assuming gridControl or some other control is being populated
             gridControl1.DataSource = data;
 
-
-
-
             AddGroupSum();
         }
         private void AddGroupSum()

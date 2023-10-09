@@ -97,6 +97,9 @@ namespace OrderManagerEF.Data
 
         public DbSet<HoldOrderData> HoldOrderDatas { get; set; }
 
+        public DbSet<CustomerResult> CustomerResults { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -108,6 +111,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<ScanPackReportLookup>().HasNoKey();
             modelBuilder.Entity<ReplenishmentResult>().HasNoKey();
             modelBuilder.Entity<OrderLookupResult>().HasNoKey();
+            modelBuilder.Entity<CustomerResult>().ToView("ASP_vGetCustomerList").HasNoKey();
             modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
             modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
             modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();

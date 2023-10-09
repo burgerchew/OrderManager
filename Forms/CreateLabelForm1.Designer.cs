@@ -78,7 +78,7 @@
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2 });
             ribbonPage1.Name = "ribbonPage1";
-            ribbonPage1.Text = "ribbonPage1";
+            ribbonPage1.Text = "Menu";
             // 
             // ribbonPageGroup1
             // 
@@ -111,11 +111,12 @@
             // 
             // progressBarControl1
             // 
-            progressBarControl1.Location = new System.Drawing.Point(310, 112);
+            progressBarControl1.Location = new System.Drawing.Point(536, 84);
             progressBarControl1.MenuManager = ribbonControl1;
             progressBarControl1.Name = "progressBarControl1";
             progressBarControl1.Size = new System.Drawing.Size(100, 18);
             progressBarControl1.TabIndex = 3;
+            progressBarControl1.Visible = false;
             // 
             // CreateLabelForm1
             // 

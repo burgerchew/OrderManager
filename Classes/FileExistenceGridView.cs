@@ -326,7 +326,7 @@ namespace OrderManagerEF.Classes
             // Get the connection string from the _configuration object using the specified key
             var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
 
-            string storedProcedureName = "dbo.CopyTransHeadersToOrdersNoCursor";
+            string storedProcedureName = "dbo.spInsertStarShipITOrder";
 
             // Use the connection string to create a new SqlConnection
             using (var connection = new SqlConnection(connectionString))
