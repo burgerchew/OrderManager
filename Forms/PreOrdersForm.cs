@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderManagerEF.Entities;
+using OrderManagerEF.DTOs;
 
 namespace OrderManagerEF
 {
@@ -36,6 +37,7 @@ namespace OrderManagerEF
         private HttpClient client;
         private bool _dataLoaded = false;
         private readonly ApiKeyManager _apiKeyManager;
+        private FileExistenceGridViewHelper _fileExistenceGridViewHelper;
         private readonly string _location = "RUB"; // Define your location
         private readonly IConfiguration _configuration;
         private readonly ReportManager _reportManager;
@@ -99,30 +101,51 @@ namespace OrderManagerEF
 
         private void LoadData()
         {
-            LoadPickSlipData();
-            var data = _context.PreOrderDatas.ToList();
+            // Show the default splash screen
+            SplashScreenManager.ShowDefaultWaitForm("Please wait", "Loading data...");
 
-            // Populate the grid control with the fetched data
-            gridView1.GridControl.DataSource = data;
-
-            var newView = new FileExistenceGridView(_configuration)
+            try
             {
-                FileLocationColumnNames =
-                    { "LabelFile", "PickSlipFile" } // Add your column names containing the file locations
-                ,
-                FilterFileExists = false
-            };
+                LoadPickSlipData();
+                var data = _context.PreOrderDatas.ToList();
+
+                // Update the FileStatus property for each item in the data list.
+                UpdateFileStatusForData(data);
+
+                // Populate the grid control with the fetched data
+                gridView1.GridControl.DataSource = data;
+                gridView1.RefreshData();
+
+                var newView = new FileExistenceGridView(_configuration)
+                {
+                    FileLocationColumnNames =
+                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FilterFileExists = false
+                };
+
+                gridControl1.MainView = newView;
+                AddPreviewLinkColumn(newView);
+                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
+                HighlightDuplicateRows(newView);
+
+                _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
+                gridView1.KeyDown += gridView1_KeyDown;
+                InitSoHyperLink();
+            }
+            finally
+            {
+                // Close the splash screen once data is loaded
+                SplashScreenManager.CloseForm(false);
+            }
+        }
 
 
-
-            gridControl1.MainView = newView;
-            // Create the hyperlink column and set up the report preview
-            AddPreviewLinkColumn(newView);
-
-
-            HighlightDuplicateRows(newView);
-            gridView1.KeyDown += gridView1_KeyDown;
-            InitSoHyperLink();
+        private void UpdateFileStatusForData(List<PreOrderData> data)
+        {
+            foreach (var item in data)
+            {
+                item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
+            }
         }
 
 

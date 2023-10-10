@@ -1,7 +1,9 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using Microsoft.Extensions.Configuration;
 using OrderManagerEF.Classes;
 using OrderManagerEF.Data;
@@ -33,7 +35,7 @@ namespace OrderManagerEF
 
             this.WindowState = FormWindowState.Maximized;
             this.VisibleChanged += new EventHandler(this.PickandPack_VisibleChanged);
-
+            gridView1.CustomDrawGroupRow += gridView_CustomDrawGroupRow;
 
         }
 
@@ -42,9 +44,36 @@ namespace OrderManagerEF
             if (this.Visible && !_dataLoaded)
             {
                 LoadData();
+                LoadParamValues();
+                ConfigureGridView();
                 _dataLoaded = true;
             }
         }
+
+        public void ConfigureGridView()
+        {
+            GridView gridView = (GridView)gridControl1.MainView;
+            gridView.OptionsFind.FindFilterColumns = "ProductCode;ProductTitle";
+
+        }
+
+
+
+
+        private void LoadParamValues()
+        {
+
+            var gridView = gridControl1.FocusedView as GridView;  // Assuming you're working with a GridView
+            if (gridView != null)
+            {
+                GroupByProductCodeAndPickType();
+                gridView.ExpandAllGroups();
+            }
+
+
+        }
+
+
         private void LoadData()
         {
             var data = _context.BINContentsLocn1s.ToList();
@@ -52,36 +81,62 @@ namespace OrderManagerEF
             // Assuming gridControl or some other control is being populated
             gridControl1.DataSource = data;
 
-            AddGroupSum();
+    
         }
-        private void AddGroupSum()
+
+
+
+        // Method to group by 'ProductCode' and 'PickType' and set summaries
+        private void GroupByProductCodeAndPickType()
         {
             GridView gridView = (GridView)gridControl1.MainView;
 
             // Clear any existing grouping
             gridView.ClearGrouping();
 
-            // Group by 'ProductCode' and 'PickType'
+            // Group by 'ProductCode'
             GridColumn colProductCode = gridView.Columns["ProductCode"];
             if (colProductCode != null)
             {
                 colProductCode.GroupIndex = 0;
             }
 
+            // Group by 'PickType'
             GridColumn colPickType = gridView.Columns["PickType"];
             if (colPickType != null)
             {
                 colPickType.GroupIndex = 1;
             }
 
+            // Clear existing group summaries
+            gridView.GroupSummary.Clear();
+
+            // Add a new group summary for 'ActualQuantity' grouped by 'ProductCode'
+            GridGroupSummaryItem summaryItemProductCode = new GridGroupSummaryItem()
+            {
+                FieldName = "ActualQuantity",
+                SummaryType = DevExpress.Data.SummaryItemType.Sum,
+                DisplayFormat = "Sum = {0}",
+                ShowInGroupColumnFooter = gridView.Columns["ActualQuantity"]
+            };
+            gridView.GroupSummary.Add(summaryItemProductCode);
+
+        }
+
+
+        // Method to add the grid sum helper
+        private void AddGridSumHelper()
+        {
+            GridView gridView = (GridView)gridControl1.MainView;
             GridViewSumHelper gridViewSumHelper = new GridViewSumHelper(gridView);
 
             // Sum 'ActualQuantity' for the grouped 'ProductCode'
             gridViewSumHelper.AddSumToGroupedColumn("ActualQuantity", "ProductCode");
 
             // Optionally, if you want to sum 'ActualQuantity' for the grouped 'PickType' as well:
-            // gridViewSumHelper.AddSumToGroupedColumn("ActualQuantity", "PickType");
+            gridViewSumHelper.AddSumToGroupedColumn("ActualQuantity", "PickType");
         }
+
 
 
         public void SetSearchTextAndClickButton(string SKU)
@@ -116,66 +171,43 @@ namespace OrderManagerEF
             }
         }
 
-        public static Image ResizeImage(Image image, int maxWidth, int maxHeight)
-        {
-            double ratioX = (double)maxWidth / image.Width;
-            double ratioY = (double)maxHeight / image.Height;
-            double ratio = Math.Min(ratioX, ratioY);
-
-            int newWidth = (int)(image.Width * ratio);
-            int newHeight = (int)(image.Height * ratio);
-
-            Image resizedImage = new Bitmap(newWidth, newHeight);
-
-            using (Graphics graphics = Graphics.FromImage(resizedImage))
-            {
-                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
-            }
-
-            return resizedImage;
-        }
-
-        private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
-        {
-            if (e.Column.FieldName == "ImageColumn" && e.IsGetData)
-            {
-                try
-                {
-                    string uncPathPrefix = @"C:\test\images\";
-                    string productCode = gridView1.GetListSourceRowCellValue(e.ListSourceRowIndex, "ProductCode").ToString();
-                    string fileName = productCode + ".jpg"; // Append the ".jpg" extension
-                    string uncImagePath = Path.Combine(uncPathPrefix, fileName);
-
-                    if (File.Exists(uncImagePath))
-                    {
-                        Image image = Image.FromFile(uncImagePath);
-
-                        // Resize the image to fit in the grid column
-                        int maxWidth = 300; // Set the maximum width for the image
-                        int maxHeight = 300; // Set the maximum height for the image
-                        Image resizedImage = ResizeImage(image, maxWidth, maxHeight);
-
-                        e.Value = resizedImage;
-                    }
-                    else
-                    {
-                        e.Value = null;
-                    }
-                }
-                catch
-                {
-                    e.Value = null;
-                }
-            }
-        }
+       
 
         private void PickandPackForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void gridView_CustomDrawGroupRow(object sender, DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventArgs e)
+        {
+            GridView view = sender as GridView;
+            GridGroupRowInfo info = e.Info as GridGroupRowInfo;
+
+            if (info != null && info.Column.FieldName == "PickType")
+            {
+                string groupValue = view.GetGroupRowDisplayText(e.RowHandle);
+
+                if (groupValue.Contains("PickFace"))
+                {
+                    info.Appearance.BackColor = Color.Green;
+                    info.Appearance.ForeColor = Color.White;
+                }
+                else if (groupValue.Contains("Bulk"))
+                {
+                    info.Appearance.BackColor = Color.MediumPurple;
+                    info.Appearance.ForeColor = Color.White;
+                }
+                else if (groupValue.Contains("Receive"))
+                {
+                    info.Appearance.BackColor = Color.LightBlue;
+                    info.Appearance.ForeColor = Color.White;
+                }
+                else if (groupValue.Contains("Consolidation"))  
+                {
+                    info.Appearance.BackColor = Color.Orange;
+                    info.Appearance.ForeColor = Color.Black;
+                }
+            }
         }
     }
 }
