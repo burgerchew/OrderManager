@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.XtraSplashScreen;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF
 {
@@ -27,13 +28,15 @@ namespace OrderManagerEF
         private readonly ExcelExporter _excelExporter;
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
+        private readonly UserSession _userSession;
 
 
-        public PackingForm(IConfiguration configuration, OMDbContext context)
+        public PackingForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
+            _userSession = userSession;
 
             gridView1.CustomDrawCell += gridView1_CustomDrawCell;
             _excelExporter = new ExcelExporter(gridView1);
@@ -46,6 +49,7 @@ namespace OrderManagerEF
         {
             LoadScanPackReportOverview();
             InitializeHyperLink();
+            BarButtonClicks();
         }
 
         private void LoadScanPackReportOverview()
@@ -54,6 +58,20 @@ namespace OrderManagerEF
 
             gridControl1.DataSource = result;
         }
+
+
+        private void BarButtonClicks()
+        {   //Export to Excel
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            //Allocated
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            //Pending
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
+            //Complete
+            barButtonItem4.ItemClick += barButtonItem4_ItemClick;
+
+        }
+
 
         private void InitializeHyperLink()
         {

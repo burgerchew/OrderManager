@@ -66,7 +66,7 @@
             // 
             // barButtonItem2
             // 
-            barButtonItem2.Caption = "Pending Orders";
+            barButtonItem2.Caption = "Allocated Orders";
             barButtonItem2.Id = 2;
             barButtonItem2.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
             barButtonItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.LargeImage");
@@ -74,7 +74,7 @@
             // 
             // barButtonItem3
             // 
-            barButtonItem3.Caption = "Allocated Orders";
+            barButtonItem3.Caption = "Pending Orders";
             barButtonItem3.Id = 3;
             barButtonItem3.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
             barButtonItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.LargeImage");
@@ -108,8 +108,8 @@
             // 
             // ribbonPageGroup2
             // 
-            ribbonPageGroup2.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup2.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup2.ItemLinks.Add(barButtonItem4);
             ribbonPageGroup2.Name = "ribbonPageGroup2";
             ribbonPageGroup2.Text = "OrderManagement";

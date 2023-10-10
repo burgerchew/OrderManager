@@ -164,10 +164,7 @@ namespace OrderManagerEF
             }
         }
 
-        private List<ASP_SSI_Result> LoadDataFromStoredProcedure()
-        {
-            return _storedProcedureService.ExecuteStoredProcedure("ASP_RUB_SSI");
-        }
+    
 
         private void UpdateFileStatusForData(List<RubiesOrderData> data)
         {
@@ -482,7 +479,7 @@ namespace OrderManagerEF
 
 
             // Fetch the updated data from the database using the new EF Core method
-            var data = LoadDataFromStoredProcedure();
+            var data = _context.RubiesOrderDatas.ToList();
 
             // Set the fetched data as the grid's data source and refresh the grid view
             gridView.GridControl.DataSource = data;
@@ -573,7 +570,7 @@ namespace OrderManagerEF
                 var gridView = gridControl1.FocusedView as GridView;
 
                 // Fetch the updated data from the database using the new EF Core method
-                var data = LoadDataFromStoredProcedure();
+                var data = _context.RubiesOrderDatas.ToList();
 
                 // Set the fetched data as the grid's data source and refresh the grid view
                 gridView.GridControl.DataSource = data;
@@ -630,7 +627,7 @@ namespace OrderManagerEF
 
 
                 // Fetch the updated data from the database using the new EF Core method
-                var data = LoadDataFromStoredProcedure();
+                var data = _context.RubiesOrderDatas.ToList();
 
                 // Set the fetched data as the grid's data source and refresh the grid view
                 gridView.GridControl.DataSource = data;
@@ -675,7 +672,7 @@ namespace OrderManagerEF
             // Refresh the GridView
 
             // Fetch the updated data from the database using the new EF Core method
-            var data = LoadDataFromStoredProcedure();
+            var data = _context.RubiesOrderDatas.ToList();
 
             // Set the fetched data as the grid's data source and refresh the grid view
             gridView.GridControl.DataSource = data;

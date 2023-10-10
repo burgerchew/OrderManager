@@ -52,7 +52,7 @@ namespace OrderManagerEF.Forms
                 { "navBarItem8", (c, ctx, us) => new WebstoreOver5Form(c, ctx, us) },
                 { "navBarItem7", (c, ctx, u) => new PrintedForm(c,ctx) },
                 { "navBarItem9", (c, ctx, u) => new LabelPrintQueueForm(c,ctx) },
-                { "navBarItem10", (c, ctx, u) => new PackingForm(c,ctx) },
+                { "navBarItem10", (c, ctx, us) => new PackingForm(c,ctx,us) },
                 { "navBarItem11", (c, ctx, u) => new HoldForm(c,ctx) },
                 { "navBarItem12", (c, ctx, u) => new Import1Form(c,ctx) },
                 { "navBarItem13", (c, ctx, u) => new CreateShipmentForm(c,ctx) },

@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
 using OrderManagerEF.Entities;
+using Label = OrderManagerEF.Entities.Label;
 using PendingBatch = OrderManagerEF.DTOs.PendingBatch;
 
 namespace OrderManagerEF.Data
@@ -43,9 +45,19 @@ namespace OrderManagerEF.Data
         public List<ScanPackReportLookup> ExecuteScanPackReportLookup(string searchTerm)
         {
             var searchTermParam = new SqlParameter("@SearchTerm", searchTerm);
-            return ScanPackReportLookups.FromSqlRaw("EXEC sp_ABM_ScanPackReportLookup @SearchTerm", searchTermParam)
+            var result = ScanPackReportLookups.FromSqlRaw("EXEC sp_ABM_ScanPackReportLookup @SearchTerm", searchTermParam)
                 .ToList();
+
+            if (result == null || !result.Any()) // Check if the result is null or empty
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given search term.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return new List<ScanPackReportLookup>(); // Return an empty list instead of null to prevent potential NullReferenceExceptions elsewhere
+            }
+
+            return result;
         }
+
 
 
         public DbSet<ScanPackReportOverview> vScanPackReportOverviews { get; set; }
@@ -57,10 +69,19 @@ namespace OrderManagerEF.Data
             var dateRangeParam = new SqlParameter("@DateRange", dateRange);
             var retailBinThresholdParam = new SqlParameter("@RetailBinThreshold", retailBinThreshold);
 
-            return await ReplenishmentResults.FromSqlRaw("EXEC sp_ASP_MasterReplenCTE @SourceLocationNo, @OrderType, @DateRange, @RetailBinThreshold",
+            var result = await ReplenishmentResults.FromSqlRaw("EXEC sp_ASP_MasterReplenCTE @SourceLocationNo, @OrderType, @DateRange, @RetailBinThreshold",
                     sourceLocationNoParam, orderTypeParam, dateRangeParam, retailBinThresholdParam)
                 .ToListAsync();
+
+            if (result == null || !result.Any()) // Check if the result is null or empty
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<ReplenishmentResult>(); // Return an empty list to prevent potential issues elsewhere
+            }
+
+            return result;
         }
+
 
 
         public virtual DbSet<OrderLookupResult> OrderLookupResults { get; set; }
@@ -68,9 +89,18 @@ namespace OrderManagerEF.Data
         public List<OrderLookupResult> ExecuteOrderLookupResult(string searchTerm)
         {
             var searchTermParam = new SqlParameter("@SearchTerm", searchTerm);
-            return OrderLookupResults.FromSqlRaw("EXEC ASP_OrderCheckBinParam @SearchTerm", searchTermParam)
+            var result = OrderLookupResults.FromSqlRaw("EXEC ASP_OrderCheckBinParam @SearchTerm", searchTermParam)
                 .ToList();
+
+            if (result == null || !result.Any()) // Check if the result is null or empty
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given search term.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<OrderLookupResult>(); // Return an empty list to prevent potential issues elsewhere
+            }
+
+            return result;
         }
+
 
         public DbSet<PendingBatch> PendingBatches { get; set; }
 

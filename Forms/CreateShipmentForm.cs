@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using Label = OrderManagerEF.Entities.Label;
+using System.Windows.Controls;
+using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
 
 namespace OrderManagerEF
 {
@@ -47,8 +49,9 @@ namespace OrderManagerEF
             //AddRadioCheckBoxColumn();
             Load += CreateShipmentForm_Load;
 
-
+     
             BarButtonClick();
+            gridView1.CustomDrawCell += gridView1_CustomDrawCell;
         }
 
 
@@ -136,50 +139,8 @@ namespace OrderManagerEF
             _context.SaveChanges();
         }
 
-        private void InitializeData()
-        {
-            try
-            {
-                // Fetch data using EF and DbContext
-                var shipments = _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
 
-
-                // Set up the main view's data source with the fetched shipments
-                var masterBindingSource = new BindingSource { DataSource = shipments };
-
-                gridControl1.DataSource = masterBindingSource;
-
-                // Set up the master-detail relationship
-                var detailView = new GridView(gridControl1);
-                gridControl1.LevelTree.Nodes.Add("StarShipITOrderDetails", detailView);
-                detailView.PopulateColumns();
-                detailView.ViewCaption = "Shipment Details";
-
-                //// Attach event handlers
-
-                detailView.MasterRowExpanded += gridView1_MasterRowExpanded;
-                detailView.RowUpdated += gridView1_RowUpdated;
-                detailView.RowDeleted += gridView1_RowDeleted;
-                detailView.InitNewRow += gridView1_InitNewRow;
-                detailView.RowDeleting += gridView1_RowDeleting;
-                gridControl1.EmbeddedNavigator.ButtonClick += EmbeddedNavigator_ButtonClick;
-                detailView.CustomDrawCell += gridView_CustomDrawCell;
-
-                SubscribeToDetailGridViewInitNewRow();
-                SubscribeToDetailGridViewCellValueChanged();
-                SubscribeToDetailGridViewRowDeleted();
-
-                // Assuming the methods ApplyShipmentIdFilter and PopulateExtraDataLookup are still relevant,
-                // let's call them as they are. If they need to be refactored too, please provide their content.
-                ApplyShipmentIdFilter();
-                PopulateExtraDataLookup(gridControl1.MainView as GridView);
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show($"Failed to initialize data. Error: {ex.Message}", "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void PopulateExtraDataLookup(GridView gridView)
+        private void PopulateExtraDataLookup(DevExpress.XtraGrid.Views.Grid.GridView gridView)
         {
             // Fetch the distinct ExtraData values directly from the database
             var extraDataValues = _context.StarShipITOrders
@@ -734,25 +695,6 @@ namespace OrderManagerEF
 
 
 
-
-
-        private void gridView_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
-        {
-            if (e.Column.FieldName == "ExtraData")
-            {
-                var value = e.CellValue.ToString();
-                switch (value)
-                {
-                    case "CSC": e.Appearance.BackColor = Color.LightBlue; break; // Change as needed
-                    case "RUB": e.Appearance.BackColor = Color.LightGray; break;
-                    case "BSA": e.Appearance.BackColor = Color.LightGreen; break;
-                    case "DS": e.Appearance.BackColor = Color.LightYellow; break;
-                        // Add more cases if needed
-                }
-            }
-        }
-
-
         public void DeleteOrderAndOrderDetails(int orderId)
         {
             var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
@@ -794,6 +736,19 @@ namespace OrderManagerEF
 
         private void gridView1_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
         {
+
+            if (e.Column.FieldName == "ExtraData")
+            {
+                var value = e.CellValue.ToString();
+                switch (value)
+                {
+                    case "CSC": e.Appearance.BackColor = Color.LightBlue; break; // Change as needed
+                    case "RUB": e.Appearance.BackColor = Color.LightGray; break;
+                    case "BSA": e.Appearance.BackColor = Color.LightGreen; break;
+                    case "DS": e.Appearance.BackColor = Color.LightYellow; break;
+                    // Add more cases if needed
+                }
+            }
             // List of column names to check for missing values
             List<string> columnNames = new List<string> { "OrderNumber", "DestinationName", "DestinationStreet", "DestinationSuburb", "DestinationState", "DestinationPostCode", "DestinationCountry" };
 

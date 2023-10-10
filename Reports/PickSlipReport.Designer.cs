@@ -677,6 +677,7 @@
             this.FilterString = "[AccountingRef] = ?";
             this.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F);
             this.Landscape = true;
+            this.Margins = new DevExpress.Drawing.DXMargins(100F, 99F, 100F, 100F);
             this.PageHeight = 827;
             this.PageWidth = 1169;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A4;

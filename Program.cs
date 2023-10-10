@@ -15,11 +15,14 @@ using OrderManager.Classes;
 using OrderManagerEF.Classes;
 using OrderManagerEF.Forms;
 using OrderManagerEF.Entities;
+using DevExpress.XtraReports.Diagnostics;
 
 namespace OrderManagerEF
 {
     internal static class Program
     {
+
+        public static string targetDirectory { get; private set; } // Static property to hold the target directory
         public static IConfigurationRoot Configuration { get; set; }
 
         [STAThread]
@@ -29,10 +32,43 @@ namespace OrderManagerEF
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Set up configuration sources directly from appsettings.json
+
+            // Define the target directory
+            targetDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "OM");
+
+
+            // Create the target directory if it doesn't exist
+            if (!Directory.Exists(targetDirectory))
+            {
+                Directory.CreateDirectory(targetDirectory);
+            }
+
+            // Define the source files
+            string[] sourceFiles = { "appsettings.json" };
+
+            foreach (string sourceFile in sourceFiles)
+            {
+                // Ensure the source file exists
+                if (File.Exists(sourceFile))
+                {
+                    string targetFile = Path.Combine(targetDirectory, sourceFile);
+                    // Copy the source file to the target directory
+                    File.Copy(sourceFile, targetFile, true); // the 'true' parameter allows the file to be overwritten if it already exists
+                }
+            }
+
+
+
+            //// Set up configuration sources directly from appsettings.json
+            //var builder = new ConfigurationBuilder()
+            //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            //    .AddJsonFile("appsettings.json");
+
+            // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .SetBasePath(targetDirectory) // Note that we are now loading configuration from the target directory
                 .AddJsonFile("appsettings.json");
+
 
             Configuration = builder.Build();
 
@@ -43,10 +79,30 @@ namespace OrderManagerEF
                 options.UseSqlServer(Configuration.GetConnectionString("RubiesConnectionString")));
             serviceCollection.AddSingleton<UserSession>();  // <-- Register the UserSession service
 
+            var path = Path.Combine(targetDirectory, "appsettings.json");
+            XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath(path)}");
+
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             using var dbContext = serviceProvider.GetRequiredService<OMDbContext>();
             var userSession = serviceProvider.GetRequiredService<UserSession>();  // <-- Retrieve the UserSession instance
+
+
+            //Load Report Settings and Error Log Path
+            ReportManager reportManager = new ReportManager(Configuration);
+
+            ReportSetting setting = reportManager.GetReportSetting();
+
+            string errorPath = setting?.ErrorPath ?? Configuration["ErrorLogPath"];
+            string errorLogDirectoryName = Path.GetDirectoryName(errorPath);
+
+            if (!Directory.Exists(errorLogDirectoryName))
+            {
+                Directory.CreateDirectory(errorLogDirectoryName);
+            }
+
+            ExceptionHandler.Initialize(errorPath);
+
 
             // Create an instance of LoginForm and show it
             LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
