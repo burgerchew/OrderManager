@@ -74,8 +74,8 @@ namespace OrderManagerEF
             barButtonItem3.ItemClick += barButtonItem3_ItemClick;
             //Late Order
             barButtonItem4.ItemClick += barButtonItem4_ItemClick;
-      
-       
+
+
         }
 
         private void Printed_VisibleChanged(object sender, EventArgs e)
@@ -276,7 +276,7 @@ namespace OrderManagerEF
             }
         }
 
-    
+
 
         private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
         {

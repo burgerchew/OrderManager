@@ -67,12 +67,12 @@ namespace OrderManagerEF.Forms
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-  
+
             BarButtonClicks();
 
         }
 
- 
+
 
         private void BarButtonClicks()
         {   //Export to Excel
@@ -571,7 +571,7 @@ namespace OrderManagerEF.Forms
         }
 
 
-     
+
 
 
         private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)

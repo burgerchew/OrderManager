@@ -170,36 +170,50 @@
             // navBarItem1
             // 
             navBarItem1.Caption = "CSC";
+            navBarItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem1.ImageOptions.LargeImage");
+            navBarItem1.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem1.ImageOptions.SmallImage");
             navBarItem1.Name = "navBarItem1";
             // 
             // navBarItem2
             // 
             navBarItem2.Caption = "DS";
+            navBarItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem2.ImageOptions.LargeImage");
+            navBarItem2.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem2.ImageOptions.SmallImage");
             navBarItem2.Name = "navBarItem2";
             // 
             // navBarItem3
             // 
             navBarItem3.Caption = "NZ";
+            navBarItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem3.ImageOptions.LargeImage");
+            navBarItem3.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem3.ImageOptions.SmallImage");
             navBarItem3.Name = "navBarItem3";
             // 
             // navBarItem4
             // 
             navBarItem4.Caption = "Samples";
+            navBarItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem4.ImageOptions.LargeImage");
+            navBarItem4.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem4.ImageOptions.SmallImage");
             navBarItem4.Name = "navBarItem4";
             // 
             // navBarItem5
             // 
             navBarItem5.Caption = "PreOrders";
+            navBarItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.LargeImage");
+            navBarItem5.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.SmallImage");
             navBarItem5.Name = "navBarItem5";
             // 
             // navBarItem6
             // 
             navBarItem6.Caption = "Rubies Dropship";
+            navBarItem6.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem6.ImageOptions.LargeImage");
+            navBarItem6.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem6.ImageOptions.SmallImage");
             navBarItem6.Name = "navBarItem6";
             // 
             // navBarItem8
             // 
             navBarItem8.Caption = "Rubies Over 5KG";
+            navBarItem8.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem8.ImageOptions.LargeImage");
+            navBarItem8.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem8.ImageOptions.SmallImage");
             navBarItem8.Name = "navBarItem8";
             // 
             // navBarGroup2
@@ -212,21 +226,29 @@
             // navBarItem7
             // 
             navBarItem7.Caption = "Printed Orders";
+            navBarItem7.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem7.ImageOptions.LargeImage");
+            navBarItem7.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem7.ImageOptions.SmallImage");
             navBarItem7.Name = "navBarItem7";
             // 
             // navBarItem9
             // 
             navBarItem9.Caption = "Printed Labels";
+            navBarItem9.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem9.ImageOptions.LargeImage");
+            navBarItem9.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem9.ImageOptions.SmallImage");
             navBarItem9.Name = "navBarItem9";
             // 
             // navBarItem10
             // 
             navBarItem10.Caption = "Packing";
+            navBarItem10.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem10.ImageOptions.LargeImage");
+            navBarItem10.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem10.ImageOptions.SmallImage");
             navBarItem10.Name = "navBarItem10";
             // 
             // navBarItem11
             // 
             navBarItem11.Caption = "Hold Orders";
+            navBarItem11.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem11.ImageOptions.LargeImage");
+            navBarItem11.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem11.ImageOptions.SmallImage");
             navBarItem11.Name = "navBarItem11";
             // 
             // navBarGroup3
@@ -239,21 +261,29 @@
             // navBarItem12
             // 
             navBarItem12.Caption = "Import from ABM";
+            navBarItem12.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem12.ImageOptions.LargeImage");
+            navBarItem12.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem12.ImageOptions.SmallImage");
             navBarItem12.Name = "navBarItem12";
             // 
             // navBarItem13
             // 
             navBarItem13.Caption = "Create Shipments";
+            navBarItem13.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem13.ImageOptions.LargeImage");
+            navBarItem13.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem13.ImageOptions.SmallImage");
             navBarItem13.Name = "navBarItem13";
             // 
             // navBarItem14
             // 
             navBarItem14.Caption = "Create Labels";
+            navBarItem14.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem14.ImageOptions.LargeImage");
+            navBarItem14.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem14.ImageOptions.SmallImage");
             navBarItem14.Name = "navBarItem14";
             // 
             // navBarItem15
             // 
             navBarItem15.Caption = "Archived Labels";
+            navBarItem15.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem15.ImageOptions.LargeImage");
+            navBarItem15.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem15.ImageOptions.SmallImage");
             navBarItem15.Name = "navBarItem15";
             // 
             // navBarGroup4
@@ -266,16 +296,22 @@
             // navBarItem16
             // 
             navBarItem16.Caption = "Replenishment Report";
+            navBarItem16.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem16.ImageOptions.LargeImage");
+            navBarItem16.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem16.ImageOptions.SmallImage");
             navBarItem16.Name = "navBarItem16";
             // 
             // navBarItem17
             // 
             navBarItem17.Caption = "Pick and Pack Stock";
+            navBarItem17.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem17.ImageOptions.LargeImage");
+            navBarItem17.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem17.ImageOptions.SmallImage");
             navBarItem17.Name = "navBarItem17";
             // 
             // navBarItem18
             // 
             navBarItem18.Caption = "Majors Stock";
+            navBarItem18.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem18.ImageOptions.LargeImage");
+            navBarItem18.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem18.ImageOptions.SmallImage");
             navBarItem18.Name = "navBarItem18";
             // 
             // navBarGroup5
@@ -288,26 +324,36 @@
             // navBarItem19
             // 
             navBarItem19.Caption = "Users";
+            navBarItem19.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem19.ImageOptions.LargeImage");
+            navBarItem19.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem19.ImageOptions.SmallImage");
             navBarItem19.Name = "navBarItem19";
             // 
             // navBarItem20
             // 
             navBarItem20.Caption = "Default Printer";
+            navBarItem20.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem20.ImageOptions.LargeImage");
+            navBarItem20.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem20.ImageOptions.SmallImage");
             navBarItem20.Name = "navBarItem20";
             // 
             // navBarItem21
             // 
             navBarItem21.Caption = "Report Settings";
+            navBarItem21.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem21.ImageOptions.LargeImage");
+            navBarItem21.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem21.ImageOptions.SmallImage");
             navBarItem21.Name = "navBarItem21";
             // 
             // navBarItem22
             // 
             navBarItem22.Caption = "Activity Log";
+            navBarItem22.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem22.ImageOptions.LargeImage");
+            navBarItem22.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem22.ImageOptions.SmallImage");
             navBarItem22.Name = "navBarItem22";
             // 
             // navBarItem23
             // 
             navBarItem23.Caption = "StarShipITApiKeys";
+            navBarItem23.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem23.ImageOptions.LargeImage");
+            navBarItem23.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem23.ImageOptions.SmallImage");
             navBarItem23.Name = "navBarItem23";
             // 
             // bar5
@@ -418,6 +464,8 @@
             // 
             barButtonItem1.Caption = "Close All Tabs";
             barButtonItem1.Id = 4;
+            barButtonItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
             barButtonItem1.Name = "barButtonItem1";
             barButtonItem1.ItemClick += barButtonItem1_ItemClick;
             // 

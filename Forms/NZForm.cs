@@ -45,7 +45,7 @@ namespace OrderManagerEF.Forms
         private readonly StoredProcedureService _storedProcedureService;
         private readonly UserSession _userSession;
 
-        public NZForm(IConfiguration configuration, OMDbContext context, UserSession userSession )
+        public NZForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
@@ -70,7 +70,7 @@ namespace OrderManagerEF.Forms
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
 
-           BarButtonClicks();
+            BarButtonClicks();
         }
 
         private void NZ_VisibleChanged(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace OrderManagerEF.Forms
             if (Visible && !_dataLoaded)
             {
                 LoadData();
-        
+
                 _dataLoaded = true;
             }
         }

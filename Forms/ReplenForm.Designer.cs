@@ -150,31 +150,31 @@
             // 
             ribbonPageGroup1.ItemLinks.Add(barEditItem2);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
-            ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Select Warehouse";
             // 
             // ribbonPageGroup2
             // 
             ribbonPageGroup2.ItemLinks.Add(barEditItem4);
             ribbonPageGroup2.Name = "ribbonPageGroup2";
-            ribbonPageGroup2.Text = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "Select OrderType";
             // 
             // ribbonPageGroup3
             // 
             ribbonPageGroup3.ItemLinks.Add(barEditItem1);
             ribbonPageGroup3.Name = "ribbonPageGroup3";
-            ribbonPageGroup3.Text = "ribbonPageGroup3";
+            ribbonPageGroup3.Text = "Enter Days from Today";
             // 
             // ribbonPageGroup4
             // 
             ribbonPageGroup4.ItemLinks.Add(barEditItem3);
             ribbonPageGroup4.Name = "ribbonPageGroup4";
-            ribbonPageGroup4.Text = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Enter StockQty";
             // 
             // ribbonPageGroup5
             // 
             ribbonPageGroup5.ItemLinks.Add(barButtonItem1);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
-            ribbonPageGroup5.Text = "ribbonPageGroup5";
+            ribbonPageGroup5.Text = "Find";
             // 
             // ribbonPage2
             // 
@@ -186,7 +186,7 @@
             // 
             ribbonPageGroup6.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup6.Name = "ribbonPageGroup6";
-            ribbonPageGroup6.Text = "ribbonPageGroup6";
+            ribbonPageGroup6.Text = "Data";
             // 
             // gridControl1
             // 

@@ -23,7 +23,7 @@ namespace OrderManagerEF
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
         private readonly StoredProcedureService _storedProcedureService;
-        public PackingDetailForm(IConfiguration configuration, OMDbContext context,string OrderRef)
+        public PackingDetailForm(IConfiguration configuration, OMDbContext context, string OrderRef)
         {
             InitializeComponent();
             _configuration = configuration;
@@ -31,7 +31,7 @@ namespace OrderManagerEF
             this.WindowState = FormWindowState.Maximized;
             // Assign the Form_Load event
             Load += PackingDetailForm_Load;
-     
+
             this.gridView1.CustomDrawCell += gridView1_CustomDrawCell;
 
 

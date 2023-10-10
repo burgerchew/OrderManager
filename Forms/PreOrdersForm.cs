@@ -67,7 +67,7 @@ namespace OrderManagerEF
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-          BarButtonClicks();
+            BarButtonClicks();
 
         }
 

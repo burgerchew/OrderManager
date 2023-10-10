@@ -43,7 +43,7 @@ namespace OrderManagerEF.Forms
             barEditItem1.EditValue = 60;               // Default value for DateRange
             barEditItem3.EditValue = 0;               // Default value for retailBinThreshold
             _excelExporter = new ExcelExporter(gridView1);
-   
+
         }
 
         private void Replen_VisibleChanged(object sender, EventArgs e)

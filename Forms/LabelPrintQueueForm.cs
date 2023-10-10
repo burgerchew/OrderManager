@@ -49,7 +49,7 @@ namespace OrderManagerEF
 
             // Assuming you have a grid or other control to display the data
             // Set the fetched data as the DataSource
-            gridControl1.DataSource = labelPrintQueueData;  
+            gridControl1.DataSource = labelPrintQueueData;
         }
 
         private void ApplyPrintedFilter()

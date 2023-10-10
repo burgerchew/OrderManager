@@ -69,6 +69,7 @@ namespace OrderManagerEF.Forms
             };
 
             InitSearchForm();
+            LoadOrderChartForm();
         }
 
         private void InitSearchForm()
@@ -78,6 +79,23 @@ namespace OrderManagerEF.Forms
 
             BarButtonItem searchButton = CreateButton(searchBar);
             ribbonPageGroup2.ItemLinks.Add(searchButton);
+        }
+
+        // Load up the default OrderChartForm
+        private void LoadOrderChartForm()
+        {
+            try
+            {
+                OrderChartForm orderChartForm = new OrderChartForm(_configuration, _context, _userSession);
+                orderChartForm.MdiParent = this;
+                orderChartForm.Show();
+
+            }
+            catch (Exception ex)
+            {
+                // Use XtraMessage to show any errors
+                XtraMessageBox.Show($"Error while loading OrderChartForm: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 

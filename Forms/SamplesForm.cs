@@ -46,13 +46,13 @@ namespace OrderManagerEF
 
 
 
-        public SamplesForm(IConfiguration configuration, OMDbContext context,UserSession userSession)
+        public SamplesForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
         {
             InitializeComponent();
             _configuration = configuration;
 
             _context = context;
-            _userSession= userSession;
+            _userSession = userSession;
 
             VisibleChanged += Samples_VisibleChanged;
 
@@ -127,7 +127,7 @@ namespace OrderManagerEF
                 gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
                 HighlightDuplicateRows(newView);
 
-    
+
                 gridView1.KeyDown += gridView1_KeyDown;
                 InitSoHyperLink();
             }

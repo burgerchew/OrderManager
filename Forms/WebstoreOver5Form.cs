@@ -51,7 +51,7 @@ namespace OrderManagerEF
             InitializeComponent();
             _configuration = configuration;
             _context = context;
-            _userSession = userSession;    
+            _userSession = userSession;
 
             VisibleChanged += WebstoreOver5_VisibleChanged;
 
@@ -72,8 +72,8 @@ namespace OrderManagerEF
 
             _reportManager = new ReportManager(configuration);
             _pickSlipGenerator = new PickSlipGenerator(configuration, context);
-             BarButtonClicks();
-          
+            BarButtonClicks();
+
         }
 
 
@@ -126,7 +126,7 @@ namespace OrderManagerEF
 
                 // Populate the grid control with the fetched data
                 gridView1.GridControl.DataSource = data;
-       
+
                 gridView1.RefreshData();
 
                 var newView = new FileExistenceGridView(_configuration)

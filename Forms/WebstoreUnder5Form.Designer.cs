@@ -28,22 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WebstoreUnder5Form));
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            gridControl1 = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
@@ -54,6 +41,20 @@
             barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem10 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem11 = new DevExpress.XtraBars.BarButtonItem();
+            ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            gridControl1 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -69,6 +70,94 @@
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage4 });
             ribbonControl1.Size = new System.Drawing.Size(490, 158);
             // 
+            // barButtonItem1
+            // 
+            barButtonItem1.Caption = "Export Data";
+            barButtonItem1.Id = 1;
+            barButtonItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
+            barButtonItem1.Name = "barButtonItem1";
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Sync IDs";
+            barButtonItem2.Id = 2;
+            barButtonItem2.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
+            barButtonItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.LargeImage");
+            barButtonItem2.Name = "barButtonItem2";
+            // 
+            // barButtonItem3
+            // 
+            barButtonItem3.Caption = "Show IDs";
+            barButtonItem3.Id = 3;
+            barButtonItem3.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
+            barButtonItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.LargeImage");
+            barButtonItem3.Name = "barButtonItem3";
+            // 
+            // barButtonItem4
+            // 
+            barButtonItem4.Caption = "Create Batch";
+            barButtonItem4.Id = 4;
+            barButtonItem4.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.Image");
+            barButtonItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.LargeImage");
+            barButtonItem4.Name = "barButtonItem4";
+            // 
+            // barButtonItem5
+            // 
+            barButtonItem5.Caption = "Show Batch";
+            barButtonItem5.Id = 5;
+            barButtonItem5.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.Image");
+            barButtonItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.LargeImage");
+            barButtonItem5.Name = "barButtonItem5";
+            // 
+            // barButtonItem6
+            // 
+            barButtonItem6.Caption = "Process Batch";
+            barButtonItem6.Id = 6;
+            barButtonItem6.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem6.ImageOptions.Image");
+            barButtonItem6.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem6.ImageOptions.LargeImage");
+            barButtonItem6.Name = "barButtonItem6";
+            // 
+            // barButtonItem7
+            // 
+            barButtonItem7.Caption = "Sort By BinNumber";
+            barButtonItem7.Id = 7;
+            barButtonItem7.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem7.ImageOptions.Image");
+            barButtonItem7.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem7.ImageOptions.LargeImage");
+            barButtonItem7.Name = "barButtonItem7";
+            // 
+            // barButtonItem8
+            // 
+            barButtonItem8.Caption = "Hold an Order";
+            barButtonItem8.Id = 8;
+            barButtonItem8.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem8.ImageOptions.Image");
+            barButtonItem8.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem8.ImageOptions.LargeImage");
+            barButtonItem8.Name = "barButtonItem8";
+            // 
+            // barButtonItem9
+            // 
+            barButtonItem9.Caption = "Show Ready Orders";
+            barButtonItem9.Id = 9;
+            barButtonItem9.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem9.ImageOptions.Image");
+            barButtonItem9.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem9.ImageOptions.LargeImage");
+            barButtonItem9.Name = "barButtonItem9";
+            // 
+            // barButtonItem10
+            // 
+            barButtonItem10.Caption = "Check Duplicates";
+            barButtonItem10.Id = 10;
+            barButtonItem10.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem10.ImageOptions.Image");
+            barButtonItem10.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem10.ImageOptions.LargeImage");
+            barButtonItem10.Name = "barButtonItem10";
+            // 
+            // barButtonItem11
+            // 
+            barButtonItem11.Caption = "Select and Process";
+            barButtonItem11.Id = 11;
+            barButtonItem11.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.Image");
+            barButtonItem11.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.LargeImage");
+            barButtonItem11.Name = "barButtonItem11";
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
@@ -79,7 +168,59 @@
             // 
             ribbonPageGroup1.ItemLinks.Add(barButtonItem1);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
-            ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Data";
+            // 
+            // ribbonPage2
+            // 
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
+            ribbonPage2.Name = "ribbonPage2";
+            ribbonPage2.Text = "Labels";
+            // 
+            // ribbonPageGroup3
+            // 
+            ribbonPageGroup3.ItemLinks.Add(barButtonItem2);
+            ribbonPageGroup3.Name = "ribbonPageGroup3";
+            ribbonPageGroup3.Text = "StarShipIT";
+            // 
+            // ribbonPageGroup5
+            // 
+            ribbonPageGroup5.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup5.Name = "ribbonPageGroup5";
+            ribbonPageGroup5.Text = "Filter By ShipmentID";
+            // 
+            // ribbonPageGroup6
+            // 
+            ribbonPageGroup6.ItemLinks.Add(barButtonItem4);
+            ribbonPageGroup6.ItemLinks.Add(barButtonItem5);
+            ribbonPageGroup6.ItemLinks.Add(barButtonItem6);
+            ribbonPageGroup6.Name = "ribbonPageGroup6";
+            ribbonPageGroup6.Text = "Batch";
+            // 
+            // ribbonPage4
+            // 
+            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
+            ribbonPage4.Name = "ribbonPage4";
+            ribbonPage4.Text = "Pickslips";
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Sort";
+            // 
+            // ribbonPageGroup7
+            // 
+            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
+            ribbonPageGroup7.Name = "ribbonPageGroup7";
+            ribbonPageGroup7.Text = "Hold";
+            // 
+            // ribbonPageGroup8
+            // 
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
+            ribbonPageGroup8.Name = "ribbonPageGroup8";
+            ribbonPageGroup8.Text = "Actions";
             // 
             // gridControl1
             // 
@@ -97,133 +238,15 @@
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
             // 
-            // ribbonPage2
-            // 
-            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
-            ribbonPage2.Name = "ribbonPage2";
-            ribbonPage2.Text = "Labels";
-            // 
-            // ribbonPageGroup3
-            // 
-            ribbonPageGroup3.ItemLinks.Add(barButtonItem2);
-            ribbonPageGroup3.Name = "ribbonPageGroup3";
-            ribbonPageGroup3.Text = "ribbonPageGroup3";
-            // 
             // ribbonPage3
             // 
             ribbonPage3.Name = "ribbonPage3";
             ribbonPage3.Text = "ribbonPage3";
             // 
-            // ribbonPage4
-            // 
-            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
-            ribbonPage4.Name = "ribbonPage4";
-            ribbonPage4.Text = "Pickslips";
-            // 
-            // ribbonPageGroup4
-            // 
-            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
-            ribbonPageGroup4.Name = "ribbonPageGroup4";
-            ribbonPageGroup4.Text = "ribbonPageGroup4";
-            // 
             // ribbonPage5
             // 
             ribbonPage5.Name = "ribbonPage5";
             ribbonPage5.Text = "ribbonPage5";
-            // 
-            // barButtonItem1
-            // 
-            barButtonItem1.Caption = "Export Data";
-            barButtonItem1.Id = 1;
-            barButtonItem1.Name = "barButtonItem1";
-            // 
-            // ribbonPageGroup5
-            // 
-            ribbonPageGroup5.ItemLinks.Add(barButtonItem3);
-            ribbonPageGroup5.Name = "ribbonPageGroup5";
-            ribbonPageGroup5.Text = "ribbonPageGroup5";
-            // 
-            // ribbonPageGroup6
-            // 
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem4);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem5);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem6);
-            ribbonPageGroup6.Name = "ribbonPageGroup6";
-            ribbonPageGroup6.Text = "ribbonPageGroup6";
-            // 
-            // ribbonPageGroup7
-            // 
-            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
-            ribbonPageGroup7.Name = "ribbonPageGroup7";
-            ribbonPageGroup7.Text = "ribbonPageGroup7";
-            // 
-            // ribbonPageGroup8
-            // 
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
-            ribbonPageGroup8.Name = "ribbonPageGroup8";
-            ribbonPageGroup8.Text = "ribbonPageGroup8";
-            // 
-            // barButtonItem2
-            // 
-            barButtonItem2.Caption = "Sync IDs";
-            barButtonItem2.Id = 2;
-            barButtonItem2.Name = "barButtonItem2";
-            // 
-            // barButtonItem3
-            // 
-            barButtonItem3.Caption = "Show IDs";
-            barButtonItem3.Id = 3;
-            barButtonItem3.Name = "barButtonItem3";
-            // 
-            // barButtonItem4
-            // 
-            barButtonItem4.Caption = "Create Batch";
-            barButtonItem4.Id = 4;
-            barButtonItem4.Name = "barButtonItem4";
-            // 
-            // barButtonItem5
-            // 
-            barButtonItem5.Caption = "Show Batch";
-            barButtonItem5.Id = 5;
-            barButtonItem5.Name = "barButtonItem5";
-            // 
-            // barButtonItem6
-            // 
-            barButtonItem6.Caption = "Process Batch";
-            barButtonItem6.Id = 6;
-            barButtonItem6.Name = "barButtonItem6";
-            // 
-            // barButtonItem7
-            // 
-            barButtonItem7.Caption = "Sort By BinNumber";
-            barButtonItem7.Id = 7;
-            barButtonItem7.Name = "barButtonItem7";
-            // 
-            // barButtonItem8
-            // 
-            barButtonItem8.Caption = "Hold an Order";
-            barButtonItem8.Id = 8;
-            barButtonItem8.Name = "barButtonItem8";
-            // 
-            // barButtonItem9
-            // 
-            barButtonItem9.Caption = "Show Ready Orders";
-            barButtonItem9.Id = 9;
-            barButtonItem9.Name = "barButtonItem9";
-            // 
-            // barButtonItem10
-            // 
-            barButtonItem10.Caption = "Check Duplicates";
-            barButtonItem10.Id = 10;
-            barButtonItem10.Name = "barButtonItem10";
-            // 
-            // barButtonItem11
-            // 
-            barButtonItem11.Caption = "Select and Process";
-            barButtonItem11.Id = 11;
-            barButtonItem11.Name = "barButtonItem11";
             // 
             // WebstoreUnder5Form
             // 

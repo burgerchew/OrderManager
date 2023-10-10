@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateShipmentForm));
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
@@ -57,24 +58,32 @@
             // 
             barButtonItem2.Caption = "Address Mode";
             barButtonItem2.Id = 2;
+            barButtonItem2.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
+            barButtonItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.LargeImage");
             barButtonItem2.Name = "barButtonItem2";
             // 
             // barButtonItem3
             // 
             barButtonItem3.Caption = "Create Shipments";
             barButtonItem3.Id = 3;
+            barButtonItem3.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
+            barButtonItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.LargeImage");
             barButtonItem3.Name = "barButtonItem3";
             // 
             // barButtonItem4
             // 
             barButtonItem4.Caption = "Delete All";
             barButtonItem4.Id = 4;
+            barButtonItem4.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.Image");
+            barButtonItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.LargeImage");
             barButtonItem4.Name = "barButtonItem4";
             // 
             // barCheckItem1
             // 
             barCheckItem1.Caption = "Toogle Shipments";
             barCheckItem1.Id = 5;
+            barCheckItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barCheckItem1.ImageOptions.Image");
+            barCheckItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barCheckItem1.ImageOptions.LargeImage");
             barCheckItem1.Name = "barCheckItem1";
             // 
             // ribbonPage1
@@ -88,14 +97,14 @@
             ribbonPageGroup1.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup1.ItemLinks.Add(barCheckItem1);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
-            ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Data Entry";
             // 
             // ribbonPageGroup2
             // 
             ribbonPageGroup2.ItemLinks.Add(barButtonItem3);
             ribbonPageGroup2.ItemLinks.Add(barButtonItem4);
             ribbonPageGroup2.Name = "ribbonPageGroup2";
-            ribbonPageGroup2.Text = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "Actions";
             // 
             // gridControl1
             // 
