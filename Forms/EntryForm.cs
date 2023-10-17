@@ -21,7 +21,7 @@ namespace OrderManagerEF.Forms
     public partial class EntryForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
 
-        delegate Form FormCreator(IConfiguration configuration, OMDbContext context, UserSession userSession);
+        delegate Form FormCreator(IConfiguration configuration, OMDbContext context, UserSession userSession, ReplenService replenService);
 
         // Create a dictionary to map form names to their constructors
         private readonly Dictionary<string, FormCreator> formMap;
@@ -30,42 +30,44 @@ namespace OrderManagerEF.Forms
         private readonly UserSession _userSession;
         private List<Form> openedForms = new List<Form>();
         private string OrderRef = "Search SO Number";
+        private readonly ReplenService _replenService;
 
 
-        public EntryForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
+        public EntryForm(IConfiguration configuration, OMDbContext context, UserSession userSession, ReplenService replenService)
         {
             InitializeComponent();
             _configuration = configuration;
             _context = context;
             navBarControl1.LinkClicked += NavBarControl1_LinkClicked;
             _userSession = userSession;
-
+            _replenService = replenService;
             // Initialize the formMap dictionary
             formMap = new Dictionary<string, FormCreator>
             {
-                { "navBarItem1", (c, ctx,us) => new CSCForm(c, ctx,us) },
-                { "navBarItem2", (c, ctx,us) => new DSForm(c, ctx,us) },
-                { "navBarItem3", (c, ctx,us) => new NZForm(c, ctx,us) },
-                { "navBarItem4", (c, ctx,us) => new SamplesForm(c, ctx,us) },
-                { "navBarItem5", (c, ctx,us) => new PreOrdersForm(c, ctx, us) },
-                { "navBarItem6", (c, ctx, us) => new WebstoreUnder5Form(c, ctx, us) },
-                { "navBarItem8", (c, ctx, us) => new WebstoreOver5Form(c, ctx, us) },
-                { "navBarItem7", (c, ctx, u) => new PrintedForm(c,ctx) },
-                { "navBarItem9", (c, ctx, u) => new LabelPrintQueueForm(c,ctx) },
-                { "navBarItem10", (c, ctx, us) => new PackingForm(c,ctx,us) },
-                { "navBarItem11", (c, ctx, u) => new HoldForm(c,ctx) },
-                { "navBarItem12", (c, ctx, u) => new Import1Form(c,ctx) },
-                { "navBarItem13", (c, ctx, u) => new CreateShipmentForm(c,ctx) },
-                { "navBarItem14", (c, ctx, u) => new CreateLabelForm1(c,ctx) },
-                { "navBarItem15", (c, ctx, u) => new ArchiveLabelForm(c,ctx) },
-                { "navBarItem16", (c, ctx, u) => new ReplenForm(c,ctx) },
-                { "navBarItem17", (c, ctx, u) => new PickandPackForm(c,ctx) },
-                { "navBarItem18", (c, ctx, u) => new MajorsForm(c,ctx) },
-                { "navBarItem19", (c, ctx, u) => new UserForm(c,ctx) },
-                { "navBarItem20", (c, ctx, u) => new PrinterSelectionForm(c,ctx,u) },
-                { "navBarItem21", (c, ctx, u) => new ReportSettingForm(c,ctx) },
-                { "navBarItem22", (c, ctx, us) => new ActivityLogForm(c, ctx, us) },
-                { "navBarItem23", (c, ctx, us) => new ApiKeyForm(c,ctx,us) },
+                { "navBarItem1", (c, ctx,us,rs) => new CSCForm(c, ctx,us) },
+                { "navBarItem2", (c, ctx,us,rs) => new DSForm(c, ctx,us) },
+                { "navBarItem3", (c, ctx,us,rs) => new NZForm(c, ctx,us) },
+                { "navBarItem4", (c, ctx,us, rs) => new SamplesForm(c, ctx,us) },
+                { "navBarItem5", (c, ctx,us,rs) => new PreOrdersForm(c, ctx, us) },
+                { "navBarItem6", (c, ctx, us, rs) => new WebstoreUnder5Form(c, ctx, us) },
+                { "navBarItem8", (c, ctx, us, rs) => new WebstoreOver5Form(c, ctx, us) },
+                { "navBarItem7", (c, ctx, u, rs) => new PrintedForm(c,ctx) },
+                { "navBarItem9", (c, ctx, u, rs) => new LabelPrintQueueForm(c,ctx) },
+                { "navBarItem10", (c, ctx, us, rs) => new PackingForm(c,ctx,us) },
+                { "navBarItem11", (c, ctx, u, rs) => new HoldForm(c,ctx) },
+                { "navBarItem12", (c, ctx, u, rs) => new Import1Form(c,ctx) },
+                { "navBarItem13", (c, ctx, u, rs) => new CreateShipmentForm(c,ctx) },
+                { "navBarItem14", (c, ctx, u, rs) => new CreateLabelForm1(c,ctx) },
+                { "navBarItem15", (c, ctx, u, rs) => new ArchiveLabelForm(c,ctx) },
+                { "navBarItem16", (c, ctx, us, rs) => new ReplenForm(c,ctx,us,rs) },
+                { "navBarItem17", (c, ctx, u, rs) => new PickandPackForm(c,ctx) },
+                { "navBarItem18", (c, ctx, u, rs) => new MajorsForm(c,ctx) },
+                { "navBarItem19", (c, ctx, u, rs) => new UserForm(c,ctx) },
+                { "navBarItem20", (c, ctx, u, rs) => new PrinterSelectionForm(c,ctx,u) },
+                { "navBarItem21", (c, ctx, u, rs) => new ReportSettingForm(c,ctx) },
+                { "navBarItem22", (c, ctx, us, rs) => new ActivityLogForm(c, ctx, us) },
+                { "navBarItem23", (c, ctx, us, rs) => new ApiKeyForm(c,ctx,us) },
+                { "navBarItem24", (c, ctx, us, rs) => new ReplenWizardForm(c,ctx,us,rs) },
             };
 
             InitSearchForm();
@@ -204,7 +206,7 @@ namespace OrderManagerEF.Forms
             // Lookup the form to open based on the clicked link's name
             if (formMap.TryGetValue(e.Link.Item.Name, out FormCreator formCreator))
             {
-                Form formToOpen = formCreator(_configuration, _context, _userSession);
+                Form formToOpen = formCreator(_configuration, _context, _userSession, _replenService);
 
                 if (formToOpen != null)
                 {

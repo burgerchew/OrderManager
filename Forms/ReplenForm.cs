@@ -17,6 +17,8 @@ using OrderManagerEF.Classes;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraBars;
+using OrderManagerEF.Entities;
 
 namespace OrderManagerEF.Forms
 {
@@ -26,9 +28,11 @@ namespace OrderManagerEF.Forms
         private bool _dataLoaded = false;
         private readonly IConfiguration _configuration;
         private readonly OMDbContext _context;
+        private readonly UserSession _userSession;
         private readonly ExcelExporter _excelExporter;
+        private readonly ReplenService _replenService;
 
-        public ReplenForm(IConfiguration configuration, OMDbContext context)
+        public ReplenForm(IConfiguration configuration, OMDbContext context, UserSession userSession, ReplenService replenService)
         {
             InitializeComponent();
             _configuration = configuration;
@@ -43,7 +47,8 @@ namespace OrderManagerEF.Forms
             barEditItem1.EditValue = 60;               // Default value for DateRange
             barEditItem3.EditValue = 0;               // Default value for retailBinThreshold
             _excelExporter = new ExcelExporter(gridView1);
-
+            _userSession = userSession;
+            _replenService = replenService;
         }
 
         private void Replen_VisibleChanged(object sender, EventArgs e)
@@ -170,5 +175,41 @@ namespace OrderManagerEF.Forms
             }
         }
 
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // Get the GridView attached to the GridControl
+                GridView gridView = gridControl1.MainView as GridView;
+
+                // Initialize a counter to keep track of successfully processed rows
+                int processedCount = 0;
+
+                // Loop through rows in the GridView to read ReplenishmentResult data
+                for (int i = 0; i < gridView.RowCount; i++)
+                {
+                    // Get row data as ReplenishmentResult object
+                    ReplenishmentResult replenishmentResult = gridView.GetRow(i) as ReplenishmentResult;
+
+                    if (replenishmentResult != null)
+                    {
+                        // Create a replenishment transaction
+                        // Replace '1' with the actual warehouseId you want to use
+                        _replenService.CreateReplenTransaction(replenishmentResult, 1);
+
+                        // Increment the counter
+                        processedCount++;
+                    }
+                }
+
+                // Display a success message
+                XtraMessageBox.Show($"{processedCount} rows successfully processed.");
+            }
+            catch (Exception ex)
+            {
+                // Display an error message
+                XtraMessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

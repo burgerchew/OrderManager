@@ -24,8 +24,9 @@ namespace OrderManagerEF.Forms
         private readonly OMDbContext _context;
         private UserActivityLogger _activityLogger;
         private UserSession _userSession; // Service to handle the logged-in user
+        private readonly ReplenService _replenService;
 
-        public LoginForm(IConfiguration configuration, OMDbContext context, UserSession userSession)
+        public LoginForm(IConfiguration configuration, OMDbContext context, UserSession userSession, ReplenService replenService)
         {
             InitializeComponent();
             _configuration = configuration;
@@ -33,6 +34,7 @@ namespace OrderManagerEF.Forms
             _userSession = userSession; // Set the user session
             textEdit1.Text = "daniel";
             textEdit2.Text = "OM123!";
+            _replenService = replenService;
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -54,7 +56,7 @@ namespace OrderManagerEF.Forms
                 _userSession.SetCurrentUser(user);
 
                 // Instantiate and show the EntryForm
-                using var entryForm = new EntryForm(_configuration, _context, _userSession);
+                using var entryForm = new EntryForm(_configuration, _context, _userSession,_replenService);
                 this.Hide(); // Hide the login form
 
                 // Close the splash screen

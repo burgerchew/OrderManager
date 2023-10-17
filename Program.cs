@@ -73,11 +73,14 @@ namespace OrderManagerEF
             Configuration = builder.Build();
 
             var serviceCollection = new ServiceCollection();
+            // Register IConfiguration instance
+            serviceCollection.AddSingleton<IConfiguration>(Configuration);
 
             // Registering OMDbContext and UserSession
             serviceCollection.AddDbContext<OMDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("RubiesConnectionString")));
             serviceCollection.AddSingleton<UserSession>();  // <-- Register the UserSession service
+            serviceCollection.AddSingleton<ReplenService>();  // <-- Register the UserSession service
 
             var path = Path.Combine(targetDirectory, "appsettings.json");
             XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath(path)}");
@@ -86,6 +89,7 @@ namespace OrderManagerEF
 
             using var dbContext = serviceProvider.GetRequiredService<OMDbContext>();
             var userSession = serviceProvider.GetRequiredService<UserSession>();  // <-- Retrieve the UserSession instance
+            var replenService = serviceProvider.GetRequiredService<ReplenService>();
 
 
             //Load Report Settings and Error Log Path
@@ -105,7 +109,7 @@ namespace OrderManagerEF
 
 
             // Create an instance of LoginForm and show it
-            LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
+            LoginForm loginForm = new LoginForm(Configuration, dbContext, userSession, replenService);  // <-- Inject UserSession
 
             if (loginForm.ShowDialog() == DialogResult.OK)
             {
@@ -113,7 +117,7 @@ namespace OrderManagerEF
                 XtraMessageBox.Show($"The configuration has been loaded from: {Path.GetFullPath("appsettings.json")}");
 
                 // Inject dbContext and UserSession into EntryForm
-                EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession);  // <-- Inject UserSession
+                EntryForm mainForm = new EntryForm(Configuration, dbContext, userSession,replenService);  // <-- Inject UserSession
 
                 // Use the utility method to close the splash screen when the mainForm loads
                 mainForm.Load += (s, e) => SplashScreenUtility.CloseSplashScreenIfNeeded();

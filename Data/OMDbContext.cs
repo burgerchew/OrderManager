@@ -34,6 +34,9 @@ namespace OrderManagerEF.Data
         public DbSet<StarShipITOrder> StarShipITOrders { get; set; }
         public DbSet<StarShipITOrderDetail> StarShipITOrderDetails { get; set; }
 
+        public DbSet<ReplenHeader> ReplenHeaders { get; set; }
+        public DbSet<ReplenDetail> ReplenDetails { get; set; }
+
         public DbSet<AddressPart> AddressParts { get; set; }
 
         public DbSet<StarShipITAPIKeyManager> StarShipITAPIKeyManager { get; set; }
@@ -160,7 +163,16 @@ namespace OrderManagerEF.Data
                 .WithOne(sd => sd.StarShipITOrder)
                 .HasForeignKey(sd => sd.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<ReplenHeader>()
+                .HasMany(r => r.ReplenDetails)
+                .WithOne(rd => rd.ReplenHeader)
+                .HasForeignKey(rd => rd.ReplenId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
+
 
     }
 }

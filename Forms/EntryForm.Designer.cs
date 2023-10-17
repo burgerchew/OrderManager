@@ -122,6 +122,7 @@
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             repositoryItemRibbonSearchEdit4 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
+            navBarItem24 = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
@@ -152,7 +153,7 @@
             navBarControl1.ActiveGroup = navBarGroup1;
             navBarControl1.Dock = System.Windows.Forms.DockStyle.Left;
             navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] { navBarGroup1, navBarGroup2, navBarGroup3, navBarGroup4, navBarGroup5 });
-            navBarControl1.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] { navBarItem1, navBarItem2, navBarItem3, navBarItem4, navBarItem5, navBarItem6, navBarItem7, navBarItem8, navBarItem9, navBarItem10, navBarItem11, navBarItem12, navBarItem13, navBarItem14, navBarItem15, navBarItem16, navBarItem17, navBarItem18, navBarItem19, navBarItem20, navBarItem21, navBarItem22, navBarItem23 });
+            navBarControl1.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] { navBarItem1, navBarItem2, navBarItem3, navBarItem4, navBarItem5, navBarItem6, navBarItem7, navBarItem8, navBarItem9, navBarItem10, navBarItem11, navBarItem12, navBarItem13, navBarItem14, navBarItem15, navBarItem16, navBarItem17, navBarItem18, navBarItem19, navBarItem20, navBarItem21, navBarItem22, navBarItem23, navBarItem24 });
             navBarControl1.Location = new System.Drawing.Point(0, 158);
             navBarControl1.Name = "navBarControl1";
             navBarControl1.OptionsNavPane.ExpandedWidth = 212;
@@ -290,7 +291,7 @@
             // 
             navBarGroup4.Caption = "Warehousing";
             navBarGroup4.Expanded = true;
-            navBarGroup4.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem16), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem17), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem18) });
+            navBarGroup4.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem16), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem17), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem18), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem24) });
             navBarGroup4.Name = "navBarGroup4";
             // 
             // navBarItem16
@@ -533,6 +534,11 @@
             repositoryItemRibbonSearchEdit4.Name = "repositoryItemRibbonSearchEdit4";
             repositoryItemRibbonSearchEdit4.NullText = "Search";
             // 
+            // navBarItem24
+            // 
+            navBarItem24.Caption = "Replen Wizard";
+            navBarItem24.Name = "navBarItem24";
+            // 
             // EntryForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -610,5 +616,6 @@
         private DevExpress.XtraNavBar.NavBarItem navBarItem21;
         private DevExpress.XtraNavBar.NavBarItem navBarItem22;
         private DevExpress.XtraNavBar.NavBarItem navBarItem23;
+        private DevExpress.XtraNavBar.NavBarItem navBarItem24;
     }
 }
