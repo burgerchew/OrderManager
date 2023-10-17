@@ -28,11 +28,10 @@ namespace OrderManagerEF.Classes
 
         }
 
-        public void CreateReplenTransaction(ReplenishmentResult replenishmentResult, int warehouseId)
+        // Method for creating a single transaction from multiple ReplenishmentResults
+        public void CreateReplenTransaction(List<ReplenishmentResult> replenishmentResults, int warehouseId)
         {
-
-            // Check for null arguments
-            if (_context == null || replenishmentResult == null)
+            if (_context == null || replenishmentResults == null)
             {
                 XtraMessageBox.Show("Arguments cannot be null.");
                 return;
@@ -40,30 +39,39 @@ namespace OrderManagerEF.Classes
 
             try
             {
-                // Map ReplenishmentResult to ReplenHeader
+                // Create a single ReplenHeader for all the ReplenishmentResults
                 ReplenHeader replenHeader = new ReplenHeader
                 {
                     ReplenDate = DateTime.Now,
-                    TradingRef = replenishmentResult.AccountingRef,
+                    TradingRef = "Replen-" + DateTime.Now.ToString("yyyyMMdd"),
                     WarehouseId = warehouseId,
                 };
 
-                // Map ReplenishmentResult to ReplenDetail
-                ReplenDetail replenDetail = new ReplenDetail
+                // Create ReplenDetails for each ReplenishmentResult
+                foreach (var replenishmentResult in replenishmentResults)
                 {
-                    ProductCode = replenishmentResult.ProductCode,
-                    Qty = (int)(replenishmentResult.BulkQty + replenishmentResult.RetailQty),
-                    FromLocation = replenishmentResult.BulkBin,
-                    ToLocation = replenishmentResult.RetailBin
-                };
+                    // Skip null records
+                    if (replenishmentResult == null)
+                    {
+                        continue;
+                    }
 
-                // Add to the corresponding collections
-                replenHeader.ReplenDetails.Add(replenDetail);
+                    ReplenDetail replenDetail = new ReplenDetail
+                    {
+                        ProductCode = replenishmentResult.ProductCode,
+                        // Check for null and replace with a default value (0 here)
+                        Qty = (int)((replenishmentResult.BulkQty ?? 0) + (replenishmentResult.RetailQty ?? 0)),
+                        // Use null-coalescing to default to an empty string if the property is null
+                        FromLocation = replenishmentResult.BulkBin ?? string.Empty,
+                        ToLocation = replenishmentResult.RetailBin ?? string.Empty
+                    };
 
-                // Add to DbContext
+                    replenHeader.ReplenDetails.Add(replenDetail);
+                }
+
+
+                // Add to DbContext and Save
                 _context.ReplenHeaders.Add(replenHeader);
-
-                // Save changes
                 _context.SaveChanges();
 
                 XtraMessageBox.Show("Data successfully copied.");
@@ -73,5 +81,6 @@ namespace OrderManagerEF.Classes
                 XtraMessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
     }
 }

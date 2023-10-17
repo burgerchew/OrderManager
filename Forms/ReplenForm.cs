@@ -182,34 +182,35 @@ namespace OrderManagerEF.Forms
                 // Get the GridView attached to the GridControl
                 GridView gridView = gridControl1.MainView as GridView;
 
-                // Initialize a counter to keep track of successfully processed rows
-                int processedCount = 0;
+                // Create a list to hold ReplenishmentResults
+                List<ReplenishmentResult> replenishmentResults = new List<ReplenishmentResult>();
 
                 // Loop through rows in the GridView to read ReplenishmentResult data
                 for (int i = 0; i < gridView.RowCount; i++)
                 {
-                    // Get row data as ReplenishmentResult object
                     ReplenishmentResult replenishmentResult = gridView.GetRow(i) as ReplenishmentResult;
-
                     if (replenishmentResult != null)
                     {
-                        // Create a replenishment transaction
-                        // Replace '1' with the actual warehouseId you want to use
-                        _replenService.CreateReplenTransaction(replenishmentResult, 1);
-
-                        // Increment the counter
-                        processedCount++;
+                        replenishmentResults.Add(replenishmentResult);
                     }
                 }
 
-                // Display a success message
-                XtraMessageBox.Show($"{processedCount} rows successfully processed.");
+                // Create a single replenishment transaction with all the collected ReplenishmentResults
+                if (replenishmentResults.Count > 0)
+                {
+                    _replenService.CreateReplenTransaction(replenishmentResults, 1); // Replace '1' with the actual warehouseId
+                    XtraMessageBox.Show($"{replenishmentResults.Count} rows successfully processed.");
+                }
+                else
+                {
+                    XtraMessageBox.Show("No rows to process.");
+                }
             }
             catch (Exception ex)
             {
-                // Display an error message
                 XtraMessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
     }
 }
