@@ -28,16 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.XYDiagram xyDiagram3 = new DevExpress.XtraCharts.XYDiagram();
+            DevExpress.XtraCharts.XYDiagram xyDiagram4 = new DevExpress.XtraCharts.XYDiagram();
             DevExpress.XtraLayout.ColumnDefinition columnDefinition1 = new DevExpress.XtraLayout.ColumnDefinition();
             DevExpress.XtraLayout.ColumnDefinition columnDefinition2 = new DevExpress.XtraLayout.ColumnDefinition();
             DevExpress.XtraLayout.RowDefinition rowDefinition1 = new DevExpress.XtraLayout.RowDefinition();
             DevExpress.XtraLayout.RowDefinition rowDefinition2 = new DevExpress.XtraLayout.RowDefinition();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             chartControl4 = new DevExpress.XtraCharts.ChartControl();
+            rubiesOrderDatasBindingSource = new System.Windows.Forms.BindingSource(components);
             chartControl3 = new DevExpress.XtraCharts.ChartControl();
             chartControl2 = new DevExpress.XtraCharts.ChartControl();
             chartControl1 = new DevExpress.XtraCharts.ChartControl();
+            nZOrderDataBindingSource = new System.Windows.Forms.BindingSource(components);
             Root = new DevExpress.XtraLayout.LayoutControlGroup();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -46,10 +52,15 @@
             ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
             layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartControl4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chartControl3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chartControl2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chartControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xyDiagram1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)rubiesOrderDatasBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nZOrderDataBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Root).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
@@ -74,42 +85,76 @@
             // 
             // chartControl4
             // 
+            chartControl4.DataSource = rubiesOrderDatasBindingSource;
+            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
+            chartControl4.Diagram = xyDiagram1;
             chartControl4.Legend.LegendID = -1;
             chartControl4.Location = new System.Drawing.Point(534, 360);
             chartControl4.Name = "chartControl4";
+            chartControl4.SeriesDataMember = "CustomerCode";
+            chartControl4.SeriesTemplate.ArgumentDataMember = "CustomerCode";
+            chartControl4.SeriesTemplate.SeriesDataMember = "CustomerCode";
+            chartControl4.SeriesTemplate.ValueDataMembersSerializable = "OrdersCount";
             chartControl4.Size = new System.Drawing.Size(518, 344);
             chartControl4.TabIndex = 7;
             // 
+            // rubiesOrderDatasBindingSource
+            // 
+            rubiesOrderDatasBindingSource.DataSource = typeof(DTOs.RubiesOrderData);
+            // 
             // chartControl3
             // 
+            chartControl3.DataSource = typeof(DTOs.DSOrderData);
+            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
+            chartControl3.Diagram = xyDiagram2;
             chartControl3.Legend.LegendID = -1;
             chartControl3.Location = new System.Drawing.Point(12, 360);
             chartControl3.Name = "chartControl3";
+            chartControl3.SeriesDataMember = "CustomerCode";
+            chartControl3.SeriesTemplate.ArgumentDataMember = "CustomerCode";
+            chartControl3.SeriesTemplate.SeriesDataMember = "CustomerCode";
+            chartControl3.SeriesTemplate.ValueDataMembersSerializable = "OrdersCount";
             chartControl3.Size = new System.Drawing.Size(518, 344);
             chartControl3.TabIndex = 6;
             // 
             // chartControl2
             // 
+            chartControl2.DataSource = typeof(DTOs.CSCOrderData);
+            xyDiagram3.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram3.AxisY.VisibleInPanesSerializable = "-1";
+            chartControl2.Diagram = xyDiagram3;
             chartControl2.Legend.LegendID = -1;
             chartControl2.Location = new System.Drawing.Point(534, 12);
             chartControl2.Name = "chartControl2";
+            chartControl2.SeriesDataMember = "CustomerCode";
+            chartControl2.SeriesTemplate.ArgumentDataMember = "CustomerCode";
+            chartControl2.SeriesTemplate.SeriesDataMember = "CustomerCode";
+            chartControl2.SeriesTemplate.ValueDataMembersSerializable = "OrdersCount";
             chartControl2.Size = new System.Drawing.Size(518, 344);
             chartControl2.TabIndex = 5;
             // 
             // chartControl1
             // 
-            chartControl1.DataSource = typeof(DTOs.NZOrderData);
-            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
-            chartControl1.Diagram = xyDiagram1;
+            chartControl1.DataSource = nZOrderDataBindingSource;
+            xyDiagram4.AxisX.VisibleInPanesSerializable = "-1";
+            xyDiagram4.AxisY.VisibleInPanesSerializable = "-1";
+            chartControl1.Diagram = xyDiagram4;
             chartControl1.Legend.LegendID = -1;
             chartControl1.Location = new System.Drawing.Point(12, 12);
             chartControl1.Name = "chartControl1";
             chartControl1.SeriesDataMember = "CustomerCode";
-            chartControl1.SeriesTemplate.ArgumentDataMember = "AccountingRef";
+            chartControl1.SeriesTemplate.ArgumentDataMember = "CustomerCode";
+            chartControl1.SeriesTemplate.ColorDataMember = "CustomerCode";
             chartControl1.SeriesTemplate.SeriesDataMember = "CustomerCode";
+            chartControl1.SeriesTemplate.ValueDataMembersSerializable = "OrdersCount";
             chartControl1.Size = new System.Drawing.Size(518, 344);
             chartControl1.TabIndex = 4;
+            // 
+            // nZOrderDataBindingSource
+            // 
+            nZOrderDataBindingSource.DataSource = typeof(DTOs.NZOrderData);
             // 
             // Root
             // 
@@ -181,11 +226,16 @@
             Text = "OrderChartForm";
             ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
             layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)chartControl4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chartControl3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chartControl2).EndInit();
             ((System.ComponentModel.ISupportInitialize)xyDiagram1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)rubiesOrderDatasBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartControl2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)xyDiagram4).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nZOrderDataBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)Root).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
@@ -206,5 +256,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private System.Windows.Forms.BindingSource nZOrderDataBindingSource;
+        private System.Windows.Forms.BindingSource rubiesOrderDatasBindingSource;
     }
 }

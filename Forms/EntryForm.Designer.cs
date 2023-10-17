@@ -95,6 +95,7 @@
             navBarItem16 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem17 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem18 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem24 = new DevExpress.XtraNavBar.NavBarItem();
             navBarGroup5 = new DevExpress.XtraNavBar.NavBarGroup();
             navBarItem19 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem20 = new DevExpress.XtraNavBar.NavBarItem();
@@ -122,7 +123,6 @@
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             repositoryItemRibbonSearchEdit4 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
-            navBarItem24 = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
@@ -314,6 +314,13 @@
             navBarItem18.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem18.ImageOptions.LargeImage");
             navBarItem18.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem18.ImageOptions.SmallImage");
             navBarItem18.Name = "navBarItem18";
+            // 
+            // navBarItem24
+            // 
+            navBarItem24.Caption = "Replen Wizard";
+            navBarItem24.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem24.ImageOptions.LargeImage");
+            navBarItem24.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem24.ImageOptions.SmallImage");
+            navBarItem24.Name = "navBarItem24";
             // 
             // navBarGroup5
             // 
@@ -533,11 +540,6 @@
             repositoryItemRibbonSearchEdit4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, true, editorButtonImageOptions7, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, DevExpress.Utils.ToolTipAnchor.Default), new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, editorButtonImageOptions8, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
             repositoryItemRibbonSearchEdit4.Name = "repositoryItemRibbonSearchEdit4";
             repositoryItemRibbonSearchEdit4.NullText = "Search";
-            // 
-            // navBarItem24
-            // 
-            navBarItem24.Caption = "Replen Wizard";
-            navBarItem24.Name = "navBarItem24";
             // 
             // EntryForm
             // 

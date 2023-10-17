@@ -118,6 +118,7 @@ namespace OrderManagerEF.Forms
             try
             {
                 LoadPickSlipData();
+
                 var data = _context.DSOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.

@@ -30,7 +30,6 @@ namespace OrderManagerEF.Forms
             _context = context;
             _userSession = userSession;
             Load += OrderChartForm_Load;
-
         }
 
         private void OrderChartForm_Load(object sender, EventArgs e)
@@ -49,7 +48,7 @@ namespace OrderManagerEF.Forms
 
             var data4 = _context.RubiesOrderDatas.ToList();
             BarChartHelper.SetupBarChart(chartControl4, data4, "AccountingRef", "CustomerCode",
-                "Number of Orders for SAMPLES", "Chameleon", true, true, data4.Count);
+                "Number of Orders for Rubies Under 5KG", "Chameleon", true, true, data4.Count);
 
 
         }
