@@ -71,6 +71,40 @@ namespace OrderManagerEF
             detailView.PopulateColumns();
             detailView.OptionsView.ShowGroupPanel = false;
             detailView.DoubleClick += DetailView_DoubleClick;
+            detailView.KeyDown += DetailView_KeyDown;
+        }
+
+
+        // Method to handle KeyDown event on detailView
+        private void DetailView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                var detailView = sender as GridView;
+                if (detailView != null)
+                {
+                    // Confirm deletion
+                    DialogResult dialogResult = XtraMessageBox.Show("Are you sure you want to delete this row?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        int rowHandle = detailView.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                        {
+                            // Delete the row from the context and update the database if needed
+                            var detailRow = detailView.GetRow(rowHandle) as ReplenDetail; // Adjust the type
+                            if (detailRow != null)
+                            {
+                                // Assuming _context is your DbContext
+                                _context.ReplenDetails.Remove(detailRow);
+                                _context.SaveChanges();
+
+                                // Refresh the data source or remove the row from the grid
+                                detailView.DeleteRow(rowHandle);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void MasterView_MasterRowExpanded(object sender, CustomMasterRowEventArgs e)
@@ -193,7 +227,7 @@ namespace OrderManagerEF
                     detailView.SetRowCellValue(focusedRowHandle, selectedColumnName, selectedBinNumber);
 
                     // Determine the column name for the BinID based on the selected column name for the bin number
-                   // var binIDColumnName = selectedColumnName.Replace("Number", "ID");
+                    // var binIDColumnName = selectedColumnName.Replace("Number", "ID");
 
                     // Set the value in the BinID column
                     detailView.SetRowCellValue(focusedRowHandle, selectedColumnName, selectedBinNumber);
@@ -213,6 +247,81 @@ namespace OrderManagerEF
             (gridControl1.MainView as GridView).RefreshData();
         }
 
+        private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
 
+        }
+
+        private bool ValidateInventoryQty(GridView detailView)
+        {
+            bool allRowsValid = true;
+
+            {
+
+
+
+                List<string> errorMessages = new List<string>();
+
+                var replenHeader = _context.ReplenHeaders.FirstOrDefault();
+                int WarehouseId = replenHeader.WarehouseId;
+
+                if (WarehouseId ==null)
+                {
+                    XtraMessageBox.Show("Warehouse ID is missing.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                for (var i = 0; i < detailView.DataRowCount; i++)
+                {
+                    var row = detailView.GetRow(i);
+
+                    if (row is ReplenDetail detail)
+                    {
+                        var selectedBinDetail = (from p in _context.Products  // Start with the Products table
+                            join pbc in _context.PBinContents on p.UniqueID equals pbc.ProductID  // Join with PBinContents on the ProductID field
+                            join b in _context.PBins on pbc.BinID equals b.BinID  // Join with PBins on the BinID field
+                            where b.Location == WarehouseId  // Filter by the warehouse location ID
+                                  && b.Type != "A"  // Exclude bins of Type "A"
+                                  && p.ProductCode == detail.ProductCode  // Filter by the product code
+                            select new BinDetail
+                            {
+                                BinID = pbc.BinID,
+                                BinNumber = b.BinNumber,  // Assuming that BinNumber is a property of the PBins table
+                                ActualQuantity = pbc.ActualQuantity
+                            }).SingleOrDefault();
+
+
+
+                        if (selectedBinDetail != null)
+                        {
+                            if (selectedBinDetail.ActualQuantity < detail.Qty)
+                            {
+                                // Adding error message to the list
+                                errorMessages.Add($"Row {i + 1}: Transfer quantity exceeds the available quantity in bin. Available: {selectedBinDetail.ActualQuantity}, Requested: {detail.Qty}");
+                                allRowsValid = false;
+                            }
+                        }
+                        else
+                        {
+                         
+                            errorMessages.Add($"Row {i + 1}: Bin details not found for the Product: {detail.ProductCode} and Bin Number: {detail.FromLocation}.");
+                            allRowsValid = false;
+                        }
+                    }
+                }
+
+                // If there are any errors, show them in a message box
+                if (errorMessages.Any())
+                {
+                    XtraMessageBox.Show(string.Join(Environment.NewLine, errorMessages), "Validation Errors", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    XtraMessageBox.Show("All rows are valid.", "Validation Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+            return allRowsValid;
+        }
     }
 }

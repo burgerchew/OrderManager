@@ -39,6 +39,7 @@ namespace OrderManagerEF.Forms
             this.transferDetailID = transferDetailID;
             Load += BinTransferForm_Load;
             gridView1.DoubleClick += GridView1_DoubleClick;
+            gridView1.RowCellStyle += gridView1_RowCellStyle;
 
         }
 
@@ -93,8 +94,8 @@ namespace OrderManagerEF.Forms
             if (rowHandle >= 0) // Ensure a valid row is double-clicked
             {
                 var binNumber = view.GetRowCellValue(rowHandle, "BinNumber").ToString(); // Adjust the field name as necessary
-                //var binID = (int)view.GetRowCellValue(rowHandle, "BinID"); // Fetch the BinID
-                var actualQuantity = (decimal)view.GetRowCellValue(rowHandle, "ActualQuantity"); // Fetch the BinID
+            
+                var actualQuantity = (decimal)view.GetRowCellValue(rowHandle, "ActualQuantity"); 
 
                 using (var choiceForm =
                        new BinLookupChoiceForm(view, rowHandle, binNumber, actualQuantity)) // Pass BinID to the choice form
@@ -115,5 +116,33 @@ namespace OrderManagerEF.Forms
 
 
         }
+
+        // This method gets invoked for every cell in GridView, allowing you to change cell styles conditionally
+        private void gridView1_RowCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            if (e.Column.FieldName == "ActualQuantity") // Change the FieldName based on your actual setup
+            {
+                // Get the value of ActualQuantity in the current row
+                int actualQuantity = Convert.ToInt32(gridView1.GetRowCellValue(e.RowHandle, "ActualQuantity"));
+
+                // Set the cell style based on the value of ActualQuantity
+                if (actualQuantity >= 20)
+                {
+                    e.Appearance.BackColor = Color.Green;
+                    e.Appearance.ForeColor = Color.White;
+                }
+                else if (actualQuantity > 0 && actualQuantity < 20)
+                {
+                    e.Appearance.BackColor = Color.Orange;
+                    e.Appearance.ForeColor = Color.White;
+                }
+                else // For ActualQuantity <= 0
+                {
+                    e.Appearance.BackColor = Color.Red;
+                    e.Appearance.ForeColor = Color.White;
+                }
+            }
+        }
+
     }
 }

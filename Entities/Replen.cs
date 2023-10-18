@@ -22,13 +22,14 @@ namespace OrderManagerEF.DTOs
             public int Id { get; set; }
             public int ReplenId { get; set; }
             public string ProductCode { get; set; }
-            public int Qty { get; set; }
 
             public string FromLocation { get; set; }
 
             public string ToLocation { get; set; }
 
-            public virtual ReplenHeader ReplenHeader { get; set; }
+            public int Qty { get; set; }
+
+        public virtual ReplenHeader ReplenHeader { get; set; }
     }
 
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrderManagerEF.Data;
 
@@ -11,9 +12,11 @@ using OrderManagerEF.Data;
 namespace OrderManagerEF.Migrations
 {
     [DbContext(typeof(OMDbContext))]
-    partial class OMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231018041618_QtyUpdate")]
+    partial class QtyUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

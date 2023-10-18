@@ -29,7 +29,7 @@ namespace OrderManagerEF.Forms
             _detailView = detailView;
             _rowHandle = rowHandle;
             SelectedBinNumber = binNumber;
-           // SelectedBinID = binID;
+    
             SelectedActualQuantity = actualQuantity;
 
             InitializeComponent();
@@ -45,15 +45,6 @@ namespace OrderManagerEF.Forms
             // Set the location of the buttons to center them on the form
             fromBinNumberButton.Location = new Point((this.ClientSize.Width - fromBinNumberButton.Width) / 2, this.ClientSize.Height / 2 - fromBinNumberButton.Height - 20);
             toBinNumberButton.Location = new Point((this.ClientSize.Width - toBinNumberButton.Width) / 2, this.ClientSize.Height / 2 + 20);
-
-            //// Assign Click event handlers
-            //toBinNumberButton.Click += (s, e) => UpdateGrid("ToBinNumber");
-            //fromBinNumberButton.Click += (s, e) => UpdateGrid("FromBinNumber");
-
-            //// Add the buttons to the form's controls
-            //Controls.Add(toBinNumberButton);
-            //Controls.Add(fromBinNumberButton);
-
 
             // Assign Click event handlers
             toBinNumberButton.Click += (s, e) => UpdateGrid("ToLocation");
