@@ -45,7 +45,7 @@ namespace OrderManagerEF.Classes
             //XtraMessageBox.Show($"SortCommand: {_sortCommand}");
             //XtraMessageBox.Show($"AfterCommand: {_afterCommand}");
 
-            startInfo.Arguments = string.Format("-src \"{0}\" -prn \"{1}\" -options {2} -postproc {3}", _sourceCommand, defaultPrinterName, _sortCommand, _afterCommand);
+            startInfo.Arguments = string.Format("-src \"{0}\" -prn \"{1}\" -options {2} -postproc {3} -postproc {3}", _sourceCommand, defaultPrinterName, _sortCommand, _afterCommand);
             // Start the process
             Process.Start(startInfo);
 

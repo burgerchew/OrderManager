@@ -76,11 +76,11 @@ namespace OrderManagerEF.Data
                     sourceLocationNoParam, orderTypeParam, dateRangeParam, retailBinThresholdParam)
                 .ToListAsync();
 
-            if (result == null || !result.Any()) // Check if the result is null or empty
-            {
-                DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return new List<ReplenishmentResult>(); // Return an empty list to prevent potential issues elsewhere
-            }
+            //if (result == null || !result.Any()) // Check if the result is null or empty
+            //{
+            //    DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return new List<ReplenishmentResult>(); // Return an empty list to prevent potential issues elsewhere
+            //}
 
             return result;
         }
@@ -131,6 +131,13 @@ namespace OrderManagerEF.Data
         public DbSet<HoldOrderData> HoldOrderDatas { get; set; }
 
         public DbSet<CustomerResult> CustomerResults { get; set; }
+
+
+        public DbSet<PBin> PBins { get; set; }
+
+        public DbSet<PBinContent> PBinContents { get; set; }
+
+        public DbSet<Product> Products { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

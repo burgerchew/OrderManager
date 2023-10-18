@@ -72,6 +72,7 @@ namespace OrderManagerEF.Forms
 
             InitSearchForm();
             LoadOrderChartForm();
+            PopulateUsername();
         }
 
         private void InitSearchForm()
@@ -258,5 +259,19 @@ namespace OrderManagerEF.Forms
         {
             CloseAllOpenedForms();
         }
+
+
+        private void PopulateUsername()
+        {
+            if (_userSession?.CurrentUser != null)
+            {
+                barStaticItem1.Caption = $"Logged in as: {_userSession.CurrentUser.Username}";
+            }
+            else
+            {
+                barStaticItem1.Caption = "Not logged in";
+            }
+        }
+
     }
 }

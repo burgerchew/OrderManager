@@ -47,6 +47,9 @@ namespace OrderManagerEF.Classes
                     WarehouseId = warehouseId,
                 };
 
+                // Create a HashSet to track unique ProductCodes
+                HashSet<string> uniqueProductCodes = new HashSet<string>();
+
                 // Create ReplenDetails for each ReplenishmentResult
                 foreach (var replenishmentResult in replenishmentResults)
                 {
@@ -55,6 +58,15 @@ namespace OrderManagerEF.Classes
                     {
                         continue;
                     }
+
+                    // Check if this ProductCode has already been processed
+                    if (uniqueProductCodes.Contains(replenishmentResult.ProductCode))
+                    {
+                        continue;  // Skip this iteration and move to the next one
+                    }
+
+                    // Add this ProductCode to the HashSet
+                    uniqueProductCodes.Add(replenishmentResult.ProductCode);
 
                     ReplenDetail replenDetail = new ReplenDetail
                     {

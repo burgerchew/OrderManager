@@ -15,6 +15,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using OrderManagerEF.Classes;
 using OrderManagerEF.DTOs;
 using OrderManagerEF.Entities;
+using OrderManagerEF.Forms;
 
 namespace OrderManagerEF
 {
@@ -34,6 +35,8 @@ namespace OrderManagerEF
             _userSession = userSession;
             _replenService = replenService;
             ConfigureMasterDetailGrid();
+
+
         }
 
         private void ConfigureMasterDetailGrid()
@@ -67,6 +70,7 @@ namespace OrderManagerEF
             gridControl1.LevelTree.Nodes.Add("ReplenDetails", detailView);
             detailView.PopulateColumns();
             detailView.OptionsView.ShowGroupPanel = false;
+            detailView.DoubleClick += DetailView_DoubleClick;
         }
 
         private void MasterView_MasterRowExpanded(object sender, CustomMasterRowEventArgs e)
@@ -127,8 +131,7 @@ namespace OrderManagerEF
                 _context.SaveChanges();
 
                 // Refresh the grid view data source to reflect changes
-                gridView.RefreshData();
-
+                RefreshGridData();
                 // Show a success message
                 XtraMessageBox.Show($"Successfully deleted {rowCount} rows.");
             }
@@ -138,6 +141,78 @@ namespace OrderManagerEF
                 XtraMessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
+        private void DetailView_DoubleClick(object sender, EventArgs e)
+        {
+            var detailView = gridControl1.FocusedView as GridView;
+
+            if (detailView != null)
+            {
+                var focusedRowHandle = detailView.FocusedRowHandle;
+                if (focusedRowHandle >= 0) // Check if a row is focused
+                {
+                    // Get the parent row handle from the detail view
+                    int parentRowHandle = detailView.SourceRowHandle;
+
+                    // Get the master view
+                    GridView masterView = detailView.ParentView as GridView;
+
+                    // Fetch the WarehouseLocationID from the master row
+                    var warehouseLocationID = (int)masterView.GetRowCellValue(parentRowHandle, "WarehouseId");
+
+                    // Continue fetching detail row-specific information
+                    var productCode = (string)detailView.GetRowCellValue(focusedRowHandle, "ProductCode");
+                    var transferDetailID = (int)detailView.GetRowCellValue(focusedRowHandle, "Id");
+
+                    // Load the new form here and set the properties
+                    var binTransferForm = new BinLookupForm(_configuration, _context, warehouseLocationID, productCode, transferDetailID);
+                    binTransferForm.BinNumberSelected += BinTransferForm_BinNumberSelected;
+                    binTransferForm.Show();
+                }
+                else
+                {
+                    XtraMessageBox.Show("No row is currently focused.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                XtraMessageBox.Show("Detail view could not be retrieved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void BinTransferForm_BinNumberSelected(string selectedColumnName, string selectedBinNumber
+            )
+        {
+            var detailView = gridControl1.FocusedView as GridView;
+            if (detailView != null)
+            {
+                var focusedRowHandle = detailView.FocusedRowHandle;
+                if (focusedRowHandle >= 0)
+                {
+                    detailView.SetRowCellValue(focusedRowHandle, selectedColumnName, selectedBinNumber);
+
+                    // Determine the column name for the BinID based on the selected column name for the bin number
+                   // var binIDColumnName = selectedColumnName.Replace("Number", "ID");
+
+                    // Set the value in the BinID column
+                    detailView.SetRowCellValue(focusedRowHandle, selectedColumnName, selectedBinNumber);
+                }
+            }
+        }
+
+        private void RefreshGridData()
+        {
+            // Load updated data from the database
+            var orders = _context.ReplenHeaders.Include(s => s.ReplenDetails).ToList();
+
+            // Bind the updated data to gridControl1
+            gridControl1.DataSource = orders;
+
+            // Refresh the MainView to update the UI
+            (gridControl1.MainView as GridView).RefreshData();
+        }
+
 
     }
 }
