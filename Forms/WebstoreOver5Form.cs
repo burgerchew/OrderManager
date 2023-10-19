@@ -118,7 +118,15 @@ namespace OrderManagerEF
 
             try
             {
-                LoadPickSlipData();
+                // Read the UseMergeTable key value from appsettings.json or other configuration source
+                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
+
+
+                // If UseMergeTable is true, then load pick slip data
+                if (useMergeTable)
+                {
+                    LoadPickSlipData();
+                }
                 var data = _context.RubiesOver5OrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.
@@ -473,6 +481,32 @@ namespace OrderManagerEF
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
             var printerProgram = new PrinterProgram(programPath, _configuration);
             printerProgram.ExecuteDefaultPrinter(defaultPrinterName);
+
+            /// Read the EnablePrintLog key value from appsettings.json or other configuration source
+            bool usePrintLog = bool.Parse(_configuration["EnablePrintLog"]);
+            // Parses the string to a boolean. Assumes that "EnablePrintLog" exists and its value is either "true" or "false".
+
+            // If EnablePrintLog is true, then log the user activity
+            if (usePrintLog)
+            {
+                // Loop through each sales order reference
+                foreach (var salesOrderReference in salesOrderReferences)
+                {
+                    // Create a new user activity instance with required properties
+                    UserActivity userActivity = new UserActivity
+                    {
+                        ActivityDescription = $"User {_userSession.CurrentUser.Username} printed pickslip with AccountingRef: {salesOrderReference} to {defaultPrinterName}",
+                        Timestamp = DateTime.Now,
+                        UserId = _userSession.CurrentUser.Id
+                    };
+
+                    // Add the user activity to the Entity Framework context
+                    _context.UserActivities.Add(userActivity);
+                }
+
+                // Commit changes to the database
+                _context.SaveChanges();
+            }
 
 
             // Refresh the GridView

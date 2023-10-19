@@ -66,6 +66,9 @@ namespace OrderManagerEF
         {
             ConfigureMasterDetailGrid();
 
+            // Refresh the grid with latest data from the database
+            RefreshGridView();
+
             ApplyShipmentIdFilter();
             PopulateExtraDataLookup(gridControl1.MainView as GridView);
         }
@@ -766,6 +769,7 @@ namespace OrderManagerEF
             // Fetch updated data from the database using EF.
             var updatedOrders = _context.StarShipITOrders
                                         .Include(s => s.StarShipITOrderDetails)
+                                        .Where(s => s.ShipmentID == null)
                                         .ToList();
 
             // Clear and update the data source for the grid control
