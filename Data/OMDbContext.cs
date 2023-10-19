@@ -152,8 +152,8 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<ReplenishmentResult>().HasNoKey();
             modelBuilder.Entity<OrderLookupResult>().HasNoKey();
             modelBuilder.Entity<CustomerResult>().ToView("ASP_vGetCustomerList").HasNoKey();
-            modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1").HasNoKey();
-            modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11").HasNoKey();
+            modelBuilder.Entity<BINContentsLocn1>().ToView("vBINContents_Locn1EF").HasNoKey();
+            modelBuilder.Entity<BINContentsLocn11>().ToView("vBINContents_Locn11EF").HasNoKey();
             modelBuilder.Entity<AddressPart>().ToView("vAddressParts").HasNoKey();
             modelBuilder.Entity<CSCOrderData>().ToView("vASP_CSC_SSI").HasNoKey();
             modelBuilder.Entity<DSOrderData>().ToView("vASP_DS_SSI").HasNoKey();

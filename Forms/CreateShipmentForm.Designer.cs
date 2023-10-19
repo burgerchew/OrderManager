@@ -33,9 +33,11 @@
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             barCheckItem1 = new DevExpress.XtraBars.BarCheckItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -47,12 +49,12 @@
             // ribbonControl1
             // 
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem2, barButtonItem3, barButtonItem4, barCheckItem1 });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem2, barButtonItem3, barButtonItem4, barButtonItem1, barCheckItem1 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.MaxItemId = 6;
+            ribbonControl1.MaxItemId = 10;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonControl1.Size = new System.Drawing.Size(430, 158);
+            ribbonControl1.Size = new System.Drawing.Size(783, 158);
             // 
             // barButtonItem2
             // 
@@ -78,17 +80,27 @@
             barButtonItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem4.ImageOptions.LargeImage");
             barButtonItem4.Name = "barButtonItem4";
             // 
+            // barButtonItem1
+            // 
+            barButtonItem1.Caption = "Save All";
+            barButtonItem1.Id = 6;
+            barButtonItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
+            barButtonItem1.Name = "barButtonItem1";
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            // 
             // barCheckItem1
             // 
             barCheckItem1.Caption = "Toogle Shipments";
-            barCheckItem1.Id = 5;
+            barCheckItem1.Id = 9;
             barCheckItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barCheckItem1.ImageOptions.Image");
             barCheckItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barCheckItem1.ImageOptions.LargeImage");
             barCheckItem1.Name = "barCheckItem1";
+            barCheckItem1.CheckedChanged += barCheckItem1_CheckedChanged_1;
             // 
             // ribbonPage1
             // 
-            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2 });
+            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup3, ribbonPageGroup2 });
             ribbonPage1.Name = "ribbonPage1";
             ribbonPage1.Text = "Menu";
             // 
@@ -98,6 +110,12 @@
             ribbonPageGroup1.ItemLinks.Add(barCheckItem1);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
             ribbonPageGroup1.Text = "Data Entry";
+            // 
+            // ribbonPageGroup3
+            // 
+            ribbonPageGroup3.ItemLinks.Add(barButtonItem1);
+            ribbonPageGroup3.Name = "ribbonPageGroup3";
+            ribbonPageGroup3.Text = "Save";
             // 
             // ribbonPageGroup2
             // 
@@ -113,7 +131,7 @@
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(430, 255);
+            gridControl1.Size = new System.Drawing.Size(783, 457);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -126,7 +144,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(430, 413);
+            ClientSize = new System.Drawing.Size(783, 615);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "CreateShipmentForm";
@@ -150,6 +168,8 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
         private DevExpress.XtraBars.BarCheckItem barCheckItem1;
     }
 }

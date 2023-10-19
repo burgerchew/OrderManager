@@ -82,11 +82,11 @@ namespace OrderManagerEF
 
         private void gridView1_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
-            if (e.Column.FieldName == "addressvalidated_value")
+            if (e.Column.FieldName == "AddressValidatedValue")
             {
                 // Get the value of the addressvalidated_value field for the current row
                 bool addressValidated =
-                    Convert.ToBoolean(gridView1.GetRowCellValue(e.RowHandle, "addressvalidated_value"));
+                    Convert.ToBoolean(gridView1.GetRowCellValue(e.RowHandle, "AddressValidatedValue"));
 
                 // Set the cell background color based on the addressvalidated_value
                 if (addressValidated)
@@ -399,8 +399,8 @@ namespace OrderManagerEF
                             int selectedRowHandle = gridView1.GetSelectedRows()[0];
 
                             // Get the order id and location for the row
-                            int orderId = Convert.ToInt32(gridView1.GetRowCellValue(selectedRowHandle, "order_id"));
-                            string location = gridView1.GetRowCellValue(selectedRowHandle, "location").ToString();
+                            int orderId = Convert.ToInt32(gridView1.GetRowCellValue(selectedRowHandle, "OrderId"));
+                            string location = gridView1.GetRowCellValue(selectedRowHandle, "Location").ToString();
 
                             // Use the order id and location when deleting the record from the API
                             bool isDeletedFromAPI = await DeleteShipmentId(orderId, location);
@@ -420,7 +420,7 @@ namespace OrderManagerEF
                             }
 
                             // If deletion from API succeeded, delete from the database
-                            string deleteQuery = "DELETE FROM Labels WHERE order_id = @order_id";
+                            string deleteQuery = "DELETE FROM Labels WHERE OrderId = @order_id";
                             using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection, transaction)) // Delete from Labels
                             {
                                 deleteCommand.Parameters.AddWithValue("@order_id", orderId);

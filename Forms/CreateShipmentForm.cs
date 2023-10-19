@@ -45,20 +45,14 @@ namespace OrderManagerEF
 
             _configuration = configuration;
             _context = context;
-            //InitializeData();
-            //AddRadioCheckBoxColumn();
             Load += CreateShipmentForm_Load;
 
-     
-            BarButtonClick();
-            gridView1.CustomDrawCell += gridView1_CustomDrawCell;
         }
 
 
         private void BarButtonClick()
         {
-            //Toggle Shipments
-            barCheckItem1.CheckedChanged += barCheckItem1_CheckedChanged;
+
             //AddressMode
             barButtonItem2.ItemClick += barButtonItem2_ItemClick;
             //Create Shipments
@@ -107,7 +101,19 @@ namespace OrderManagerEF
             gridControl1.LevelTree.Nodes.Add("StarShipITOrderDetails", detailView);
             detailView.PopulateColumns();
             detailView.OptionsView.ShowGroupPanel = false;
+
+
+            BarButtonClick();
+            gridView1.CustomDrawCell += gridView1_CustomDrawCell;
+
+            gridView1.RowUpdated += gridView1_RowUpdated;
+            gridView1.RowDeleted += gridView1_RowDeleted;
+            detailView.RowUpdated += detailView_RowUpdated;
+            gridView1.KeyDown += new KeyEventHandler(gridView1_KeyDown);
+
         }
+
+
 
 
         private void MasterView_MasterRowExpanded(object sender, CustomMasterRowEventArgs e)
@@ -125,19 +131,36 @@ namespace OrderManagerEF
 
         private void GridView1_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
         {
-            // Check the type of the updated row and update it in the database
-            if (e.Row is StarShipITOrder header)
-            {
-                _context.StarShipITOrders.Update(header);
-            }
-            else if (e.Row is StarShipITOrderDetail detail)
-            {
-                _context.StarShipITOrderDetails.Update(detail);
-            }
+            // Commit any changes to the row to ensure that they are updated in the data source.
+            GridView view = sender as GridView;
+            view.CloseEditor();
+            view.UpdateCurrentRow();
 
-            // Save changes to database
-            _context.SaveChanges();
+            try
+            {
+                // Check the type of the updated row and update it in the database
+                if (e.Row is StarShipITOrder header)
+                {
+                    _context.StarShipITOrders.Update(header);
+                }
+                else if (e.Row is StarShipITOrderDetail detail)
+                {
+                    _context.StarShipITOrderDetails.Update(detail);
+                }
+
+                // Save changes to database
+                _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"An error occurred while saving: {ex.Message}", "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+
+
+
 
 
         private void PopulateExtraDataLookup(DevExpress.XtraGrid.Views.Grid.GridView gridView)
@@ -187,40 +210,6 @@ namespace OrderManagerEF
 
 
 
-        private void SubscribeToDetailGridViewInitNewRow()
-        {
-            // Get the detail GridView pattern view from the LevelTree
-            var detailViewPattern = gridControl1.LevelTree.Nodes[0].LevelTemplate as GridView;
-
-            if (detailViewPattern != null)
-                // Subscribe to the InitNewRow event of the detail GridView pattern view
-                detailViewPattern.InitNewRow += detailViewPattern_InitNewRow;
-        }
-
-        private void OrderTableAdapter_RowUpdated(object sender, SqlRowUpdatedEventArgs e)
-        {
-            if (e.Status == UpdateStatus.Continue && e.StatementType == StatementType.Insert)
-            {
-                var newOrderID = (int)e.Row["Id", DataRowVersion.Current];
-                AddDefaultOrderDetail(newOrderID);
-            }
-        }
-
-        private void DeleteOrderDetails(int orderId)
-        {
-            // Fetch related order details directly from the database
-            var relatedOrderDetails = _context.StarShipITOrderDetails
-                .Where(sd => sd.OrderId == orderId)
-                .ToList();
-
-            // Remove the related order details from the context
-            _context.StarShipITOrderDetails.RemoveRange(relatedOrderDetails);
-
-            // Commit changes to the database
-            _context.SaveChanges();
-        }
-
-
 
         private void SaveChanges()
         {
@@ -239,12 +228,39 @@ namespace OrderManagerEF
             _context.SaveChanges();
         }
 
-
-        private void detailView_RowDeleted(object sender, RowDeletedEventArgs e)
+        private void SaveAllChanges()
         {
-            SaveChanges();
-        }
+            // Update the current row to ensure all changes are committed to the data source.
+            GridView masterView = gridControl1.MainView as GridView;
+            masterView.CloseEditor();
+            masterView.UpdateCurrentRow();
 
+            // Do the same for all detail views
+            for (int i = 0; i < masterView.RowCount; i++)
+            {
+                if (masterView.IsMasterRow(i))
+                {
+                    GridView detailView = masterView.GetDetailView(i, 0) as GridView;
+                    if (detailView != null)
+                    {
+                        detailView.CloseEditor();
+                        detailView.UpdateCurrentRow();
+                    }
+                }
+            }
+
+            try
+            {
+                // Save changes to the database
+                _context.SaveChanges();
+
+                XtraMessageBox.Show("All changes saved successfully!", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"An error occurred while saving: {ex.Message}", "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
 
 
@@ -264,199 +280,6 @@ namespace OrderManagerEF
             SaveChanges();
         }
 
-        private void detailViewPattern_RowDeleted(object sender, RowDeletedEventArgs e)
-        {
-            // Save changes to the database
-            SaveChanges();
-        }
-
-        private void SubscribeToDetailGridViewCellValueChanged()
-        {
-            // Get the detail GridView pattern view from the LevelTree
-            var detailViewPattern = gridControl1.LevelTree.Nodes[0].LevelTemplate as GridView;
-
-            if (detailViewPattern != null)
-                // Subscribe to the CellValueChanged event of the detail GridView pattern view
-                detailViewPattern.CellValueChanged += detailViewPattern_CellValueChanged;
-        }
-
-        private void detailViewPattern_InitNewRow(object sender, InitNewRowEventArgs e)
-        {
-            var view = sender as GridView;
-
-            if (view != null)
-            {
-                view.SetRowCellValue(e.RowHandle, view.Columns["Description"], "Costume");
-                view.SetRowCellValue(e.RowHandle, view.Columns["SKU"], "COSTUME");
-                view.SetRowCellValue(e.RowHandle, view.Columns["Quantity"], 1);
-                view.SetRowCellValue(e.RowHandle, view.Columns["Weight"], 0.65);
-                view.SetRowCellValue(e.RowHandle, view.Columns["Value"], 40);
-                // Set other default values as required.
-            }
-        }
-
-        private void AddDefaultOrderDetail(int orderID)
-        {
-            var newDetail = new StarShipITOrderDetail
-            {
-                OrderId = orderID,
-                Description = "Mobile Phone",
-                SKU = "MOBILE",
-                Quantity = 1,
-                Weight = 0.23M, // Assuming weight is of type decimal and 023 was a typo
-                Value = 125M
-            };
-
-            _context.StarShipITOrderDetails.Add(newDetail);
-            _context.SaveChanges();
-        }
-
-
-        private void detailViewPattern_CellValueChanged(object sender, CellValueChangedEventArgs e)
-        {
-            var view = sender as GridView;
-
-            if (view != null)
-            {
-                view.PostEditor();  // Save the edited cell value
-                view.UpdateCurrentRow();  // Update the underlying data source
-
-                // Assuming you have mapped OrderDetails as ShipmentDetails
-                var detailRow = view.GetRow(e.RowHandle) as StarShipITOrderDetail;
-
-                if (detailRow != null)
-                {
-                    // Attach the entity and mark it as modified
-                    _context.Entry(detailRow).State = EntityState.Modified;
-
-                    // Save changes to the database
-                    _context.SaveChanges();
-                }
-            }
-        }
-
-
-        private void gridView1_MasterRowExpanded(object sender, CustomMasterRowEventArgs e)
-        {
-            var detailView = gridView1.GetDetailView(e.RowHandle, 0) as GridView;
-            if (detailView != null)
-            {
-                detailView.InitNewRow += (s, ea) =>
-                {
-                    var orderID = (int)gridView1.GetRowCellValue(e.RowHandle, "Id");
-                    detailView.SetRowCellValue(ea.RowHandle, "OrderID", orderID);
-                };
-
-                detailView.RowUpdated += (s, ea) => SaveChanges();
-                detailView.RowDeleted += (s, ea) => SaveChanges();
-            }
-        }
-
-
-        private void SubscribeToDetailGridViewRowDeleted()
-        {
-            // Get the detail GridView pattern view from the LevelTree
-            var detailViewPattern = gridControl1.LevelTree.Nodes[0].LevelTemplate as GridView;
-
-            if (detailViewPattern != null)
-                // Subscribe to the RowDeleted event of the detail GridView pattern view
-                detailViewPattern.RowDeleted += detailViewPattern_RowDeleted;
-        }
-
-        private void gridView1_InitNewRow(object sender, InitNewRowEventArgs e)
-        {
-            var newOrderID = GenerateNewOrderID();
-            gridView1.SetRowCellValue(e.RowHandle, "Id", newOrderID);
-            gridView1.SetRowCellValue(e.RowHandle, "OrderDate", DateTime.Now);
-            gridView1.SetRowCellValue(e.RowHandle, "Selected", true); // Set the Selected column value to true
-
-            var detailView = gridView1.GetDetailView(e.RowHandle, 0) as GridView;
-            if (detailView != null)
-                detailView.InitNewRow += (s, ea) =>
-                {
-                    detailView.SetRowCellValue(ea.RowHandle, "OrderID", newOrderID);
-                };
-        }
-
-        private int GenerateNewOrderID()
-        {
-            // Using Entity Framework to get the maximum OrderID value
-            var maxOrderID = _context.StarShipITOrders.Any() ? _context.StarShipITOrders.Max(o => o.Id) : 0;
-
-            // Increment the maximum OrderID value by 1 or set a default starting value if the table is empty
-            var newOrderID = maxOrderID > 0 ? maxOrderID + 1 : 1;
-
-            return newOrderID;
-        }
-
-        private void gridView1_RowDeleting(object sender, RowDeletingEventArgs e)
-        {
-            var rowView = e.Row as DataRowView;
-            var orderId = (int)rowView["Id"];
-
-            // Using Entity Framework to retrieve the related entity
-            var orderToDelete = _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).FirstOrDefault(o => o.Id == orderId);
-
-            if (orderToDelete != null)
-            {
-                // Delete the related order details
-                _context.StarShipITOrderDetails.RemoveRange(orderToDelete.StarShipITOrderDetails);
-
-                // Delete the order
-                _context.StarShipITOrders.Remove(orderToDelete);
-
-                // Save the changes
-                _context.SaveChanges();
-            }
-        }
-
-
-        private void EmbeddedNavigator_ButtonClick(object sender, NavigatorButtonClickEventArgs e)
-        {
-            if (e.Button.ButtonType == NavigatorButtonType.Remove)
-            {
-                e.Handled = true;
-
-                // Check if a row is selected in the master GridView
-                if (gridView1.FocusedRowHandle < 0)
-                {
-                    XtraMessageBox.Show("Please select an order to delete.", "Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Ask for confirmation before deleting the selected order
-                var result = XtraMessageBox.Show("Are you sure you want to delete the selected order?",
-                    "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes) gridView1.DeleteSelectedRows();
-            }
-        }
-
-
-        private void AddRadioCheckBoxColumn()
-        {
-            // Create a new GridColumn for the "Selected" field
-            var selectedColumn = new GridColumn
-            {
-                FieldName = "Selected",
-                Caption = "Selected",
-                Visible = true,
-                VisibleIndex = gridView1.Columns.Count // Set the visible index to the last column
-            };
-
-            // Create a RepositoryItemCheckEdit with the RadioGroupIndex property set to 0
-            var checkEdit = new RepositoryItemCheckEdit
-            {
-                RadioGroupIndex = 0
-            };
-
-            // Set the ColumnEdit property of the new column to the RepositoryItemCheckEdit
-            selectedColumn.ColumnEdit = checkEdit;
-
-            // Add the new column to the gridView1.Columns collection
-            gridView1.Columns.Add(selectedColumn);
-        }
 
 
         private (string StarshipItApiKey, string OcpApimSubscriptionKey) GetApiKeysFromTableAdapter(string location)
@@ -558,7 +381,7 @@ namespace OrderManagerEF
         {
             var selectedShipments = _context.StarShipITOrders
                                            .Include(s => s.StarShipITOrderDetails) // To load related data
-                                           .Where(s => (bool)s.Selected)
+                                           .Where(s => (bool)s.Selected && s.ShipmentID == null)
                                            .ToList();
 
             if (!selectedShipments.Any())
@@ -693,6 +516,62 @@ namespace OrderManagerEF
             return successfulShipmentsCount;
         }
 
+        // Attach this event handler to the KeyDown event of the GridView
+        private void gridView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                GridView view = sender as GridView;
+                if (view != null)
+                {
+                    // Show a message box asking the user if they want to delete the row
+                    var result = XtraMessageBox.Show(
+                        "Are you sure you want to delete the selected row and its details?",
+                        "Confirm Deletion",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    // If the user clicks 'No', exit the event handler
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    var focusedRow = view.GetRow(view.FocusedRowHandle);
+
+                    // Check if it's a master row
+                    if (focusedRow is StarShipITOrder)
+                    {
+                        StarShipITOrder masterRow = focusedRow as StarShipITOrder;
+
+                        // Remove child details
+                        foreach (var detail in masterRow.StarShipITOrderDetails)
+                        {
+                            _context.StarShipITOrderDetails.Remove(detail);
+                        }
+
+                        // Delete the master row
+                        _context.StarShipITOrders.Remove(masterRow);
+                    }
+                    // Check if it's a detail row
+                    else if (focusedRow is StarShipITOrderDetail)
+                    {
+                        StarShipITOrderDetail detailRow = focusedRow as StarShipITOrderDetail;
+                        _context.StarShipITOrderDetails.Remove(detailRow);
+                    }
+
+                    // Save changes to the database
+                    _context.SaveChanges();
+
+                    // Refresh the grid
+                    RefreshGridView(); // Assume RefreshGridView() is your method to refresh the grid
+                }
+            }
+        }
+
+
+
+
 
 
         public void DeleteOrderAndOrderDetails(int orderId)
@@ -703,7 +582,7 @@ namespace OrderManagerEF
                 connection.Open();
 
                 // Delete the associated records from the OrderDetails table
-                using (var command = new SqlCommand("DELETE FROM OrderDetails WHERE OrderId = @orderId", connection))
+                using (var command = new SqlCommand("DELETE FROM StarShipITOrderDetails WHERE OrderId = @orderId", connection))
                 {
                     command.Parameters.AddWithValue("@orderId", orderId);
 
@@ -711,7 +590,7 @@ namespace OrderManagerEF
                 }
 
                 // Delete the record from the Orders table
-                using (var command = new SqlCommand("DELETE FROM Orders WHERE Id = @orderId", connection))
+                using (var command = new SqlCommand("DELETE FROM StarShipITOrders WHERE Id = @orderId", connection))
                 {
                     command.Parameters.AddWithValue("@orderId", orderId);
 
@@ -721,18 +600,6 @@ namespace OrderManagerEF
         }
 
 
-        private void barCheckItem1_CheckedChanged(object sender, ItemClickEventArgs e)
-        {
-            BarCheckItem item = (BarCheckItem)e.Item;
-            gridView1.BeginUpdate(); // Suspend layout updates
-
-            for (int i = 0; i < gridView1.RowCount; i++)
-            {
-                gridView1.SetRowCellValue(i, "Selected", item.Checked);
-            }
-
-            gridView1.EndUpdate(); // Resume layout updates
-        }
 
         private void gridView1_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
         {
@@ -746,7 +613,7 @@ namespace OrderManagerEF
                     case "RUB": e.Appearance.BackColor = Color.LightGray; break;
                     case "BSA": e.Appearance.BackColor = Color.LightGreen; break;
                     case "DS": e.Appearance.BackColor = Color.LightYellow; break;
-                    // Add more cases if needed
+                        // Add more cases if needed
                 }
             }
             // List of column names to check for missing values
@@ -897,15 +764,63 @@ namespace OrderManagerEF
         public void RefreshGridView()
         {
             // Fetch updated data from the database using EF.
-            var updatedOrders = _context.StarShipITOrders.Include(s => s.StarShipITOrderDetails).ToList();
+            var updatedOrders = _context.StarShipITOrders
+                                        .Include(s => s.StarShipITOrderDetails)
+                                        .ToList();
 
-            // Bind the fetched data to the gridControl.
+            // Clear and update the data source for the grid control
+            gridControl1.DataSource = null;
             gridControl1.DataSource = new BindingList<StarShipITOrder>(updatedOrders);
 
-            // Refresh the view
-            gridView1.RefreshData();
+            // Refresh the main and detail views
+            GridView mainView = gridControl1.MainView as GridView;
+            mainView.RefreshData();
+
+            // Loop through all rows of the master view
+            for (int i = 0; i < mainView.RowCount; i++)
+            {
+                int rowHandle = mainView.GetRowHandle(i); // Get the row handle, which may be different from the visual index i
+                                                          // Get the detail view for the current master row; assume only one detail grid, so relationIndex is 0
+                GridView detailView = mainView.GetDetailView(rowHandle, 0) as GridView;
+
+                // Refresh the detail view
+                if (detailView != null)
+                {
+                    detailView.RefreshData();
+                }
+            }
+
         }
 
 
+
+
+
+        private void barCheckItem1_CheckedChanged_1(object sender, ItemClickEventArgs e)
+        {
+            BarCheckItem item = (BarCheckItem)e.Item;
+            gridView1.BeginUpdate(); // Suspend layout updates
+
+            for (int i = 0; i < gridView1.RowCount; i++)
+            {
+                var row = gridView1.GetRow(i) as StarShipITOrder;
+                if (row != null)
+                {
+                    row.Selected = item.Checked;
+                    _context.StarShipITOrders.Update(row); // Update the entity
+                }
+                gridView1.SetRowCellValue(i, "Selected", item.Checked); // Update the grid cell
+            }
+
+            _context.SaveChanges(); // Commit changes to the database
+
+            gridView1.EndUpdate(); // Resume layout updates
+        }
+
+
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            SaveAllChanges();
+        }
     }
 }
