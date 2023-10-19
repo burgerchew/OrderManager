@@ -115,8 +115,6 @@ namespace OrderManagerEF.Forms
                 // Read the UseMergeTable key value from appsettings.json or other configuration source
                 bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
 
-                // Display a message confirming the loaded configuration value
-                DevExpress.XtraEditors.XtraMessageBox.Show($"Configuration UseMergeTable is set to: {useMergeTable}");
 
                 // If UseMergeTable is true, then load pick slip data
                 if (useMergeTable)
@@ -256,87 +254,6 @@ namespace OrderManagerEF.Forms
             highlighter.HighlightDuplicates(gridView);
         }
 
-
-        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var tableName = "LabelstoPrintCSC";
-            var manager = new LabelQueueManager(tableName, _configuration);
-
-            if (manager.ConfirmTruncate())
-            {
-                manager.TruncateTable();
-
-                var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-                var columnMappings = new Dictionary<string, string>
-            {
-                { "AccountingRef", "SalesOrder" },
-                { "TradingRef", "OrderNumber" },
-                { "CustomerCode", "CustomerCode" },
-                { "EntryDateTime", "Date" }
-            };
-
-                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
-
-                if (!CheckZShipmentID(gridView))
-                    if (XtraMessageBox.Show(
-                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
-                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                        return;
-
-                manager.InsertData(gridView, columnMappings, parameterNames);
-
-                var rowCount = gridView.GetSelectedRows().Length;
-                manager.ShowRowCountMessage(rowCount);
-            }
-
-            manager.CloseConnection();
-        }
-
-        private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            try
-            {
-                // create an SQL connection
-                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
-
-                // Assuming you have a connection string called "connectionString" and a table called "myTable"
-                using (var conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSC";
-                    var cmd = new SqlCommand(sql, conn);
-                    var rowCount = (int)cmd.ExecuteScalar();
-
-                    if (rowCount > 0)
-                    {
-                        // Show a message box asking the user if they want to continue
-                        var result =
-                            XtraMessageBox.Show(
-                                "Are you sure you want to run the job and download " + rowCount + " labels ?",
-                                "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        // If the user clicks Yes, continue with the operation
-                        if (result == DialogResult.Yes)
-                        {
-                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintCSC");
-                            jobRunner.RunJob();
-                            // Show the row count in a message box
-                            XtraMessageBox.Show("Job started successfully! Number of labels queued " + rowCount);
-                        }
-                    }
-                    else
-                    {
-                        XtraMessageBox.Show("Warning: The CSC Queue does not contain any rows!");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show($"Error starting job: {ex.Message}");
-            }
-        }
 
         private void ProcessAndPrintSelectedRows()
         {
@@ -620,52 +537,6 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void barButtonItem13_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            // Create an instance of the PickSlipGenerator class
-            var pickSlipGenerator = new PickSlipGenerator(_configuration, _context);
-
-            // Define the customer groups you want to pass
-            var customerGroups = new List<string> { "CSC", "DS" };
-            // Call the method to generate pick slips for the specified customer groups
-            var rowsInserted = pickSlipGenerator.GeneratePickSlipsForGroups(customerGroups);
-
-            // Show a success message with the count of rows inserted
-            XtraMessageBox.Show($"{rowsInserted} pick slips generated successfully!");
-        }
-
-        private void barButtonItem13_ItemClick_1(object sender, ItemClickEventArgs e)
-        {
-            var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-            if (gridView.SelectedRowsCount == 0)
-            {
-                XtraMessageBox.Show("Please select one or more rows");
-                return;
-            }
-
-            var selectedRowHandles = gridView.GetSelectedRows();
-            var salesOrderReferences = new List<string>();
-
-            foreach (var rowHandle in selectedRowHandles)
-            {
-                var salesOrderReference = gridView.GetRowCellValue(rowHandle, "AccountingRef").ToString();
-                salesOrderReferences.Add(salesOrderReference);
-            }
-
-            CancelOrder(
-                salesOrderReferences); // Assuming this method is taking care of order cancellation logic with the DB.
-
-            // Show a confirmation message
-            XtraMessageBox.Show("These orders have been moved to the Hold Tab.");
-
-            // Fetch the updated data from the database
-            var data = LoadDataFromStoredProcedure();
-
-            // Set the fetched data as the grid's data source and refresh the grid view
-            gridView.GridControl.DataSource = data;
-            gridView.RefreshData();
-        }
 
 
         private void CancelOrder(List<string> salesOrderReferences)
@@ -922,6 +793,43 @@ namespace OrderManagerEF.Forms
             if (gridView != null)
             {
                 gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
+            }
+        }
+
+        private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            StartImportTask();
+        }
+
+        // Method to start the import task
+        private void StartImportTask()
+        {
+            try
+            {
+                // Fetch server and job name from configuration
+                var serverName = _configuration["ServerName"];  // Make sure you have this key in your appsettings.json
+                var jobName = _configuration["JobName"];  // Make sure you have this key in your appsettings.json
+
+                // Show a message box asking the user if they want to continue
+                var result = XtraMessageBox.Show(
+                    "Are you sure you want to run the job?",
+                    "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                // If the user clicks Yes, continue with the operation
+                if (result == DialogResult.Yes)
+                {
+                    // Initialize SqlAgentJobRunner using configuration data
+                    var jobRunner = new SqlAgentJobRunner(serverName, "msdb", jobName);
+                    jobRunner.RunJob();
+
+                    // Show success message
+                    XtraMessageBox.Show("Job started successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show error message if there is an exception
+                XtraMessageBox.Show($"Error starting job: {ex.Message}");
             }
         }
 

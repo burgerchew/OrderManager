@@ -106,7 +106,15 @@ namespace OrderManagerEF
 
             try
             {
-                LoadPickSlipData();
+                // Read the UseMergeTable key value from appsettings.json or other configuration source
+                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
+
+
+                // If UseMergeTable is true, then load pick slip data
+                if (useMergeTable)
+                {
+                    LoadPickSlipData();
+                }
                 var data = _context.PreOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.
