@@ -249,7 +249,7 @@ namespace OrderManagerEF
 
         private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            XtraMessageBox.Show("This feature is not implemented yet.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private bool ValidateInventoryQty(GridView detailView)

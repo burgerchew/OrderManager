@@ -35,20 +35,33 @@ namespace OrderManagerEF.Classes
             ProcessStartInfo startInfo = new ProcessStartInfo(_programPath);
 
 
-            // startInfo.Arguments = string.Format("-src \"C:\\test\\pickslips\\*.*\" -prn \"{0}\" -options sort:date_d -postproc passed:move passed_dir:\"C:\\test\\pickslips\\done\"", defaultPrinterName);
-            //startInfo.Arguments = string.Format("-src \"\\\\dbserv\\pickslips\\*.*\" -prn \"{0}\" -options sort:date -postproc passed:move passed_dir:\"\\\\dbserv\\pickslips\\archive\"", defaultPrinterName);
-
-            // Build the arguments string using the configurable values from appsettings
-
-            // Add some logging or debugging code to check the values
-            //XtraMessageBox.Show($"SourceCommand: {_sourceCommand}");
-            //XtraMessageBox.Show($"SortCommand: {_sortCommand}");
-            //XtraMessageBox.Show($"AfterCommand: {_afterCommand}");
-
             startInfo.Arguments = string.Format("-src \"{0}\" -prn \"{1}\" -options {2} -postproc {3} -postproc {3}", _sourceCommand, defaultPrinterName, _sortCommand, _afterCommand);
             // Start the process
             Process.Start(startInfo);
 
         }
+
+        public void ExecuteDefaultPrinterQuickPrint(string defaultPrinterName, string pickSlipPath, string salesOrderRef)
+        {
+            // This method executes the default printer program with only the source and printer name parameters.
+
+            // Create the full source path by concatenating the pickSlipPath and salesOrderRef
+            string fullSourcePath = string.Format("{0}\\archive\\{1}.pdf", pickSlipPath.TrimEnd('\\'), salesOrderRef);
+
+
+            // Create a new process start info
+            ProcessStartInfo startInfo = new ProcessStartInfo(_programPath);
+
+            // Include -src and -prn in the arguments
+            startInfo.Arguments = string.Format("-src \"{0}\" -prn \"{1}\"", fullSourcePath, defaultPrinterName);
+
+            // Start the process
+            Process.Start(startInfo);
+        }
+
     }
+
+
+
 }
+

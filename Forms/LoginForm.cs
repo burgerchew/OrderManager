@@ -32,9 +32,13 @@ namespace OrderManagerEF.Forms
             _configuration = configuration;
             _context = context;
             _userSession = userSession; // Set the user session
-            textEdit1.Text = "daniel";
-            textEdit2.Text = "OM123!";
+            textEdit1.Text = Environment.UserName;
+         
             _replenService = replenService;
+
+            // Attach the event handlers
+            textEdit1.KeyDown += new KeyEventHandler(textEdit_KeyDown);
+            textEdit2.KeyDown += new KeyEventHandler(textEdit_KeyDown);
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
@@ -73,6 +77,16 @@ namespace OrderManagerEF.Forms
                 XtraMessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void textEdit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Invoke the Click event of the login button
+                simpleButton1.PerformClick();
+            }
+        }
+
 
         private void hyperlinkLabelControl1_Click(object sender, EventArgs e)
         {

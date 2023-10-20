@@ -116,11 +116,15 @@
             barLinkContainerItem1 = new DevExpress.XtraBars.BarLinkContainerItem();
             barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
+            barEditItem1 = new DevExpress.XtraBars.BarEditItem();
+            repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPageCategory1 = new DevExpress.XtraBars.Ribbon.RibbonPageCategory();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             repositoryItemRibbonSearchEdit2 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
@@ -129,6 +133,7 @@
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemTextEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit3).BeginInit();
@@ -444,12 +449,12 @@
             // 
             ribbonControl1.Categories.AddRange(new DevExpress.XtraBars.BarManagerCategory[] { new DevExpress.XtraBars.BarManagerCategory("Test", new System.Guid("4cc73942-aed6-4d5d-86b1-fa532428bc7a")) });
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barListItem1, barSubItem1, barLinkContainerItem1, barButtonItem1, barStaticItem1 });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barListItem1, barSubItem1, barLinkContainerItem1, barButtonItem1, barStaticItem1, barEditItem1, barButtonItem2 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.MaxItemId = 6;
+            ribbonControl1.MaxItemId = 8;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.PageCategories.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageCategory[] { ribbonPageCategory1 });
-            ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemRibbonSearchEdit1 });
+            ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemRibbonSearchEdit1, repositoryItemTextEdit1 });
             ribbonControl1.Size = new System.Drawing.Size(1142, 158);
             // 
             // barListItem1
@@ -485,6 +490,26 @@
             barStaticItem1.Id = 5;
             barStaticItem1.Name = "barStaticItem1";
             // 
+            // barEditItem1
+            // 
+            barEditItem1.Caption = "Enter SO Number";
+            barEditItem1.Edit = repositoryItemTextEdit1;
+            barEditItem1.EditWidth = 150;
+            barEditItem1.Id = 6;
+            barEditItem1.Name = "barEditItem1";
+            // 
+            // repositoryItemTextEdit1
+            // 
+            repositoryItemTextEdit1.AutoHeight = false;
+            repositoryItemTextEdit1.Name = "repositoryItemTextEdit1";
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Print Existing Pickslip";
+            barButtonItem2.Id = 7;
+            barButtonItem2.Name = "barButtonItem2";
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            // 
             // ribbonPageCategory1
             // 
             ribbonPageCategory1.Name = "ribbonPageCategory1";
@@ -493,7 +518,7 @@
             // 
             // ribbonPage1
             // 
-            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2, ribbonPageGroup3 });
+            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2, ribbonPageGroup3, ribbonPageGroup4 });
             ribbonPage1.Name = "ribbonPage1";
             ribbonPage1.Text = "Menu";
             // 
@@ -514,6 +539,13 @@
             ribbonPageGroup3.ItemLinks.Add(barStaticItem1);
             ribbonPageGroup3.Name = "ribbonPageGroup3";
             ribbonPageGroup3.Text = "CurrentUser";
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barEditItem1);
+            ribbonPageGroup4.ItemLinks.Add(barButtonItem2);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Quick Print";
             // 
             // repositoryItemRibbonSearchEdit2
             // 
@@ -571,6 +603,7 @@
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).EndInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemTextEdit1).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit2).EndInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl2).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit3).EndInit();
@@ -636,5 +669,9 @@
         private DevExpress.XtraNavBar.NavBarItem navBarItem24;
         private DevExpress.XtraBars.BarStaticItem barStaticItem1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
+        private DevExpress.XtraBars.BarEditItem barEditItem1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
     }
 }
