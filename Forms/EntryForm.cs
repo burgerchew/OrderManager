@@ -132,12 +132,20 @@ public partial class EntryForm : RibbonForm
 
         searchItem.EditValueChanged += (s, e) =>
         {
-            var searchTerm = searchItem.EditValue.ToString();
-            PerformSearch(searchTerm); // Call PerformSearch method whenever the search term changes
+            var currentText = searchItem.EditValue.ToString();
+            if (currentText == OrderRef)
+            {
+                searchItem.EditValue = string.Empty;
+            }
+            else
+            {
+                PerformSearch(currentText);
+            }
         };
-
         return searchItem;
     }
+
+
 
     private List<SearchResult> PerformSearch(string searchText)
     {
@@ -310,6 +318,18 @@ public partial class EntryForm : RibbonForm
 
             // Use the original pickSlipPath without adding "archive" here
             string originalPickSlipPath = reportSetting.PickSlipPath;
+
+            // Append "archive" to the original path
+            string archivePath = Path.Combine(originalPickSlipPath, "archive", salesOrderRef);
+
+            // Add ".pdf" extension
+            string pdfPath = Path.ChangeExtension(archivePath, "pdf");
+
+            if (!File.Exists(pdfPath))
+            {
+                XtraMessageBox.Show("PickSlip does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             // Execute the quick print
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
