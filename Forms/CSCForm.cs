@@ -326,7 +326,7 @@ namespace OrderManagerEF.Forms
             // Call the ExecuteDefaultPrinter method and pass in the default printer name
             var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
             var printerProgram = new PrinterProgram(programPath, _configuration);
-            printerProgram.ExecuteDefaultPrinter(defaultPrinterName);
+            printerProgram.ExecuteDefaultPrinterLog(defaultPrinterName);
 
 
             /// Read the EnablePrintLog key value from appsettings.json or other configuration source

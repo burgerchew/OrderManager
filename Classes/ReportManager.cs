@@ -47,6 +47,25 @@ namespace OrderManagerEF.Classes
             return null;
         }
 
+        public string GetPickSlipPath()
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                string query = "SELECT TOP 1 PickslipPath FROM ReportSettings";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        return reader["PickslipPath"].ToString();
+                    }
+                }
+            }
+            return null;
+        }
+
         public bool IsPickSlipPathEmpty()
         {
             ReportSetting reportSetting = GetReportSetting();
