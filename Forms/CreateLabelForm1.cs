@@ -138,11 +138,16 @@ namespace OrderManagerEF
 
         private void BindTableAdapterToBindingSource()
         {
-            // Fetch labels using Entity Framework Core
-            var labels = _context.Labels.ToList();
+            // Fetch labels using Entity Framework Core with a filter
+            var labels = _context.Labels.Where(label => label.Exported == false).ToList();
 
-            // Bind the result to the grid control
+            // Bind the filtered result to the grid control
             gridControl1.DataSource = labels;
+
+            // If needed, you can also set the GridView's default filter in code, but it's not necessary
+            // as the data is already filtered
+            gridView1.ActiveFilterString = "[Exported] = false";
+
         }
 
 

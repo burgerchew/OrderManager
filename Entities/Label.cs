@@ -25,6 +25,8 @@ namespace OrderManagerEF.Entities
 
         public string ExtraData { get; set; }
 
+        public bool? Exported { get; set; }
+
 
     }
 }
