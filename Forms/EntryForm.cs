@@ -11,6 +11,7 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraNavBar;
+using DevExpress.XtraReports.UserDesigner;
 using Microsoft.Extensions.Configuration;
 using OrderManagerEF.Classes;
 using OrderManagerEF.Data;
@@ -347,6 +348,103 @@ public partial class EntryForm : RibbonForm
             XtraMessageBox.Show($"Failed to print pick slip: {ex.Message}", "Error", MessageBoxButtons.OK);
         }
     }
+
+
+    private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        try
+        {
+            // Get the sales order range from BarEditItem
+            string salesOrderRange = barEditItem1.EditValue?.ToString();
+
+            // Validate sales order range
+            if (string.IsNullOrEmpty(salesOrderRange))
+            {
+                XtraMessageBox.Show("Please enter a sales order range.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Split the range into start and end
+            var rangeParts = salesOrderRange.Split('-');
+            if (rangeParts.Length != 2)
+            {
+                XtraMessageBox.Show("Invalid sales order range format.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Extract start and end order numbers from the range
+            int startOrder, endOrder;
+            if (!int.TryParse(rangeParts[0].Substring(2), out startOrder) || !int.TryParse(rangeParts[1].Substring(2), out endOrder))
+            {
+                XtraMessageBox.Show("Invalid sales order numbers.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Check if range is valid
+            if (startOrder > endOrder)
+            {
+                XtraMessageBox.Show("Start order number must be less than end order number.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Calculate the number of pickslips
+            int numberOfPickslips = endOrder - startOrder + 1;
+
+            // Confirm with the user
+            var result = XtraMessageBox.Show($"Are you sure you want to print {numberOfPickslips} pickslips?", "Confirm", MessageBoxButtons.YesNo);
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            // Retrieve the report setting
+            ReportSetting reportSetting = _reportManager.GetReportSetting();
+
+            // Get the default printer for the current user
+            string defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
+
+            for (int i = startOrder; i <= endOrder; i++)
+            {
+                string salesOrderRef = "SO" + i.ToString("D6"); // Format the sales order reference
+
+        
+
+                // Use the original pickSlipPath without adding "archive" here
+                string originalPickSlipPath = reportSetting.PickSlipPath;
+
+                // Append "archive" and the sales order reference to the original path
+                string archivePath = Path.Combine(originalPickSlipPath, "archive", salesOrderRef);
+
+                // Add ".pdf" extension to the path
+                string pdfPath = Path.ChangeExtension(archivePath, "pdf");
+
+                // Check if the pickslip file exists
+                if (!File.Exists(pdfPath))
+                {
+                    XtraMessageBox.Show($"PickSlip {salesOrderRef} does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue; // Skip to the next iteration if the pickslip doesn't exist
+                }
+
+                // Execute the quick print
+                var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
+                PrinterProgram printerProgram = new PrinterProgram(programPath, _configuration);
+
+                // Execute the printing for the current sales order reference
+                printerProgram.ExecuteDefaultPrinterQuickPrint(defaultPrinterName, originalPickSlipPath, salesOrderRef);
+
+                // Optionally, you can add a delay or a success message for each printed pickslip here
+            }
+
+            // Show success message for the entire range
+            XtraMessageBox.Show("Pick slips printed successfully.", "Success", MessageBoxButtons.OK);
+        }
+        catch (Exception ex)
+        {
+            // Show error message
+            XtraMessageBox.Show($"Failed to print pick slips: {ex.Message}", "Error", MessageBoxButtons.OK);
+        }
+    }
+
 
 
 }
