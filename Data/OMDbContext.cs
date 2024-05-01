@@ -39,7 +39,7 @@ namespace OrderManagerEF.Data
 
         public DbSet<AddressPart> AddressParts { get; set; }
 
-        public DbSet<StarShipITAPIKeyManager> StarShipITAPIKeyManager { get; set; }
+        public DbSet<StarShipITAPIKeyManager> StarShipITAPIKeyManagers { get; set; }
 
         public virtual DbSet<ScanPackReportLookup> ScanPackReportLookups { get; set; }
 
@@ -126,6 +126,8 @@ namespace OrderManagerEF.Data
 
         public DbSet<NZOrderData> NzOrderDatas { get; set; }
 
+        public DbSet<NecaOrderData> NecaOrderDatas { get; set; }
+
         public DbSet<PrintedOrderData> PrintedOrderDatas { get; set; }
 
         public DbSet<HoldOrderData> HoldOrderDatas { get; set; }
@@ -164,7 +166,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<NZOrderData>().ToView("vASP_NZ_SSI").HasNoKey();
             modelBuilder.Entity<HoldOrderData>().ToView("vASP_HOLD_SSI").HasNoKey();
             modelBuilder.Entity<PrintedOrderData>().ToView("vASP_COMPLETE_SSI").HasNoKey();
-
+            modelBuilder.Entity<NecaOrderData>().ToView("vASP_NECA_SSI").HasNoKey();
             modelBuilder.Entity<StarShipITOrder>()
                 .HasMany(s => s.StarShipITOrderDetails)
                 .WithOne(sd => sd.StarShipITOrder)

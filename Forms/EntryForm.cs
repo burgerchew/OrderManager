@@ -71,7 +71,8 @@ public partial class EntryForm : RibbonForm
             { "navBarItem21", (c, ctx, u, rs) => new ReportSettingForm(c, ctx) },
             { "navBarItem22", (c, ctx, us, rs) => new ActivityLogForm(c, ctx, us) },
             { "navBarItem23", (c, ctx, us, rs) => new ApiKeyForm(c, ctx, us) },
-            { "navBarItem24", (c, ctx, us, rs) => new ReplenWizardForm(c, ctx, us, rs) }
+            { "navBarItem24", (c, ctx, us, rs) => new ReplenWizardForm(c, ctx, us, rs) },
+            { "navBarItem25", (c, ctx, us, rs) => new NecaForm(c, ctx, us) }
         };
 
         InitSearchForm();
@@ -167,22 +168,22 @@ public partial class EntryForm : RibbonForm
                 // Iterate through all rows in the GridView
                 for (var i = 0; i < gridView.RowCount; i++)
                     // Iterate through all columns in the GridView
-                for (var j = 0; j < gridView.Columns.Count; j++)
-                {
-                    // Get the cell value
-                    var cellValue = gridView.GetRowCellValue(i, gridView.Columns[j])?.ToString();
+                    for (var j = 0; j < gridView.Columns.Count; j++)
+                    {
+                        // Get the cell value
+                        var cellValue = gridView.GetRowCellValue(i, gridView.Columns[j])?.ToString();
 
-                    // Check if the cell value contains the search text
-                    if (!string.IsNullOrEmpty(cellValue) &&
-                        cellValue.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                        // Add the search result to the list
-                        searchResults.Add(new SearchResult
-                        {
-                            Form = form,
-                            RowHandle = i,
-                            Column = gridView.Columns[j]
-                        });
-                }
+                        // Check if the cell value contains the search text
+                        if (!string.IsNullOrEmpty(cellValue) &&
+                            cellValue.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                            // Add the search result to the list
+                            searchResults.Add(new SearchResult
+                            {
+                                Form = form,
+                                RowHandle = i,
+                                Column = gridView.Columns[j]
+                            });
+                    }
             }
         }
 
@@ -407,7 +408,7 @@ public partial class EntryForm : RibbonForm
             {
                 string salesOrderRef = "SO" + i.ToString("D6"); // Format the sales order reference
 
-        
+
 
                 // Use the original pickSlipPath without adding "archive" here
                 string originalPickSlipPath = reportSetting.PickSlipPath;

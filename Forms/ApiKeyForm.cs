@@ -40,7 +40,7 @@ namespace OrderManagerEF.Forms
             try
             {
                 // Fetch data from the database
-                var apiKeys = _context.Set<StarShipITAPIKeyManager>().ToList();
+                var apiKeys = _context.StarShipITOrderDetails.ToList();
 
                 // Bind the data to the grid view
                 gridControl1.DataSource = apiKeys; // Assuming your GridControl is named 'gridControl1'
