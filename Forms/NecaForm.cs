@@ -22,6 +22,7 @@ using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraReports.UI;
+using Newtonsoft.Json.Linq;
 using OrderManagerEF.DTOs;
 
 namespace OrderManagerEF
@@ -388,5 +389,120 @@ namespace OrderManagerEF
             e.Handled = true;
         }
 
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            _excelExporter.ExportToXls();
+        }
+
+        private async void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // Sync and update orders
+                await SyncAndUpdateOrders();
+
+                // Refresh the GridView
+                var gridView = gridControl1.FocusedView as GridView;
+
+                var data = _context.NecaOrderDatas.ToList();
+
+                // Populate the grid control with the fetched data
+                gridView.GridControl.DataSource = data;
+
+                gridView.RefreshData();
+
+                XtraMessageBox.Show("Sync and update operation was a success!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                XtraMessageBox.Show($"An error occurred during the sync and update operation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public async Task SyncAndUpdateOrders()
+        {
+            int page = 1;
+            int limit = 50;
+            string sinceOrderDate = Uri.EscapeDataString(DateTime.UtcNow.AddDays(-7).ToString("yyyy-MM-dd'T'HH:mm:ss.FFF'Z'"));
+
+            while (true)
+            {
+                try
+                {
+                    var responseString = await client.GetStringAsync($"https://api.starshipit.com/api/orders/unshipped?limit={limit}&page={page}&since_order_date={sinceOrderDate}");
+                    var orders = JObject.Parse(responseString)["orders"];
+                    using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
+                    {
+                        connection.Open();
+                        foreach (var order in orders)
+                        {
+                            if (order["order_id"] != null && order["order_number"] != null)
+                            {
+                                string orderId = (string)order["order_id"];
+                                string orderNumber = (string)order["order_number"];
+                                using (SqlCommand cmdTransHeader = new SqlCommand("ASP_ShipmentIDSync", connection))
+                                {
+                                    cmdTransHeader.CommandType = CommandType.StoredProcedure;
+                                    cmdTransHeader.Parameters.AddWithValue("@OrderID", orderId);
+                                    cmdTransHeader.Parameters.AddWithValue("@OrderNumber", orderNumber);
+                                    cmdTransHeader.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        // Check if orders are still available for the next page
+                        if (orders.Count() < limit)
+                            break;
+
+                        page++;  // Move to next page
+                    }
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show("Error: " + ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        XtraMessageBox.Show("Inner Exception: " + ex.InnerException.Message);
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            StartImportTask();
+        }
+
+        private void StartImportTask()
+        {
+            try
+            {
+                // Fetch server and job name from configuration
+                var serverName = _configuration["ServerName1"];  // 
+                var jobName = _configuration["JobName1"];  // 
+
+                // Show a message box asking the user if they want to continue
+                var result = XtraMessageBox.Show(
+                    "Are you sure you want to run the job?",
+                    "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                // If the user clicks Yes, continue with the operation
+                if (result == DialogResult.Yes)
+                {
+                    // Initialize SqlAgentJobRunner using configuration data
+                    var jobRunner = new SqlAgentJobRunner(serverName, "msdb", jobName);
+                    jobRunner.RunJob();
+
+                    // Show success message
+                    XtraMessageBox.Show("Job started successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show error message if there is an exception
+                XtraMessageBox.Show($"Error starting job: {ex.Message}");
+            }
+        }
     }
 }
