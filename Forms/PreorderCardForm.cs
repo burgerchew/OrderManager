@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Windows.Forms;
@@ -11,6 +13,7 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraSplashScreen;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using OrderManagerEF.Classes;
 using OrderManagerEF.Data;
@@ -223,8 +226,168 @@ public partial class PreorderCardForm : RibbonForm
 
     }
 
+    private void CancelOrder(List<string> salesOrderReferences)
+    {
+        var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            foreach (var salesOrderReference in salesOrderReferences)
+                using (var command = new SqlCommand("dbo.ASP_CANCEL", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Assuming the parameter name is @SalesOrderReference in your stored procedure
+                    command.Parameters.AddWithValue("@SalesOrderReference", salesOrderReference);
+
+                    command.ExecuteNonQuery();
+                }
+        }
+    }
+
     private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
     {
+        var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
+        if (gridView.SelectedRowsCount == 0)
+        {
+            XtraMessageBox.Show("Please select one or more rows");
+            return;
+        }
+
+
+        var selectedRowHandles = gridView.GetSelectedRows();
+        var salesOrderReferences = new List<string>();
+
+        foreach (var rowHandle in selectedRowHandles)
+        {
+            var salesOrderReference = gridView.GetRowCellValue(rowHandle, "AccountingRef").ToString();
+            salesOrderReferences.Add(salesOrderReference);
+        }
+
+        CancelOrder(salesOrderReferences);
+        // Refresh the GridView
+        XtraMessageBox.Show(
+            "These orders has been moved to the Hold Tab.");
+
+        // Fetch the updated data from the database using the new EF Core method
+        var data = _context.PreOrderCardDatas.ToList();
+
+        // Set the fetched data as the grid's data source and refresh the grid view
+        gridView.GridControl.DataSource = data;
+        gridView.RefreshData();
+    }
+
+    private void barButtonItem5_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+    {
+        var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+
+        if (gridView.SelectedRowsCount == 0)
+        {
+            XtraMessageBox.Show("Please select one or more rows to generate reports.");
+            return;
+        }
+
+        // Call the method from ReportManager to show a warning if the path is not empty
+        _reportManager.ShowWarningIfPathNotEmpty();
+
+        if (gridView.SelectedRowsCount > 5)
+        {
+            var result =
+                XtraMessageBox.Show("You have selected more than 5 rows. Are you sure you want to continue?",
+                    "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.No) return;
+        }
+
+        //Check Label File Exists
+        foreach (var rowHandle in gridView.GetSelectedRows())
+        {
+            var filePath = gridView.GetRowCellValue(rowHandle, "LabelFile").ToString();
+            if (!File.Exists(filePath))
+            {
+                var result =
+                    XtraMessageBox.Show(
+                        "The label file does not exist for one or more selected rows. Do you want to continue processing?",
+                        "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.No) return; // Exit the method to prevent processing
+
+                {
+                    break; // Break out of the loop and continue processing
+                }
+            }
+        }
+
+
+        var selectedRowHandles = gridView.GetSelectedRows();
+        var salesOrderReferences = new List<string>();
+
+        foreach (var rowHandle in selectedRowHandles)
+        {
+            var salesOrderReference = gridView.GetRowCellValue(rowHandle, "AccountingRef").ToString();
+            salesOrderReferences.Add(salesOrderReference);
+        }
+
+        // Ensure the splash screen is closed
+        SplashScreenUtility.CloseSplashScreenIfNeeded();
+
+        // Show the custom splash screen
+        SplashScreenManager.ShowForm(typeof(ProgressForm));
+
+
+        _reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences,
+            progress => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress),
+            errorMessage => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetMessage, errorMessage)
+        );
+
+        // Ensure the splash screen is closed
+        SplashScreenUtility.CloseSplashScreenIfNeeded();
+
+
+        var defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
+
+
+        // Call the ExecuteDefaultPrinter method and pass in the default printer name
+        var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
+        var printerProgram = new PrinterProgram(programPath, _configuration);
+        printerProgram.ExecuteDefaultPrinter(defaultPrinterName);
+
+        /// Read the EnablePrintLog key value from appsettings.json or other configuration source
+        bool usePrintLog = bool.Parse(_configuration["EnablePrintLog"]);
+        // Parses the string to a boolean. Assumes that "EnablePrintLog" exists and its value is either "true" or "false".
+
+        // If EnablePrintLog is true, then log the user activity
+        if (usePrintLog)
+        {
+            // Loop through each sales order reference
+            foreach (var salesOrderReference in salesOrderReferences)
+            {
+                // Create a new user activity instance with required properties
+                UserActivity userActivity = new UserActivity
+                {
+                    ActivityDescription = $"User {_userSession.CurrentUser.Username} printed pickslip with AccountingRef: {salesOrderReference} to {defaultPrinterName}",
+                    Timestamp = DateTime.Now,
+                    UserId = _userSession.CurrentUser.Id
+                };
+
+                // Add the user activity to the Entity Framework context
+                _context.UserActivities.Add(userActivity);
+            }
+
+            // Commit changes to the database
+            _context.SaveChanges();
+        }
+
+        // Fetch the updated data from the database using the new EF Core method
+        var data = _context.PreOrderCardDatas.ToList();
+
+        // Set the fetched data as the grid's data source and refresh the grid view
+        gridView.GridControl.DataSource = data;
+        gridView.RefreshData();
+
+        // Show a message box indicating all reports were saved
+        XtraMessageBox.Show($"{salesOrderReferences.Count} reports were saved successfully.");
     }
 }

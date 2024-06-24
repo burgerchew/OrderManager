@@ -91,10 +91,7 @@ namespace OrderManagerEF
             barButtonItem7.ItemClick += barButtonItem7_ItemClick;
             //Hold Order
             barButtonItem8.ItemClick += barButtonItem8_ItemClick;
-            //Show Ready Orders
-            barButtonItem9.ItemClick += barButtonItem9_ItemClick;
-            //Show Duplicates
-            barButtonItem10.ItemClick += barButtonItem10_ItemClick;
+ 
             //Select and Process
             barButtonItem11.ItemClick += barButtonItem11_ItemClick;
         }
@@ -737,6 +734,7 @@ namespace OrderManagerEF
             gridView.GridControl.DataSource = data;
             gridView.RefreshData();
         }
+
 
         private void CancelOrder(List<string> salesOrderReferences)
         {
