@@ -76,11 +76,6 @@ namespace OrderManagerEF.Data
                     sourceLocationNoParam, orderTypeParam, dateRangeParam, retailBinThresholdParam)
                 .ToListAsync();
 
-            //if (result == null || !result.Any()) // Check if the result is null or empty
-            //{
-            //    DevExpress.XtraEditors.XtraMessageBox.Show("No data found for the given parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return new List<ReplenishmentResult>(); // Return an empty list to prevent potential issues elsewhere
-            //}
 
             return result;
         }
@@ -117,6 +112,8 @@ namespace OrderManagerEF.Data
         public DbSet<DSOrderData> DSOrderDatas { get; set; }
 
         public DbSet<PreOrderData> PreOrderDatas { get; set; }
+
+        public DbSet<PreOrderCardData> PreOrderCardDatas { get; set; }
 
         public DbSet<SampleOrderData> SampleOrderDatas { get; set; }
 
@@ -160,6 +157,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<CSCOrderData>().ToView("vASP_CSC_SSI").HasNoKey();
             modelBuilder.Entity<DSOrderData>().ToView("vASP_DS_SSI").HasNoKey();
             modelBuilder.Entity<PreOrderData>().ToView("vASP_PREORDERS_SSI").HasNoKey();
+            modelBuilder.Entity<PreOrderCardData>().ToView("vASP_PREORDERS_CARD_SSI").HasNoKey();
             modelBuilder.Entity<SampleOrderData>().ToView("vASP_SAMPLES_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOrderData>().ToView("vASP_RUB_SSI").HasNoKey();
             modelBuilder.Entity<RubiesOver5OrderData>().ToView("vASP_RUB_SSI_OVER5").HasNoKey();
