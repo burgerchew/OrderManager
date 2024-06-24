@@ -73,13 +73,15 @@
             repositoryItemRibbonSearchEdit1 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
             navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
+            navBarGroup6 = new DevExpress.XtraNavBar.NavBarGroup();
+            navBarItem5 = new DevExpress.XtraNavBar.NavBarItem();
+            navBarItem26 = new DevExpress.XtraNavBar.NavBarItem();
             navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
             navBarItem1 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem2 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem25 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem3 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem4 = new DevExpress.XtraNavBar.NavBarItem();
-            navBarItem5 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem6 = new DevExpress.XtraNavBar.NavBarItem();
             navBarItem8 = new DevExpress.XtraNavBar.NavBarItem();
             navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
@@ -130,8 +132,6 @@
             navBarControl2 = new DevExpress.XtraNavBar.NavBarControl();
             repositoryItemRibbonSearchEdit3 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
             repositoryItemRibbonSearchEdit4 = new DevExpress.XtraBars.Ribbon.Internal.RepositoryItemRibbonSearchEdit();
-            navBarItem26 = new DevExpress.XtraNavBar.NavBarItem();
-            navBarGroup6 = new DevExpress.XtraNavBar.NavBarGroup();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRibbonSearchEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navBarControl1).BeginInit();
@@ -167,9 +167,30 @@
             navBarControl1.Location = new System.Drawing.Point(0, 158);
             navBarControl1.Name = "navBarControl1";
             navBarControl1.OptionsNavPane.ExpandedWidth = 212;
-            navBarControl1.Size = new System.Drawing.Size(212, 835);
+            navBarControl1.Size = new System.Drawing.Size(212, 922);
             navBarControl1.TabIndex = 1;
             navBarControl1.Text = "navBarControl1";
+            // 
+            // navBarGroup6
+            // 
+            navBarGroup6.Caption = "Pre-Orders";
+            navBarGroup6.Expanded = true;
+            navBarGroup6.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem5), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem26) });
+            navBarGroup6.Name = "navBarGroup6";
+            // 
+            // navBarItem5
+            // 
+            navBarItem5.Caption = "PreOrders Account";
+            navBarItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.LargeImage");
+            navBarItem5.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.SmallImage");
+            navBarItem5.Name = "navBarItem5";
+            // 
+            // navBarItem26
+            // 
+            navBarItem26.Caption = "PreOrders Card Only";
+            navBarItem26.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem26.ImageOptions.LargeImage");
+            navBarItem26.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem26.ImageOptions.SmallImage");
+            navBarItem26.Name = "navBarItem26";
             // 
             // navBarGroup1
             // 
@@ -212,13 +233,6 @@
             navBarItem4.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem4.ImageOptions.LargeImage");
             navBarItem4.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem4.ImageOptions.SmallImage");
             navBarItem4.Name = "navBarItem4";
-            // 
-            // navBarItem5
-            // 
-            navBarItem5.Caption = "PreOrders Account";
-            navBarItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.LargeImage");
-            navBarItem5.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem5.ImageOptions.SmallImage");
-            navBarItem5.Name = "navBarItem5";
             // 
             // navBarItem6
             // 
@@ -465,7 +479,7 @@
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.PageCategories.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageCategory[] { ribbonPageCategory1 });
             ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemRibbonSearchEdit1, repositoryItemTextEdit1 });
-            ribbonControl1.Size = new System.Drawing.Size(1142, 158);
+            ribbonControl1.Size = new System.Drawing.Size(1131, 158);
             // 
             // barListItem1
             // 
@@ -598,25 +612,11 @@
             repositoryItemRibbonSearchEdit4.Name = "repositoryItemRibbonSearchEdit4";
             repositoryItemRibbonSearchEdit4.NullText = "Search";
             // 
-            // navBarItem26
-            // 
-            navBarItem26.Caption = "PreOrders Card Only";
-            navBarItem26.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem26.ImageOptions.LargeImage");
-            navBarItem26.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem26.ImageOptions.SmallImage");
-            navBarItem26.Name = "navBarItem26";
-            // 
-            // navBarGroup6
-            // 
-            navBarGroup6.Caption = "Pre-Orders";
-            navBarGroup6.Expanded = true;
-            navBarGroup6.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] { new DevExpress.XtraNavBar.NavBarItemLink(navBarItem5), new DevExpress.XtraNavBar.NavBarItemLink(navBarItem26) });
-            navBarGroup6.Name = "navBarGroup6";
-            // 
             // EntryForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1142, 993);
+            ClientSize = new System.Drawing.Size(1131, 1080);
             Controls.Add(navBarControl1);
             Controls.Add(ribbonControl1);
             IsMdiContainer = true;
