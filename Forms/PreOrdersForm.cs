@@ -214,7 +214,7 @@ namespace OrderManagerEF
                 var reportGenerator = new BulkReportGenerator(_configuration);
 
                 // Call the GenerateReportPortrait method
-                var report = reportGenerator.GenerateReportPortrait(salesOrderReference, errorCallback);
+                var report = reportGenerator.GenerateReportPreorderPortrait(salesOrderReference, errorCallback);
 
                 // Check if the report is not null (i.e., data was found)
                 if (report != null)
@@ -484,7 +484,7 @@ namespace OrderManagerEF
             SplashScreenManager.ShowForm(typeof(ProgressForm));
 
 
-            _reportGenerator.GenerateAndSaveReportsProgressPath(salesOrderReferences,
+            _reportGenerator.GenerateAndSavePreorderReportsProgressPath(salesOrderReferences,
                 progress => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetProgress, progress),
                 errorMessage => SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetMessage, errorMessage)
             );

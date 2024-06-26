@@ -6,9 +6,9 @@ using System.Drawing;
 
 namespace OrderManagerEF.Reports
 {
-    public partial class PickSlipCardOnlyReport : DevExpress.XtraReports.UI.XtraReport
+    public partial class PreorderPickslipReport : DevExpress.XtraReports.UI.XtraReport
     {
-        public PickSlipCardOnlyReport()
+        public PreorderPickslipReport()
         {
             InitializeComponent();
         }

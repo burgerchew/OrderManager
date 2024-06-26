@@ -19,6 +19,7 @@ using DevExpress.XtraReports.UserDesigner;
 using DevExpress.XtraSplashScreen;
 using Microsoft.Extensions.Configuration;
 using OrderManager;
+using OrderManagerEF.Reports;
 
 
 namespace OrderManagerEF.Classes
@@ -89,23 +90,63 @@ namespace OrderManagerEF.Classes
             }
         }
 
+        public void GenerateAndSavePreorderReportsProgressPath(List<string> salesOrderReferences, Action<int> progressCallback, Action<string> errorCallback)
+        {
+            int totalReports = salesOrderReferences.Count;
+            int currentReport = 0;
+
+            // Retrieve the report setting from the database
+            ReportSetting reportSetting = _reportManager.GetReportSetting();
+
+            if (reportSetting != null)
+            {
+                int successfulReports = 0;
+
+                foreach (string salesOrderRef in salesOrderReferences)
+                {
+                    try
+                    {
+                        // Pass the errorCallback to GenerateReportPortrait
+                        XtraReport report = GenerateReportPreorderPortrait(salesOrderRef, errorCallback);
+
+                        if (report != null) // Check if report is not null (i.e., successful)
+                        {
+                            // Call the SaveReport method with the pickslipPath from the reportSetting object
+                            SaveReportPath(report, salesOrderRef, reportSetting.PickSlipPath);
+
+                            // Update the transheaders table
+                            UpdateTransHeaders(salesOrderRef);
+
+                            successfulReports++;
+                            string successMessage = $"{successfulReports} out of {totalReports} pickslips generated successfully.";
+                            SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetMessage, successMessage);
+                        }
+                    }
+                    catch (Exception ex) // Handle exceptions
+                    {
+                        string errorMessage = $"An error occurred for {salesOrderRef}. Details: {ex.Message}. Skipping...";
+                        SplashScreenManager.Default.SendCommand(ProgressForm.SplashScreenCommand.SetMessage, errorMessage);
+                    }
+
+                    // Update the progress
+                    currentReport++;
+                    int progress = (int)((double)currentReport / totalReports * 100);
+                    progressCallback(progress);
+                }
+            }
+
+            else
+            {
+                // Handle the case when the report setting is not available
+                XtraMessageBox.Show("Report settings are not available. Please configure the settings first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
 
-       //Older Version
+
+        //Older Version
         public XtraReport GenerateReportPortrait(string salesOrderReference, Action<string> errorCallback)
         {
-
-            //// Access the target directory from Program class
-            //string TargetDirectory = Program.targetDirectory;
-
-            //// Assuming you have a connection string in your appsettings.json file.
-            //string connectionString = _configuration.GetConnectionString("RubiesConnectionString");
-
-            //// The full path to the appsettings.json file
-            //string appSettingsPath = Path.Combine(TargetDirectory, "appsettings.json");
-
-            //// Show a message box with the connection string and folder path to ensure they are loaded correctly
-            //XtraMessageBox.Show($"Connection string loaded from appsettings.json: {connectionString}\nConfiguration loaded from: {Path.GetFullPath(appSettingsPath)}");
 
 
             if (!IsDataPresentForSalesOrder(salesOrderReference, errorCallback))
@@ -116,8 +157,30 @@ namespace OrderManagerEF.Classes
             // Create a new report instance
             PickSlipReportPortrait report = new PickSlipReportPortrait();
 
-            // Set report data source, filter, and parameters
-            // based on the sales order reference
+            // Set the sales order reference parameter
+            report.Parameters["SalesOrderReferenceParam"].Value = salesOrderReference;
+
+            // Apply the parameter (set the second argument to 'true')
+            report.Parameters["SalesOrderReferenceParam"].Visible = false;
+
+            // Make sure the data is filtered by the parameter
+            report.FilterString = "[AccountingRef] = ?SalesOrderReferenceParam";
+
+            return report;
+        }
+
+
+        public XtraReport GenerateReportPreorderPortrait(string salesOrderReference, Action<string> errorCallback)
+        {
+
+
+            if (!IsDataPresentForSalesOrder(salesOrderReference, errorCallback))
+            {
+                return null;
+            }
+
+            // Create a new report instance
+            PreorderPickslipReport report = new PreorderPickslipReport();
 
             // Set the sales order reference parameter
             report.Parameters["SalesOrderReferenceParam"].Value = salesOrderReference;

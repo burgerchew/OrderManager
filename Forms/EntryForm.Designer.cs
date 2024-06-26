@@ -264,7 +264,7 @@
             // 
             // navBarItem9
             // 
-            navBarItem9.Caption = "Printed Labels";
+            navBarItem9.Caption = "Label Queue";
             navBarItem9.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("navBarItem9.ImageOptions.LargeImage");
             navBarItem9.ImageOptions.SmallImage = (System.Drawing.Image)resources.GetObject("navBarItem9.ImageOptions.SmallImage");
             navBarItem9.Name = "navBarItem9";
