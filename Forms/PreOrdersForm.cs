@@ -91,7 +91,7 @@ namespace OrderManagerEF
             barButtonItem7.ItemClick += barButtonItem7_ItemClick;
             //Hold Order
             barButtonItem8.ItemClick += barButtonItem8_ItemClick;
- 
+
             //Select and Process
             barButtonItem11.ItemClick += barButtonItem11_ItemClick;
         }
