@@ -50,7 +50,7 @@ namespace OrderManagerEF.Forms
                 string connectionString = _configuration.GetConnectionString("RubiesConnectionString");
                 string[] tablesToTruncate =
                 {
-                    "LabelstoPrintDS", "LabelstoPrintRUB", "LabelstoPrintCSC", "LabelstoPrint","LabelstoPrintNZ"
+                    "LabelstoPrintDS", "LabelstoPrintRUB", "LabelstoPrintCSC", "LabelstoPrint","LabelstoPrintNZ","LabelstoPrintNECA"
                 }; // Add the names of the tables you want to truncate
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
