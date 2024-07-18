@@ -132,7 +132,8 @@ namespace OrderManagerEF.Forms
                 { "RUB", "LabelstoPrintRUB" },
                 { "DS", "LabelstoPrintDS" },
                 { "BSA", "LabelstoPrint" },
-                { "NZ", "LabelstoPrintNZ" }
+                { "NZ", "LabelstoPrintNZ" },
+                { "NECA", "LabelstoPrintNECA" }
             };
 
 
@@ -146,7 +147,7 @@ namespace OrderManagerEF.Forms
                     DataRowView rowView = (DataRowView)gridView1.GetRow(rowHandle);
                     string starShipITAccount =
                         rowView["StarShipITAccount"]
-                            .ToString(); // Replace "StarShipITAccount" with the actual column name containing the account code
+                            .ToString(); // 
                     string
                         accountingRef =
                             rowView["SalesOrder"]
