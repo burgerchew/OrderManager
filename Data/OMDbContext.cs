@@ -125,6 +125,8 @@ namespace OrderManagerEF.Data
 
         public DbSet<NecaOrderData> NecaOrderDatas { get; set; }
 
+        public DbSet<NecaB2bOrderData> NecaB2bOrderDatas { get; set; }
+
         public DbSet<PrintedOrderData> PrintedOrderDatas { get; set; }
 
         public DbSet<HoldOrderData> HoldOrderDatas { get; set; }

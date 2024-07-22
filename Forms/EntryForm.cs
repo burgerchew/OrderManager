@@ -73,7 +73,8 @@ public partial class EntryForm : RibbonForm
             { "navBarItem23", (c, ctx, us, rs) => new ApiKeyForm(c, ctx, us) },
             { "navBarItem24", (c, ctx, us, rs) => new ReplenWizardForm(c, ctx, us, rs) },
             { "navBarItem25", (c, ctx, us, rs) => new NecaForm(c, ctx, us) },
-            { "navBarItem26", (c, ctx, us, rs) => new PreorderCardForm(c, ctx, us) }
+            { "navBarItem26", (c, ctx, us, rs) => new PreorderCardForm(c, ctx, us) },
+            { "navBarItem27", (c, ctx, us, rs) => new NecaB2BForm(c, ctx, us) }
         };
 
         InitSearchForm();
