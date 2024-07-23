@@ -28,11 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NecaB2BForm));
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -41,23 +49,69 @@
             // ribbonControl1
             // 
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2, barButtonItem3 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.MaxItemId = 1;
+            ribbonControl1.MaxItemId = 4;
             ribbonControl1.Name = "ribbonControl1";
-            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
             ribbonControl1.Size = new System.Drawing.Size(784, 146);
+            // 
+            // barButtonItem1
+            // 
+            barButtonItem1.Caption = "Hold Order";
+            barButtonItem1.Id = 1;
+            barButtonItem1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
+            barButtonItem1.Name = "barButtonItem1";
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick;
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Export";
+            barButtonItem2.Id = 2;
+            barButtonItem2.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
+            barButtonItem2.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem2.ImageOptions.LargeImage");
+            barButtonItem2.Name = "barButtonItem2";
+            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
+            // 
+            // barButtonItem3
+            // 
+            barButtonItem3.Caption = "Select and Process";
+            barButtonItem3.Id = 3;
+            barButtonItem3.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
+            barButtonItem3.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem3.ImageOptions.LargeImage");
+            barButtonItem3.Name = "barButtonItem3";
+            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
             // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
             ribbonPage1.Name = "ribbonPage1";
-            ribbonPage1.Text = "ribbonPage1";
+            ribbonPage1.Text = "Menu";
             // 
             // ribbonPageGroup1
             // 
+            ribbonPageGroup1.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
-            ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Data";
+            // 
+            // ribbonPage2
+            // 
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2, ribbonPageGroup3 });
+            ribbonPage2.Name = "ribbonPage2";
+            ribbonPage2.Text = "PickSlips";
+            // 
+            // ribbonPageGroup2
+            // 
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem1);
+            ribbonPageGroup2.Name = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "Hold";
+            // 
+            // ribbonPageGroup3
+            // 
+            ribbonPageGroup3.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup3.Name = "ribbonPageGroup3";
+            ribbonPageGroup3.Text = "Process";
             // 
             // gridControl1
             // 
@@ -74,6 +128,11 @@
             // 
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            // 
+            // ribbonPage3
+            // 
+            ribbonPage3.Name = "ribbonPage3";
+            ribbonPage3.Text = "ribbonPage3";
             // 
             // NecaB2BForm
             // 
@@ -98,5 +157,12 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage2;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage3;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
     }
 }

@@ -168,6 +168,7 @@ namespace OrderManagerEF.Data
             modelBuilder.Entity<HoldOrderData>().ToView("vASP_HOLD_SSI").HasNoKey();
             modelBuilder.Entity<PrintedOrderData>().ToView("vASP_COMPLETE_SSI").HasNoKey();
             modelBuilder.Entity<NecaOrderData>().ToView("vASP_NECA_SSI").HasNoKey();
+            modelBuilder.Entity<NecaB2bOrderData>().ToView("vASP_NECAB2B_SSI").HasNoKey();
             modelBuilder.Entity<StarShipITOrder>()
                 .HasMany(s => s.StarShipITOrderDetails)
                 .WithOne(sd => sd.StarShipITOrder)

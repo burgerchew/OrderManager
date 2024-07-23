@@ -50,7 +50,7 @@ public partial class NecaB2BForm : XtraForm
         _userSession = userSession;
 
 
-        VisibleChanged += Neca_VisibleChanged;
+        VisibleChanged += NecaB2b_VisibleChanged;
 
         _excelExporter = new ExcelExporter(gridView1);
 
@@ -84,7 +84,7 @@ public partial class NecaB2BForm : XtraForm
 
             // If UseMergeTable is true, then load pick slip data
             if (useMergeTable) LoadPickSlipData();
-            var data = _context.NecaOrderDatas.ToList();
+            var data = _context.NecaB2bOrderDatas.ToList();
 
             // Update the FileStatus property for each item in the data list.
             UpdateFileStatusForData(data);
@@ -174,7 +174,7 @@ public partial class NecaB2BForm : XtraForm
         _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
     }
 
-    private void UpdateFileStatusForData(List<NecaOrderData> data)
+    private void UpdateFileStatusForData(List<NecaB2bOrderData> data)
     {
         foreach (var item in data) item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
     }
@@ -207,7 +207,7 @@ public partial class NecaB2BForm : XtraForm
         return fileExistenceGridViewHelper;
     }
 
-    private void Neca_VisibleChanged(object sender, EventArgs e)
+    private void NecaB2b_VisibleChanged(object sender, EventArgs e)
     {
         if (Visible && !_dataLoaded)
         {
@@ -254,63 +254,6 @@ public partial class NecaB2BForm : XtraForm
         highlighter.HighlightDuplicates(gridView);
     }
 
-    private void UpdateBinSortNECA()
-    {
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
-
-        {
-            using (var command = new SqlCommand("ASP_PickSortListRUB", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        try
-        {
-            // create an SQL connection
-            var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
-
-            // Assuming you have a connection string called "connectionString" and a table called "myTable"
-            using (var conn = new Microsoft.Data.SqlClient.SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                var sql = "SELECT COUNT(*) FROM LabelstoPrintNECA";
-                var cmd = new Microsoft.Data.SqlClient.SqlCommand(sql, conn);
-                var rowCount = (int)cmd.ExecuteScalar();
-
-                if (rowCount > 0)
-                {
-                    // Show a message box asking the user if they want to continue
-                    var result = XtraMessageBox.Show(
-                        "Are you sure you want to run the job and download " + rowCount + " labels ?",
-                        "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    // If the user clicks Yes, continue with the operation
-                    if (result == DialogResult.Yes)
-                    {
-                        var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintNECA");
-                        jobRunner.RunJob();
-                        // Show the row count in a message box
-                        XtraMessageBox.Show("Job started successfully! Number of labels queued " + rowCount);
-                    }
-                }
-                else
-                {
-                    XtraMessageBox.Show("Warning: The NECA Queue does not contain any rows!");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            XtraMessageBox.Show($"Error starting job: {ex.Message}");
-        }
-    }
 
 
     private bool CheckZShipmentID(FileExistenceGridView gridView)
@@ -381,232 +324,16 @@ public partial class NecaB2BForm : XtraForm
         e.Handled = true;
     }
 
-    private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+    private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
     {
         _excelExporter.ExportToXls();
     }
 
-    private async void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        try
-        {
-            // Sync and update orders
-            await SyncAndUpdateOrders();
-
-            // Refresh the GridView
-            var gridView = gridControl1.FocusedView as GridView;
-
-            var data = _context.NecaOrderDatas.ToList();
-
-            // Populate the grid control with the fetched data
-            gridView.GridControl.DataSource = data;
-
-            gridView.RefreshData();
-
-            XtraMessageBox.Show("Sync and update operation was a success!", "Success", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
-        catch (Exception ex)
-        {
-            // Log error
-            XtraMessageBox.Show($"An error occurred during the sync and update operation: {ex.Message}", "Error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-    }
-
-    public async Task SyncAndUpdateOrders()
-    {
-        var page = 1;
-        var limit = 50;
-        var sinceOrderDate = Uri.EscapeDataString(DateTime.UtcNow.AddDays(-7).ToString("yyyy-MM-dd'T'HH:mm:ss.FFF'Z'"));
-
-        while (true)
-            try
-            {
-                var responseString = await client.GetStringAsync(
-                    $"https://api.starshipit.com/api/orders/unshipped?limit={limit}&page={page}&since_order_date={sinceOrderDate}");
-                var orders = JObject.Parse(responseString)["orders"];
-                using (var connection = new SqlConnection(_configuration.GetConnectionString("RubiesConnectionString")))
-                {
-                    connection.Open();
-                    foreach (var order in orders)
-                        if (order["order_id"] != null && order["order_number"] != null)
-                        {
-                            var orderId = (string)order["order_id"];
-                            var orderNumber = (string)order["order_number"];
-                            using (var cmdTransHeader = new SqlCommand("ASP_ShipmentIDSync", connection))
-                            {
-                                cmdTransHeader.CommandType = CommandType.StoredProcedure;
-                                cmdTransHeader.Parameters.AddWithValue("@OrderID", orderId);
-                                cmdTransHeader.Parameters.AddWithValue("@OrderNumber", orderNumber);
-                                cmdTransHeader.ExecuteNonQuery();
-                            }
-                        }
-
-                    // Check if orders are still available for the next page
-                    if (orders.Count() < limit)
-                        break;
-
-                    page++; // Move to next page
-                }
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show("Error: " + ex.Message);
-                if (ex.InnerException != null) XtraMessageBox.Show("Inner Exception: " + ex.InnerException.Message);
-                break;
-            }
-    }
-
-    private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        StartImportTask();
-    }
-
-    private void StartImportTask()
-    {
-        try
-        {
-            // Fetch server and job name from configuration
-            var serverName = _configuration["ServerName1"]; // 
-            var jobName = _configuration["JobName1"]; // 
-
-            // Show a message box asking the user if they want to continue
-            var result = XtraMessageBox.Show(
-                "Are you sure you want to run the job?",
-                "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            // If the user clicks Yes, continue with the operation
-            if (result == DialogResult.Yes)
-            {
-                // Initialize SqlAgentJobRunner using configuration data
-                var jobRunner = new SqlAgentJobRunner(serverName, "msdb", jobName);
-                jobRunner.RunJob();
-
-                // Show success message
-                XtraMessageBox.Show("Job started successfully!");
-            }
-        }
-        catch (Exception ex)
-        {
-            // Show error message if there is an exception
-            XtraMessageBox.Show($"Error starting job: {ex.Message}");
-        }
-    }
-
-    //Show iDs
-    private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-        if (gridView != null) FilterZShipmentID(gridView);
-    }
-
-    private void FilterZShipmentID(FileExistenceGridView gridView)
-    {
-        // Assuming ZShipmentID is in the first cell, change 0 to the correct cell index if needed
-        var zShipmentIDColumnIndex = 0;
-        var zShipmentIDColumn = gridView.Columns[zShipmentIDColumnIndex];
-
-        if (gridView.ActiveFilterString.Contains("Not(IsNullOrEmpty([ZShipmentID]))"))
-        {
-            gridView.ActiveFilterCriteria = null;
-            gridView.ActiveFilterString = string.Empty;
-        }
-        else
-        {
-            gridView.ActiveFilterCriteria = new NotOperator(
-                new FunctionOperator(FunctionOperatorType.IsNullOrEmpty,
-                    new OperandProperty(zShipmentIDColumn.FieldName)));
-            gridView.ActiveFilterString = "Not(IsNullOrEmpty([ZShipmentID]))";
-        }
-
-        gridView.RefreshData();
-    }
-
-    //Create a Batch
-    private void barButtonItem4_ItemClick_1(object sender, ItemClickEventArgs e)
-    {
-        var tableName = "LabelstoPrintNECA";
-        var manager = new LabelQueueManager(tableName, _configuration);
-
-        if (manager.ConfirmTruncate())
-        {
-            manager.TruncateTable();
-
-            var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-            var columnMappings = new Dictionary<string, string>
-            {
-                { "AccountingRef", "SalesOrder" },
-                { "TradingRef", "OrderNumber" },
-                { "CustomerCode", "CustomerCode" },
-                { "EntryDateTime", "Date" }
-            };
-
-            string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
-
-            if (!CheckZShipmentID(gridView))
-                if (XtraMessageBox.Show(
-                        "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
-                        "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                    return;
-
-            manager.InsertData(gridView, columnMappings, parameterNames);
-
-            var rowCount = gridView.GetSelectedRows().Length;
-            manager.ShowRowCountMessage(rowCount);
-        }
-
-        manager.CloseConnection();
-    }
-
-    //Show Batch
-    private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        var newForm = new BatchForm(_configuration, _context);
-        newForm.Show();
-    }
 
 
-
-    private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        // Show the SplashScreen
-        SplashScreenManager.ShowDefaultWaitForm();
-        try
-        {
-            // Call the stored procedure
-            UpdateBinSortNECA();
-
-            // Refresh the GridView
-            var gridView = gridControl1.FocusedView as GridView;
-
-            // Refresh the GridView
-            // Fetch the updated data from the database using the new EF Core method
-            var data = _context.NecaOrderDatas.ToList();
-
-            // Set the fetched data as the grid's data source and refresh the grid view
-            gridView.GridControl.DataSource = data;
-            gridView.RefreshData();
-
-        }
-
-        finally
-        {
-            // If SplashScreen was shown, close it
-            if (SplashScreenManager.Default != null)
-            {
-                SplashScreenManager.CloseForm(false);
-            }
-        }
-
-        // Show a message box indicating all reports were saved
-        XtraMessageBox.Show("Operation was successful. Sorting by BinNumber has been completed.");
-    }
 
     //Hold an Order
-    private void barButtonItem8_ItemClick(object sender, ItemClickEventArgs e)
+    private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
     {
         var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -660,21 +387,9 @@ public partial class NecaB2BForm : XtraForm
         }
     }
 
-    //Show Ready orders
-    private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        var gridView = gridControl1.FocusedView as FileExistenceGridView;
-
-        if (gridView != null) gridView.ToggleFileExistenceFilter();
-    }
-    //Check Duplicates
-    private void barButtonItem10_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        FilterDuplicateRows((FileExistenceGridView)gridControl1.MainView);
-    }
 
     //SelectandProcess
-    private void barButtonItem11_ItemClick(object sender, ItemClickEventArgs e)
+    private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
     {
         var gridView = gridControl1.FocusedView as FileExistenceGridView;
 
@@ -782,10 +497,12 @@ public partial class NecaB2BForm : XtraForm
 
         // Refresh the GridView
         // Fetch the updated data from the database using the new EF Core method
-        var data = _context.NecaOrderDatas.ToList();
+        var data = _context.NecaB2bOrderDatas.ToList();
 
         // Set the fetched data as the grid's data source and refresh the grid view
         gridView.GridControl.DataSource = data;
         gridView.RefreshData();
     }
+
+
 }
