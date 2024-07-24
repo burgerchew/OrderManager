@@ -54,7 +54,7 @@
             ribbonControl1.MaxItemId = 5;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
-            ribbonControl1.Size = new System.Drawing.Size(382, 158);
+            ribbonControl1.Size = new System.Drawing.Size(806, 158);
             // 
             // barButtonItem1
             // 
@@ -121,7 +121,7 @@
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(382, 190);
+            gridControl1.Size = new System.Drawing.Size(806, 493);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -139,7 +139,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(382, 348);
+            ClientSize = new System.Drawing.Size(806, 651);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
             Name = "PackingForm";
