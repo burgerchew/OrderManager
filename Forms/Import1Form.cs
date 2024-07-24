@@ -37,8 +37,6 @@ namespace OrderManagerEF
 
             // Set up the MemoEdit column after the data is loaded
             ReadOnlyColumns();
-            SetupMemoEditColumn("ExtraText");
-            SetupEditFormMemoEdit("ExtraText");
             // Save changes and refresh
             UpdateAndRefresh();
 
@@ -141,8 +139,7 @@ namespace OrderManagerEF
             // Make all columns read only
             foreach (GridColumn col in gridView1.Columns) col.OptionsColumn.ReadOnly = true;
 
-            // Enable editing on specific columns
-            gridView1.Columns["ExtraText"].OptionsColumn.ReadOnly = false;
+      
             gridView1.Columns["TradingRef"].OptionsColumn.ReadOnly = false;
         }
 

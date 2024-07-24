@@ -85,25 +85,6 @@ namespace OrderManagerEF.Forms
             }
         }
 
-        private void LoadPickSlipData()
-        {
-            // Define the customer groups dictionary that you want to merge
-            var customerGroups = new Dictionary<string, string>
-        {
-            { "CSC", "CSC" }
-
-            // Add other customer groups as needed
-        };
-
-            _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-        }
-
-        private List<ASP_SSI_Result> LoadDataFromStoredProcedure()
-        {
-            return _storedProcedureService.ExecuteStoredProcedure("ASP_CSC_SSI");
-        }
-
-
 
         private void LoadData()
         {
@@ -112,15 +93,6 @@ namespace OrderManagerEF.Forms
 
             try
             {
-                // Read the UseMergeTable key value from appsettings.json or other configuration source
-                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
-
-
-                // If UseMergeTable is true, then load pick slip data
-                if (useMergeTable)
-                {
-                    LoadPickSlipData();
-                }
                 var data = _context.CscOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.

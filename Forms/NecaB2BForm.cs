@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using DevExpress.Data;
 using DevExpress.Data.Filtering;
@@ -23,6 +24,7 @@ using OrderManagerEF.Data;
 using OrderManagerEF.DTOs;
 using OrderManagerEF.Entities;
 using OrderManagerEF.Forms;
+using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
 
 namespace OrderManagerEF;
 
@@ -69,6 +71,7 @@ public partial class NecaB2BForm : XtraForm
 
         _reportManager = new ReportManager(configuration);
         _pickSlipGenerator = new PickSlipGenerator(configuration, context);
+    
     }
 
     private void LoadData()
@@ -78,12 +81,6 @@ public partial class NecaB2BForm : XtraForm
 
         try
         {
-            // Read the UseMergeTable key value from appsettings.json or other configuration source
-            var useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
-
-
-            // If UseMergeTable is true, then load pick slip data
-            if (useMergeTable) LoadPickSlipData();
             var data = _context.NecaB2bOrderDatas.ToList();
 
             // Update the FileStatus property for each item in the data list.
@@ -105,6 +102,9 @@ public partial class NecaB2BForm : XtraForm
             AddPreviewLinkColumn(newView);
             gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
             HighlightDuplicateRows(newView);
+            GroupDueDate(newView);
+
+
 
             _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
             gridView1.KeyDown += gridView1_KeyDown;
@@ -139,40 +139,6 @@ public partial class NecaB2BForm : XtraForm
         }
     }
 
-    private void LoadPickSlipData()
-    {
-        // Define the customer groups dictionary that you want to merge
-        var customerGroups = new Dictionary<string, string>
-        {
-            { "MOVIEWO", "MOVIEWO" },
-            { "COSTUME BOX", "COSTUME BOX" },
-            { "CASEYS", "CASEYS" },
-            { "COSTCO", "COSTCO" },
-            { "EXPORT", "EXPORT" },
-            { "INDEPENDENTS", "INDEPENDENTS" },
-            { "HIGHEST HEEL", "HIGHEST HEEL" },
-            { "NX", "NX" },
-            { "MRTOYS", "MRTOYS" },
-            { "ONLINE", "ONLINE" },
-            { "KIDSTUFF", "KIDSTUFF" },
-            { "ARL", "ARL" },
-            { "LICENSOR", "LICENSOR" },
-            { "AMAZON", "AMAZON" },
-            { "CATCH", "CATCH" },
-            { "DISC10", "DISC10" },
-            { "TOYMATE", "TOYMATE" },
-            { "DISC15", "DISC15" },
-            { "MEXPORT", "MEXPORT" },
-            { "COSTCODTC", "COSTCODTC" },
-            { "DISC20", "DISC20" },
-            { "STAFF", "STAFF" },
-            { "COLES", "COLES" }
-
-            // Add other customer groups as needed
-        };
-
-        _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-    }
 
     private void UpdateFileStatusForData(List<NecaB2bOrderData> data)
     {
@@ -239,19 +205,25 @@ public partial class NecaB2BForm : XtraForm
         if (gridView != null) gridView.Columns["AccountingRef"].ColumnEdit = repositoryItemHyperLinkEdit1;
     }
 
-    private void FilterDuplicateRows(FileExistenceGridView gridView)
-    {
-        var highlighter = new DuplicateRowHighlighter();
-        highlighter.HighlightDuplicates(gridView);
-
-        highlighter.FilterDuplicates(gridView);
-    }
-
 
     private void HighlightDuplicateRows(FileExistenceGridView gridView)
     {
         var highlighter = new DuplicateRowHighlighter();
         highlighter.HighlightDuplicates(gridView);
+    }
+
+
+    private void GroupDueDate(FileExistenceGridView gridView)
+    {
+        var dueDateColumn = gridView.Columns.ColumnByFieldName("DueDate");
+        if (dueDateColumn != null)
+        {
+            // Group the GridView by the 'duedate' column
+            dueDateColumn.GroupIndex = 0;
+
+            // Expand all group rows
+            gridView.ExpandAllGroups();
+        }
     }
 
 
@@ -277,7 +249,7 @@ public partial class NecaB2BForm : XtraForm
         return allRowsHaveShipmentID;
     }
 
-    private void AddPreviewLinkColumn(GridView gridView)
+    private void AddPreviewLinkColumn(DevExpress.XtraGrid.Views.Grid.GridView gridView)
     {
         // Part 1: Add a new column and specify the column editor
         var column = gridView.Columns.AddField("PreviewLink");

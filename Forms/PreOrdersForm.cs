@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderManagerEF.Entities;
 using OrderManagerEF.DTOs;
+using DevExpress.XtraGrid.Views.Base;
 
 namespace OrderManagerEF
 {
@@ -103,15 +104,7 @@ namespace OrderManagerEF
 
             try
             {
-                // Read the UseMergeTable key value from appsettings.json or other configuration source
-                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
-
-
-                // If UseMergeTable is true, then load pick slip data
-                if (useMergeTable)
-                {
-                    LoadPickSlipData();
-                }
+         
                 var data = _context.PreOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.
@@ -132,6 +125,7 @@ namespace OrderManagerEF
                 AddPreviewLinkColumn(newView);
                 gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
                 HighlightDuplicateRows(newView);
+                GroupDueDate(newView);
 
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
                 gridView1.KeyDown += gridView1_KeyDown;
@@ -141,6 +135,60 @@ namespace OrderManagerEF
             {
                 // Close the splash screen once data is loaded
                 SplashScreenManager.CloseForm(false);
+            }
+        }
+
+        private void GridView_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
+        {
+            GridView view = sender as GridView;
+            if (view == null) return;
+
+            // Get the due date value
+            var dueDate = view.GetGroupRowValue(e.RowHandle, view.Columns["DueDate"]) as DateTime?;
+            if (dueDate == null) return;
+
+            // Calculate the difference in days between the due date and today
+            int daysDiff = (dueDate.Value - DateTime.Today).Days;
+
+            // Set the background color based on the difference
+            if (daysDiff > 14)
+            {
+                e.Appearance.BackColor = Color.LimeGreen;
+                e.Appearance.ForeColor = Color.Black;
+            }
+            else if (daysDiff > 7)
+            {
+                e.Appearance.BackColor = Color.Bisque;
+                e.Appearance.ForeColor = Color.Black;
+            }
+            else if (daysDiff >= 0)
+            {
+                e.Appearance.BackColor = Color.LavenderBlush;
+                e.Appearance.ForeColor = Color.Black;
+            }
+
+            else if (daysDiff < 0)
+            {
+                e.Appearance.BackColor = Color.LightPink;
+                e.Appearance.ForeColor = Color.Black;
+            }
+
+            // Allow default painting to proceed
+            e.Handled = false;
+        }
+
+        private void GroupDueDate(FileExistenceGridView gridView)
+        {
+            var dueDateColumn = gridView.Columns.ColumnByFieldName("DueDate");
+            if (dueDateColumn != null)
+            {
+                // Group the GridView by the 'duedate' column
+                dueDateColumn.GroupIndex = 0;
+
+                // Expand all group rows
+                gridView.ExpandAllGroups();
+                // Subscribe to the CustomDrawGroupRow event
+                // //gridView.CustomDrawGroupRow += GridView_CustomDrawGroupRow;
             }
         }
 
@@ -163,21 +211,6 @@ namespace OrderManagerEF
             }
         }
 
-
-        private void LoadPickSlipData()
-        {
-            // Define the customer groups dictionary that you want to merge
-            Dictionary<string, string> customerGroups = new Dictionary<string, string>
-            {
-                {"PREORDER", "PREORDER"},
-                {"PREORDER-CARD", "PREORDER-CARD"},
-
-
-            };
-
-            _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-
-        }
 
         private void AddPreviewLinkColumn(GridView gridView)
         {
@@ -235,19 +268,6 @@ namespace OrderManagerEF
             return fileExistenceGridViewHelper;
         }
 
-        private DataTable AddFileStatusColumn(DataTable originalTable)
-        {
-            DataTable newTable = originalTable.Copy();
-            newTable.Columns.Add("FileStatus", typeof(string));
-
-            foreach (DataRow row in newTable.Rows)
-            {
-                string filePath = row["LabelFile"].ToString();
-                row["FileStatus"] = CustomTextConverter.Convert(filePath);
-            }
-
-            return newTable;
-        }
 
         private void gridView1_KeyDown(object sender, KeyEventArgs e)
         {

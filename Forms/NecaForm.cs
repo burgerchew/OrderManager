@@ -78,12 +78,7 @@ public partial class NecaForm : XtraForm
 
         try
         {
-            // Read the UseMergeTable key value from appsettings.json or other configuration source
-            var useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
 
-
-            // If UseMergeTable is true, then load pick slip data
-            if (useMergeTable) LoadPickSlipData();
             var data = _context.NecaOrderDatas.ToList();
 
             // Update the FileStatus property for each item in the data list.
@@ -119,7 +114,6 @@ public partial class NecaForm : XtraForm
 
 
 
-
     private void SetUpHttpClient(string location)
     {
         var (starshipItApiKey, ocpApimSubscriptionKey) = _apiKeyManager.GetApiKeysByLocation(location);
@@ -139,40 +133,6 @@ public partial class NecaForm : XtraForm
         }
     }
 
-    private void LoadPickSlipData()
-    {
-        // Define the customer groups dictionary that you want to merge
-        var customerGroups = new Dictionary<string, string>
-        {
-            { "MOVIEWO", "MOVIEWO" },
-            { "COSTUME BOX", "COSTUME BOX" },
-            { "CASEYS", "CASEYS" },
-            { "COSTCO", "COSTCO" },
-            { "EXPORT", "EXPORT" },
-            { "INDEPENDENTS", "INDEPENDENTS" },
-            { "HIGHEST HEEL", "HIGHEST HEEL" },
-            { "NX", "NX" },
-            { "MRTOYS", "MRTOYS" },
-            { "ONLINE", "ONLINE" },
-            { "KIDSTUFF", "KIDSTUFF" },
-            { "ARL", "ARL" },
-            { "LICENSOR", "LICENSOR" },
-            { "AMAZON", "AMAZON" },
-            { "CATCH", "CATCH" },
-            { "DISC10", "DISC10" },
-            { "TOYMATE", "TOYMATE" },
-            { "DISC15", "DISC15" },
-            { "MEXPORT", "MEXPORT" },
-            { "COSTCODTC", "COSTCODTC" },
-            { "DISC20", "DISC20" },
-            { "STAFF", "STAFF" },
-            { "COLES", "COLES" }
-
-            // Add other customer groups as needed
-        };
-
-        _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-    }
 
     private void UpdateFileStatusForData(List<NecaOrderData> data)
     {

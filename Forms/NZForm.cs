@@ -116,15 +116,7 @@ namespace OrderManagerEF.Forms
 
             try
             {
-                // Read the UseMergeTable key value from appsettings.json or other configuration source
-                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
-
-
-                // If UseMergeTable is true, then load pick slip data
-                if (useMergeTable)
-                {
-                    LoadPickSlipData();
-                }
+      
                 var data = _context.NzOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.
@@ -190,22 +182,6 @@ namespace OrderManagerEF.Forms
             }
         }
 
-
-
-        private void LoadPickSlipData()
-        {
-            // Define the customer groups dictionary that you want to merge
-            Dictionary<string, string> customerGroups = new Dictionary<string, string>
-            {
-                {"PREORDER", "PREORDER"},
-                {"PREORDER-CARD", "PREORDER-CARD"},
-
-
-            };
-
-            _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-
-        }
 
         private FileExistenceGridViewHelper InitializeFileExistenceHelper(FileExistenceGridView gridView)
         {

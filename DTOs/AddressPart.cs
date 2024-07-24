@@ -11,7 +11,6 @@ namespace OrderManagerEF.DTOs
         public DateTime EntryDateTime { get; set; }
         public string AccountingRef { get; set; }
         public string TradingRef { get; set; }
-        public string ExtraText { get; set; }
         public string CustomerCode { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }

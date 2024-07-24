@@ -75,10 +75,6 @@ namespace OrderManagerEF
             );
         }
 
-        private void YourForm_Resize(object sender, EventArgs e)
-        {
-            UpdateProgressBarLocation();
-        }
 
         private void gridView1_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
@@ -458,6 +454,7 @@ namespace OrderManagerEF
 
         private async void barButtonItem1_ItemClick_1(object sender, ItemClickEventArgs e)
         {
+            // Check if the semaphore is currently locked, if so, exit the method
             if (semaphore.CurrentCount == 0) return;
 
             await semaphore.WaitAsync();
@@ -473,8 +470,7 @@ namespace OrderManagerEF
                     if (isChecked)
                     {
                         // Check if the addressvalidated_value field is true for the current row
-                        bool addressValidated =
-                            Convert.ToBoolean(gridView1.GetRowCellValue(i, "AddressValidatedValue"));
+                        bool addressValidated = Convert.ToBoolean(gridView1.GetRowCellValue(i, "AddressValidatedValue"));
 
                         if (addressValidated)
                         {
@@ -487,10 +483,8 @@ namespace OrderManagerEF
                         }
                         else
                         {
-                            // Optionally, show a message to the user informing them that the submission is not allowed
-                            XtraMessageBox.Show(
-                                "Submission not allowed. The address has not been validated. Please unselect the row",
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            // Show a message to the user if the submission is not allowed
+                            XtraMessageBox.Show("Submission not allowed. The address has not been validated. Please unselect the row", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
@@ -512,18 +506,30 @@ namespace OrderManagerEF
 
                 foreach (var extraData in checkedRowHandles.Keys)
                 {
-                    // Retrieve API keys for the desired location.
+                    // Retrieve API keys for the desired location
                     var (starshipItApiKey, ocpApimSubscriptionKey) = GetApiKeysFromTableAdapter(extraData);
 
                     var apiRequestSender = new BulkLabelCreator(_configuration, gridView1, starshipItApiKey, ocpApimSubscriptionKey,
                         checkedRowHandles[extraData].ToArray(), progressBarControl1, this);
+
+                    // Send the API request to create labels
                     await apiRequestSender.BulkLabelSendApiRequestAsyncLimitProgress(progress);
+
+                    // Update the Exported field to true for the processed rows
+                    foreach (var rowIndex in checkedRowHandles[extraData])
+                    {
+                        gridView1.SetRowCellValue(rowIndex, "Exported", true);
+                        gridView1.SetRowCellValue(rowIndex, "Selected", false); // Uncheck the selected field
+                    }
                 }
+
+                // Refresh the grid view
+                gridView1.RefreshData();
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                // Show an error message if an exception occurs
+                XtraMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -536,5 +542,6 @@ namespace OrderManagerEF
                 }
             }
         }
+
     }
 }

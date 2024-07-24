@@ -117,15 +117,7 @@ namespace OrderManagerEF.Forms
 
             try
             {
-                // Read the UseMergeTable key value from appsettings.json or other configuration source
-                bool useMergeTable = bool.Parse(_configuration["UseMergeTable"]);
-
-
-                // If UseMergeTable is true, then load pick slip data
-                if (useMergeTable)
-                {
-                    LoadPickSlipData();
-                }
+  
 
                 var data = _context.DSOrderDatas.ToList();
 
@@ -193,22 +185,6 @@ namespace OrderManagerEF.Forms
                 item.FileStatus = CustomTextConverter.Convert(item.LabelFile);
             }
         }
-
-        private void LoadPickSlipData()
-        {
-            // Define the customer groups dictionary that you want to merge
-            Dictionary<string, string> customerGroups = new Dictionary<string, string>
-            {
-                {"DS", "DS"}
-              
-                // Add other customer groups as needed
-            };
-
-            _pickSlipGenerator.MergeTable(customerGroups); // Call the merge method
-
-        }
-
-
         private FileExistenceGridViewHelper InitializeFileExistenceHelper(FileExistenceGridView gridView)
         {
             var fileExistenceGridViewHelper = new FileExistenceGridViewHelper(gridView);
