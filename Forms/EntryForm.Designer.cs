@@ -566,7 +566,7 @@
             // 
             // barButtonItem4
             // 
-            barButtonItem4.Caption = "Print";
+            barButtonItem4.Caption = "Print Range in Bulk";
             barButtonItem4.Id = 9;
             barButtonItem4.Name = "barButtonItem4";
             barButtonItem4.ItemClick += barButtonItem4_ItemClick_1;

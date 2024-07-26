@@ -91,6 +91,10 @@ public partial class EntryForm : RibbonForm
         barButtonItem2.Appearance.BackColor = Color.ForestGreen;
         // Set text color
         barButtonItem2.Appearance.ForeColor = Color.White;
+
+        barButtonItem4.Appearance.BackColor = Color.ForestGreen;
+        // Set text color
+        barButtonItem4.Appearance.ForeColor = Color.White;
     }
 
     private void InitSearchForm()
@@ -353,7 +357,7 @@ public partial class EntryForm : RibbonForm
 
     private void barButtonItem4_ItemClick_1(object sender, ItemClickEventArgs e)
     {
-  
+
 
         try
         {
