@@ -351,6 +351,61 @@ public partial class EntryForm : RibbonForm
         }
     }
 
+    private void barButtonItem4_ItemClick_1(object sender, ItemClickEventArgs e)
+    {
+  
+
+        try
+        {
+            // Get the sales order range from BarEditItem fields
+            string startSalesOrderRef = barEditItem2.EditValue?.ToString();
+            string endSalesOrderRef = barEditItem3.EditValue?.ToString();
+
+            // Validate sales order references
+            if (string.IsNullOrEmpty(startSalesOrderRef) || string.IsNullOrEmpty(endSalesOrderRef))
+            {
+                XtraMessageBox.Show("Please enter both start and end sales order references.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Ensure the start value is less than or equal to the end value
+            if (string.Compare(startSalesOrderRef, endSalesOrderRef, StringComparison.Ordinal) > 0)
+            {
+                XtraMessageBox.Show("The start sales order reference must be less than or equal to the end sales order reference.", "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Retrieve the report setting
+            ReportSetting reportSetting = _reportManager.GetReportSetting();
+
+            // Get the default printer for the current user
+            string defaultPrinterName = PrinterHelperEF.GetUserPrinter(_context, _userSession.CurrentUser.Id);
+
+            // Validate default printer
+            if (string.IsNullOrEmpty(defaultPrinterName))
+            {
+                XtraMessageBox.Show("No default printer is set up. Please set a default printer before proceeding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Use the original pickSlipPath without adding "archive" here
+            string originalPickSlipPath = reportSetting.PickSlipPath;
+            // Execute the quick print
+            var programPath = "C:\\Program Files (x86)\\2Printer\\2Printer.exe";
+            PrinterProgram printerProgram = new PrinterProgram(programPath, _configuration);
+            printerProgram.ExecuteDefaultPrinterQuickPrintRange(defaultPrinterName, originalPickSlipPath, startSalesOrderRef, endSalesOrderRef);
+
+            // Show success message
+            XtraMessageBox.Show("Pick slips printed successfully.", "Success", MessageBoxButtons.OK);
+        }
+        catch (Exception ex)
+        {
+            // Show error message
+            XtraMessageBox.Show($"Failed to print pick slip: {ex.Message}", "Error", MessageBoxButtons.OK);
+        }
+    }
+
+
 
     private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
     {
@@ -446,7 +501,6 @@ public partial class EntryForm : RibbonForm
             XtraMessageBox.Show($"Failed to print pick slips: {ex.Message}", "Error", MessageBoxButtons.OK);
         }
     }
-
 
 
 }

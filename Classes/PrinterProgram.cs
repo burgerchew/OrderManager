@@ -101,6 +101,65 @@ namespace OrderManagerEF.Classes
             Process.Start(startInfo);
         }
 
+        public void ExecuteDefaultPrinterQuickPrintRange(string defaultPrinterName, string pickSlipPath, string startSalesOrderRef, string endSalesOrderRef)
+        {
+            // Validate sales order references
+            if (string.Compare(startSalesOrderRef, endSalesOrderRef, StringComparison.Ordinal) > 0)
+            {
+                throw new ArgumentException("The start sales order reference must be less than or equal to the end sales order reference.");
+            }
+
+            for (string salesOrderRef = startSalesOrderRef; string.Compare(salesOrderRef, endSalesOrderRef, StringComparison.Ordinal) <= 0; salesOrderRef = IncrementSalesOrderRef(salesOrderRef))
+            {
+                Console.WriteLine($"Processing {salesOrderRef}");
+
+                // Create the full source path by concatenating the pickSlipPath and salesOrderRef
+                string fullSourcePath = string.Format("{0}\\archive\\{1}.pdf", pickSlipPath.TrimEnd('\\'), salesOrderRef);
+
+                // Check if the file exists before printing
+                if (!File.Exists(fullSourcePath))
+                {
+                    Console.WriteLine($"PickSlip for {salesOrderRef} does not exist. Skipping.");
+                    continue;
+                }
+
+                // Create a new process start info
+                ProcessStartInfo startInfo = new ProcessStartInfo(_programPath)
+                {
+                    Arguments = string.Format("-src \"{0}\" -prn \"{1}\"", fullSourcePath, defaultPrinterName)
+                };
+
+                // Start the process
+                Process.Start(startInfo);
+            }
+        }
+
+
+
+        private string IncrementSalesOrderRef(string salesOrderRef)
+        {
+            // Check if the sales order reference ends with digits
+            int index = salesOrderRef.Length - 1;
+            while (index >= 0 && char.IsDigit(salesOrderRef[index]))
+            {
+                index--;
+            }
+
+            string prefix = salesOrderRef.Substring(0, index + 1);
+            string numberPart = salesOrderRef.Substring(index + 1);
+
+            if (int.TryParse(numberPart, out int number))
+            {
+                number++;
+                return prefix + number.ToString(new string('0', numberPart.Length));
+            }
+
+            throw new InvalidOperationException("Sales order reference format is not supported for incrementing.");
+        }
+
+
+
+
     }
 
 
