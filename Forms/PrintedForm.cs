@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
@@ -287,5 +288,155 @@ namespace OrderManagerEF
                 filter.ApplyFilter(gridView);
             }
         }
+
+        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+            
+                // Get the focused view as FileExistenceGridView
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                if (gridView != null)
+                {
+                    // Create an SQL connection
+                    var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                    using (var conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        // Get selected rows from the FileExistenceGridView
+                        var selectedRows = gridView.GetSelectedRows();
+                        XtraMessageBox.Show($"Selected rows: {selectedRows.Length}");
+
+                        // Dictionary to group records by customer group
+                        var groupedRecords = new Dictionary<string, List<string>>();
+
+                        if (selectedRows.Length > 0)
+                        {
+                            foreach (var rowHandle in selectedRows)
+                            {
+                                // Get values from the selected row
+                                var customerGroup = gridView.GetRowCellValue(rowHandle, "ZEmployeeGroup")?.ToString();
+                                var customerCode = gridView.GetRowCellValue(rowHandle, "CustomerCode")?.ToString();
+                                var dueDate = gridView.GetRowCellValue(rowHandle, "DueDate") as DateTime?;
+                                var accountingRef = gridView.GetRowCellValue(rowHandle, "AccountingRef")?.ToString();
+                                var tradingRef = gridView.GetRowCellValue(rowHandle, "TradingRef")?.ToString();
+
+
+                                // Ensure the required data exists before inserting
+                                if (!string.IsNullOrEmpty(customerGroup) && !string.IsNullOrEmpty(customerCode)
+                                    && dueDate.HasValue && !string.IsNullOrEmpty(accountingRef)
+                                    && !string.IsNullOrEmpty(tradingRef))
+                                {
+                                    var salesOrder = accountingRef;
+                                    var orderNumber = tradingRef;
+
+                                    // Build the record string for bulk insert (adjust based on your database)
+                                    var record = $"('{salesOrder}', '{orderNumber}', '{customerCode}', '{dueDate.Value:yyyy-MM-dd HH:mm:ss}')";
+
+                                    if (!groupedRecords.ContainsKey(customerGroup))
+                                    {
+                                        groupedRecords[customerGroup] = new List<string>();
+                                    }
+                                    groupedRecords[customerGroup].Add(record);
+                                }
+                            }
+
+                            // Now, insert records for each customer group in bulk
+                            foreach (var group in groupedRecords)
+                            {
+                                var customerGroup = group.Key;
+                                var records = group.Value;
+
+                                var tableName = GetTableNameByCustomerGroup(customerGroup);
+                                if (!string.IsNullOrEmpty(tableName))
+                                {
+                                    var insertSql = $"INSERT INTO {tableName} (SalesOrder, OrderNumber, CustomerCode, Date) VALUES " + string.Join(",", records);
+
+                                    using (var insertCmd = new SqlCommand(insertSql, conn))
+                                    {
+                                        insertCmd.ExecuteNonQuery();
+                                    }
+
+                                    // After insertion, check the row count
+                                    var countSql = $@"SELECT COUNT(*) FROM {tableName}";
+                                    using (var countCmd = new SqlCommand(countSql, conn))
+                                    {
+                                        var rowCount = (int)countCmd.ExecuteScalar();
+
+                                        if (rowCount > 0)
+                                        {
+                                            var result = XtraMessageBox.Show(
+                                                $"Are you sure you want to run the job and download {rowCount} labels from {tableName}?",
+                                                "Confirm Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                            if (result == DialogResult.Yes)
+                                            {
+                                                // Dynamically select the SQL Agent job based on customer group
+                                                var jobName = GetJobNameByCustomerGroup(customerGroup);
+                                                if (!string.IsNullOrEmpty(jobName))
+                                                {
+                                                    var jobRunner = new SqlAgentJobRunner("hvserver02\\ABM", "msdb", jobName);
+                                                    jobRunner.RunJob();
+
+                                                    // Show the row count in a message box
+                                                    XtraMessageBox.Show($"Job started successfully! Number of labels queued from {tableName}: {rowCount}");
+                                                }
+                                                else
+                                                {
+                                                    XtraMessageBox.Show($"No job found for customer group {customerGroup}.");
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            XtraMessageBox.Show($"Warning: The {tableName} queue does not contain any rows!");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+
+        // Helper method to determine the table name based on customer group
+        private string GetTableNameByCustomerGroup(string customerGroup)
+        {
+            switch (customerGroup)
+            {
+                case "DS":
+                    return "LabelstoPrintDS";
+                case "CSC":
+                    return "LabelstoPrintCSC";
+                // Add more cases as needed
+                default:
+                    return null;  // Return null if no table is matched
+            }
+        }
+
+        // Helper method to determine the SQL Agent job name based on customer group
+        private string GetJobNameByCustomerGroup(string customerGroup)
+        {
+            switch (customerGroup)
+            {
+                case "DS":
+                    return "LabelPrintDS";  // Job name for DS group
+                case "CSC":
+                    return "LabelPrintCSC";  // Job name for CSC group
+                // Add more cases as needed
+                default:
+                    return null;  // Return null if no job is matched
+            }
+        }
+
+
     }
 }

@@ -40,6 +40,8 @@
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -47,13 +49,16 @@
             // 
             // ribbonControl1
             // 
+            ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 44, 45, 44);
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2, barButtonItem3, barButtonItem4 });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2, barButtonItem3, barButtonItem4, barButtonItem5 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.MaxItemId = 5;
+            ribbonControl1.Margin = new System.Windows.Forms.Padding(4);
+            ribbonControl1.MaxItemId = 6;
             ribbonControl1.Name = "ribbonControl1";
+            ribbonControl1.OptionsMenuMinWidth = 495;
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbonControl1.Size = new System.Drawing.Size(484, 158);
+            ribbonControl1.Size = new System.Drawing.Size(1386, 231);
             // 
             // barButtonItem1
             // 
@@ -89,7 +94,7 @@
             // 
             // ribbonPage1
             // 
-            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2, ribbonPageGroup3 });
+            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup2, ribbonPageGroup3, ribbonPageGroup4 });
             ribbonPage1.Name = "ribbonPage1";
             ribbonPage1.Text = "Menu";
             // 
@@ -115,26 +120,46 @@
             // gridControl1
             // 
             gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridControl1.Location = new System.Drawing.Point(0, 158);
+            gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            gridControl1.Location = new System.Drawing.Point(0, 231);
             gridControl1.MainView = gridView1;
+            gridControl1.Margin = new System.Windows.Forms.Padding(4);
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(484, 247);
+            gridControl1.Size = new System.Drawing.Size(1386, 906);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
             // gridView1
             // 
+            gridView1.DetailHeight = 512;
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            gridView1.OptionsEditForm.PopupEditFormWidth = 1200;
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barButtonItem5);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Labels";
+            // 
+            // barButtonItem5
+            // 
+            barButtonItem5.Caption = "Create into Batch";
+            barButtonItem5.Id = 5;
+            barButtonItem5.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.Image");
+            barButtonItem5.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem5.ImageOptions.LargeImage");
+            barButtonItem5.Name = "barButtonItem5";
+            barButtonItem5.ItemClick += barButtonItem5_ItemClick;
             // 
             // PrintedForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(484, 405);
+            ClientSize = new System.Drawing.Size(1386, 1137);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
+            Margin = new System.Windows.Forms.Padding(4);
             Name = "PrintedForm";
             Ribbon = ribbonControl1;
             Text = "PrintedForm";
@@ -158,5 +183,7 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem5;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
     }
 }
