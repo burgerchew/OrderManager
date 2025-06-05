@@ -698,7 +698,7 @@ namespace OrderManagerEF
         //Create Batch - AustPost
         private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintRUBAustPost";
+            var tableName = "LabelstoPrintAustPostRUB";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -750,7 +750,7 @@ namespace OrderManagerEF
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintRUBAustPost";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintAustPostRUB";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 
@@ -764,7 +764,7 @@ namespace OrderManagerEF
                         // If the user clicks Yes, continue with the operation
                         if (result == DialogResult.Yes)
                         {
-                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintRUBAustPost");
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintAustPostRUB");
                             jobRunner.RunJob();
 
                             // Show the row count in a message box
@@ -788,7 +788,7 @@ namespace OrderManagerEF
         //Create Batch - StarTrack
         private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintRUBStarTrack";
+            var tableName = "LabelstoPrintStarTrackRUB";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -840,7 +840,7 @@ namespace OrderManagerEF
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintRUBStarTrack";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintStarTrackRUB";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 
@@ -854,7 +854,7 @@ namespace OrderManagerEF
                         // If the user clicks Yes, continue with the operation
                         if (result == DialogResult.Yes)
                         {
-                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintRUBStarTrack");
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintStarTrackRUB");
                             jobRunner.RunJob();
 
                             // Show the row count in a message box

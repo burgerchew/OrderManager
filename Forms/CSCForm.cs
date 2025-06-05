@@ -98,24 +98,39 @@ namespace OrderManagerEF.Forms
                 // Update the FileStatus property for each item in the data list.
                 UpdateFileStatusForData(data);
 
-                // Populate the grid control with the fetched data
-                gridView1.GridControl.DataSource = data;
-                gridView1.RefreshData();
-
+                // Create the new FileExistenceGridView
                 var newView = new FileExistenceGridView(_configuration)
                 {
-                    FileLocationColumnNames =
-                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FileLocationColumnNames = { "LabelFile", "PickSlipFile" },
                     FilterFileExists = false
                 };
 
+                // Set the new view as the main view BEFORE setting data
                 gridControl1.MainView = newView;
+
+                // Now set the data source
+                gridControl1.DataSource = data;
+                newView.RefreshData();
+
+                // Apply additional configurations
                 AddPreviewLinkColumn(newView);
-                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
                 HighlightDuplicateRows(newView);
 
+                // Apply shipping method grouping with color coding
+                try
+                {
+                    newView.GroupByShippingMethod();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // Show a warning to the user using XtraMessageBox
+                    XtraMessageBox.Show($"Note: Shipping method grouping not available - {ex.Message}",
+                        "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Initialize helpers and event handlers
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-                gridView1.KeyDown += gridView1_KeyDown;
+                newView.KeyDown += gridView1_KeyDown;
                 InitSoHyperLink();
             }
             finally
@@ -837,7 +852,7 @@ namespace OrderManagerEF.Forms
         //Create Batch - CSC AustPost
         private void barButtonItem13_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintCSCAustPost";
+            var tableName = "LabelstoPrintAustPostCSC";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -889,7 +904,7 @@ namespace OrderManagerEF.Forms
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSCAustPost";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintAustPostCSC";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 
@@ -927,7 +942,7 @@ namespace OrderManagerEF.Forms
         //Create Batch - CSC StarTrack
         private void barButtonItem16_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintCSCStarTrack";
+            var tableName = "LabelstoPrintStarTrackCSC";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -979,7 +994,7 @@ namespace OrderManagerEF.Forms
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSCStarTrack";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintStarTrackCSC";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 

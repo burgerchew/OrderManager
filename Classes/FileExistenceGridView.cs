@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using DevExpress.CodeParser;
+﻿using DevExpress.CodeParser;
+using DevExpress.Utils;
+using DevExpress.Utils.TouchHelpers;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Web.UI;
 using System.Windows.Forms;
-using DevExpress.Utils.TouchHelpers;
-using Microsoft.Extensions.Configuration;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace OrderManagerEF.Classes
@@ -371,6 +375,180 @@ namespace OrderManagerEF.Classes
         }
 
 
+        public void ApplyShippingMethodGrouping()
+        {
+            // Clear any existing grouping
+            this.ClearGrouping();
+
+            // Find the shipping method column (try common column names)
+            GridColumn shippingMethodColumn = null;
+            var possibleColumns = new[] { "ZShippingMethod" };
+
+            foreach (var columnName in possibleColumns)
+            {
+                shippingMethodColumn = this.Columns.ColumnByFieldName(columnName);
+                if (shippingMethodColumn != null)
+                    break;
+            }
+
+            if (shippingMethodColumn == null)
+            {
+                // If no shipping method column found, try to find it by caption
+                shippingMethodColumn = this.Columns.Cast<GridColumn>()
+                    .FirstOrDefault(c => c.Caption.ToLower().Contains("shipping"));
+            }
+
+            if (shippingMethodColumn != null)
+            {
+                // Group by shipping method
+                shippingMethodColumn.GroupIndex = 0;
+
+                // Expand all groups by default
+                this.ExpandAllGroups();
+
+                // Apply custom cell styling for ONLY the ZShippingMethod column
+                this.RowCellStyle += ShippingMethodCellStyle;
+                this.CustomDrawGroupRow += ShippingMethodGroupRowStyle;
+            }
+            else
+            {
+                throw new InvalidOperationException("Shipping method column not found. Expected columns: ZShippingMethod, ShippingMethod, or zShippingMethod");
+            }
+        }
+
+        /// <summary>
+        /// Applies color coding to ONLY the ZShippingMethod cells based on shipping method
+        /// </summary>
+        private void ShippingMethodCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            // Only apply styling to the ZShippingMethod column
+            if (e.Column.FieldName != "ZShippingMethod") return;
+
+            if (e.RowHandle < 0) return; // Skip group rows
+
+            var gridView = sender as GridView;
+            if (gridView == null) return;
+
+            // Get the shipping method value for this cell
+            var shippingMethod = gridView.GetRowCellValue(e.RowHandle, e.Column)?.ToString();
+
+            if (!string.IsNullOrEmpty(shippingMethod))
+            {
+                ApplyShippingMethodColors(shippingMethod.Trim(), e.Appearance);
+            }
+        }
+
+        /// <summary>
+        /// Applies color coding to group headers based on shipping method
+        /// </summary>
+        private void ShippingMethodGroupRowStyle(object sender, RowObjectCustomDrawEventArgs e)
+        {
+            var gridView = sender as GridView;
+            if (gridView == null) return;
+
+            var info = e.Info as GridGroupRowInfo;
+            if (info == null) return;
+
+            // Only apply styling if this is a ZShippingMethod group
+            if (info.Column?.FieldName != "ZShippingMethod") return;
+
+            // Extract shipping method from group text
+            var groupText = info.GroupText;
+            var shippingMethod = ExtractShippingMethodFromGroupText(groupText);
+
+            if (!string.IsNullOrEmpty(shippingMethod))
+            {
+                ApplyShippingMethodColors(shippingMethod.Trim(), info.Appearance);
+            }
+        }
+
+        /// <summary>
+        /// Extracts shipping method from group row text
+        /// </summary>
+        private string ExtractShippingMethodFromGroupText(string groupText)
+        {
+            if (string.IsNullOrEmpty(groupText)) return null;
+
+            // Group text format is usually like "ZShippingMethod: 7C55 (5 items)"
+            var colonIndex = groupText.IndexOf(':');
+            if (colonIndex >= 0 && colonIndex < groupText.Length - 1)
+            {
+                var afterColon = groupText.Substring(colonIndex + 1).Trim();
+                var openParenIndex = afterColon.IndexOf('(');
+
+                if (openParenIndex >= 0)
+                {
+                    return afterColon.Substring(0, openParenIndex).Trim();
+                }
+                else
+                {
+                    return afterColon;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Applies the appropriate colors based on shipping method
+        /// </summary>
+        private void ApplyShippingMethodColors(string shippingMethod, AppearanceObject appearance)
+        {
+            switch (shippingMethod.ToUpper().Trim())
+            {
+                case "7C55":
+                    // AustPost - Red background with white text
+                    appearance.BackColor = Color.PaleVioletRed;
+                    appearance.ForeColor = Color.White;
+                    break;
+
+                case "FPP":
+                    // StarTrack - Blue background with white text
+                    appearance.BackColor = Color.LightSkyBlue;
+                    appearance.ForeColor = Color.Black;
+                    break;
+
+                default:
+                    // Default colors for other shipping methods
+                    appearance.BackColor = Color.LightGray;
+                    appearance.ForeColor = Color.Black;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Removes shipping method grouping and restores default view
+        /// </summary>
+        public void RemoveShippingMethodGrouping()
+        {
+            this.ClearGrouping();
+            this.RowCellStyle -= ShippingMethodCellStyle;
+            this.CustomDrawGroupRow -= ShippingMethodGroupRowStyle;
+        }
+
+        /// <summary>
+        /// Removes shipping method grouping and restores default view
+        /// </summary>
+ 
     }
+
+    // Extension method to easily call from your forms
+    public static class GridViewExtensions
+    {
+        /// <summary>
+        /// Extension method to apply shipping method grouping to any FileExistenceGridView
+        /// </summary>
+        public static void GroupByShippingMethod(this FileExistenceGridView gridView)
+        {
+            gridView.ApplyShippingMethodGrouping();
+        }
+
+
+
+
+
+    }
+
+
 
 }

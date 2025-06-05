@@ -55,15 +55,14 @@
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage8 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage10 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup10 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -277,9 +276,9 @@
             // 
             // ribbonPage2
             // 
-            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5 });
             ribbonPage2.Name = "ribbonPage2";
-            ribbonPage2.Text = "Labels";
+            ribbonPage2.Text = "StarShipIT";
             // 
             // ribbonPageGroup3
             // 
@@ -292,40 +291,6 @@
             ribbonPageGroup5.ItemLinks.Add(barButtonItem3);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
             ribbonPageGroup5.Text = "Filter";
-            // 
-            // ribbonPageGroup6
-            // 
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem4);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem5);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem6);
-            ribbonPageGroup6.Name = "ribbonPageGroup6";
-            ribbonPageGroup6.Text = "Actions";
-            // 
-            // ribbonPage4
-            // 
-            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
-            ribbonPage4.Name = "ribbonPage4";
-            ribbonPage4.Text = "Pickslips";
-            // 
-            // ribbonPageGroup4
-            // 
-            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
-            ribbonPageGroup4.Name = "ribbonPageGroup4";
-            ribbonPageGroup4.Text = "Sorting";
-            // 
-            // ribbonPageGroup7
-            // 
-            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
-            ribbonPageGroup7.Name = "ribbonPageGroup7";
-            ribbonPageGroup7.Text = "Hold";
-            // 
-            // ribbonPageGroup8
-            // 
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
-            ribbonPageGroup8.Name = "ribbonPageGroup8";
-            ribbonPageGroup8.Text = "Actions";
             // 
             // ribbonPage8
             // 
@@ -354,6 +319,32 @@
             ribbonPageGroup10.ItemLinks.Add(barButtonItem18);
             ribbonPageGroup10.Name = "ribbonPageGroup10";
             ribbonPageGroup10.Text = "Batch";
+            // 
+            // ribbonPage4
+            // 
+            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
+            ribbonPage4.Name = "ribbonPage4";
+            ribbonPage4.Text = "Pickslips";
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Sorting";
+            // 
+            // ribbonPageGroup7
+            // 
+            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
+            ribbonPageGroup7.Name = "ribbonPageGroup7";
+            ribbonPageGroup7.Text = "Hold";
+            // 
+            // ribbonPageGroup8
+            // 
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
+            ribbonPageGroup8.Name = "ribbonPageGroup8";
+            ribbonPageGroup8.Text = "Actions";
             // 
             // ribbonPage3
             // 
@@ -438,7 +429,6 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;
         private DevExpress.XtraBars.BarButtonItem barButtonItem5;
         private DevExpress.XtraBars.BarButtonItem barButtonItem6;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup7;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup8;
         private DevExpress.XtraBars.BarButtonItem barButtonItem7;

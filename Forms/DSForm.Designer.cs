@@ -41,32 +41,31 @@
             barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem10 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem11 = new DevExpress.XtraBars.BarButtonItem();
-            ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            gridControl1 = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPage6 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage7 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPage8 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage9 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem16 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem17 = new DevExpress.XtraBars.BarButtonItem();
+            ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage6 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage8 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            gridControl1 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage7 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage9 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -173,6 +172,60 @@
             barButtonItem11.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.LargeImage");
             barButtonItem11.Name = "barButtonItem11";
             // 
+            // barButtonItem12
+            // 
+            barButtonItem12.Caption = "Create Batch";
+            barButtonItem12.Id = 12;
+            barButtonItem12.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem12.ImageOptions.Image");
+            barButtonItem12.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem12.ImageOptions.LargeImage");
+            barButtonItem12.Name = "barButtonItem12";
+            barButtonItem12.ItemClick += barButtonItem12_ItemClick;
+            // 
+            // barButtonItem13
+            // 
+            barButtonItem13.Caption = "Show Batch";
+            barButtonItem13.Id = 13;
+            barButtonItem13.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem13.ImageOptions.Image");
+            barButtonItem13.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem13.ImageOptions.LargeImage");
+            barButtonItem13.Name = "barButtonItem13";
+            barButtonItem13.ItemClick += barButtonItem13_ItemClick;
+            // 
+            // barButtonItem14
+            // 
+            barButtonItem14.Caption = "Process Batch";
+            barButtonItem14.Id = 14;
+            barButtonItem14.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem14.ImageOptions.Image");
+            barButtonItem14.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem14.ImageOptions.LargeImage");
+            barButtonItem14.Name = "barButtonItem14";
+            barButtonItem14.ItemClick += barButtonItem14_ItemClick;
+            // 
+            // barButtonItem15
+            // 
+            barButtonItem15.Caption = "Create Batch";
+            barButtonItem15.Id = 15;
+            barButtonItem15.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem15.ImageOptions.Image");
+            barButtonItem15.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem15.ImageOptions.LargeImage");
+            barButtonItem15.Name = "barButtonItem15";
+            barButtonItem15.ItemClick += barButtonItem15_ItemClick;
+            // 
+            // barButtonItem16
+            // 
+            barButtonItem16.Caption = "Show Batch";
+            barButtonItem16.Id = 16;
+            barButtonItem16.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem16.ImageOptions.Image");
+            barButtonItem16.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem16.ImageOptions.LargeImage");
+            barButtonItem16.Name = "barButtonItem16";
+            barButtonItem16.ItemClick += barButtonItem16_ItemClick;
+            // 
+            // barButtonItem17
+            // 
+            barButtonItem17.Caption = "Process Batch";
+            barButtonItem17.Id = 17;
+            barButtonItem17.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem17.ImageOptions.Image");
+            barButtonItem17.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem17.ImageOptions.LargeImage");
+            barButtonItem17.Name = "barButtonItem17";
+            barButtonItem17.ItemClick += barButtonItem17_ItemClick;
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
@@ -187,9 +240,9 @@
             // 
             // ribbonPage2
             // 
-            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5 });
             ribbonPage2.Name = "ribbonPage2";
-            ribbonPage2.Text = "Labels";
+            ribbonPage2.Text = "StarShipIT";
             // 
             // ribbonPageGroup3
             // 
@@ -202,14 +255,6 @@
             ribbonPageGroup5.ItemLinks.Add(barButtonItem3);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
             ribbonPageGroup5.Text = "Filter ShipmentID";
-            // 
-            // ribbonPageGroup6
-            // 
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem4);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem5);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem6);
-            ribbonPageGroup6.Name = "ribbonPageGroup6";
-            ribbonPageGroup6.Text = "Batch";
             // 
             // ribbonPage4
             // 
@@ -236,6 +281,34 @@
             ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
             ribbonPageGroup8.Name = "ribbonPageGroup8";
             ribbonPageGroup8.Text = "Actions";
+            // 
+            // ribbonPage6
+            // 
+            ribbonPage6.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2 });
+            ribbonPage6.Name = "ribbonPage6";
+            ribbonPage6.Text = "AustPost Labels";
+            // 
+            // ribbonPageGroup2
+            // 
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem12);
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem13);
+            ribbonPageGroup2.ItemLinks.Add(barButtonItem14);
+            ribbonPageGroup2.Name = "ribbonPageGroup2";
+            ribbonPageGroup2.Text = "Batch";
+            // 
+            // ribbonPage8
+            // 
+            ribbonPage8.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup9 });
+            ribbonPage8.Name = "ribbonPage8";
+            ribbonPage8.Text = "StarTrack Labels";
+            // 
+            // ribbonPageGroup9
+            // 
+            ribbonPageGroup9.ItemLinks.Add(barButtonItem15);
+            ribbonPageGroup9.ItemLinks.Add(barButtonItem16);
+            ribbonPageGroup9.ItemLinks.Add(barButtonItem17);
+            ribbonPageGroup9.Name = "ribbonPageGroup9";
+            ribbonPageGroup9.Text = "Batch";
             // 
             // gridControl1
             // 
@@ -267,85 +340,15 @@
             ribbonPage5.Name = "ribbonPage5";
             ribbonPage5.Text = "ribbonPage5";
             // 
-            // ribbonPage6
-            // 
-            ribbonPage6.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2 });
-            ribbonPage6.Name = "ribbonPage6";
-            ribbonPage6.Text = "AustPost Labels";
-            // 
-            // ribbonPageGroup2
-            // 
-            ribbonPageGroup2.ItemLinks.Add(barButtonItem12);
-            ribbonPageGroup2.ItemLinks.Add(barButtonItem13);
-            ribbonPageGroup2.ItemLinks.Add(barButtonItem14);
-            ribbonPageGroup2.Name = "ribbonPageGroup2";
-            ribbonPageGroup2.Text = "ribbonPageGroup2";
-            // 
             // ribbonPage7
             // 
             ribbonPage7.Name = "ribbonPage7";
             ribbonPage7.Text = "ribbonPage7";
             // 
-            // ribbonPage8
-            // 
-            ribbonPage8.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup9 });
-            ribbonPage8.Name = "ribbonPage8";
-            ribbonPage8.Text = "StarTrack Labels";
-            // 
-            // ribbonPageGroup9
-            // 
-            ribbonPageGroup9.ItemLinks.Add(barButtonItem15);
-            ribbonPageGroup9.ItemLinks.Add(barButtonItem16);
-            ribbonPageGroup9.ItemLinks.Add(barButtonItem17);
-            ribbonPageGroup9.Name = "ribbonPageGroup9";
-            ribbonPageGroup9.Text = "ribbonPageGroup9";
-            // 
             // ribbonPage9
             // 
             ribbonPage9.Name = "ribbonPage9";
             ribbonPage9.Text = "ribbonPage9";
-            // 
-            // barButtonItem12
-            // 
-            barButtonItem12.Caption = "Create Batch";
-            barButtonItem12.Id = 12;
-            barButtonItem12.Name = "barButtonItem12";
-            barButtonItem12.ItemClick += barButtonItem12_ItemClick;
-            // 
-            // barButtonItem13
-            // 
-            barButtonItem13.Caption = "Show Batch";
-            barButtonItem13.Id = 13;
-            barButtonItem13.Name = "barButtonItem13";
-            barButtonItem13.ItemClick += barButtonItem13_ItemClick;
-            // 
-            // barButtonItem14
-            // 
-            barButtonItem14.Caption = "Process Batch";
-            barButtonItem14.Id = 14;
-            barButtonItem14.Name = "barButtonItem14";
-            barButtonItem14.ItemClick += barButtonItem14_ItemClick;
-            // 
-            // barButtonItem15
-            // 
-            barButtonItem15.Caption = "Create Batch";
-            barButtonItem15.Id = 15;
-            barButtonItem15.Name = "barButtonItem15";
-            barButtonItem15.ItemClick += barButtonItem15_ItemClick;
-            // 
-            // barButtonItem16
-            // 
-            barButtonItem16.Caption = "Show Batch";
-            barButtonItem16.Id = 16;
-            barButtonItem16.Name = "barButtonItem16";
-            barButtonItem16.ItemClick += barButtonItem16_ItemClick;
-            // 
-            // barButtonItem17
-            // 
-            barButtonItem17.Caption = "Process Batch";
-            barButtonItem17.Id = 17;
-            barButtonItem17.Name = "barButtonItem17";
-            barButtonItem17.ItemClick += barButtonItem17_ItemClick;
             // 
             // DSForm
             // 
@@ -380,7 +383,6 @@
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage5;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;

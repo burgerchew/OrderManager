@@ -117,32 +117,46 @@ namespace OrderManagerEF.Forms
 
             try
             {
-
-
                 var data = _context.DSOrderDatas.ToList();
 
                 // Update the FileStatus property for each item in the data list.
                 UpdateFileStatusForData(data);
 
-                // Populate the grid control with the fetched data
-                gridView1.GridControl.DataSource = data;
-                gridView1.RefreshData();
-
+                // Create the new FileExistenceGridView
                 var newView = new FileExistenceGridView(_configuration)
                 {
-                    FileLocationColumnNames =
-                        { "LabelFile", "PickSlipFile" }, // Add your column names containing the file locations
+                    FileLocationColumnNames = { "LabelFile", "PickSlipFile" },
                     FilterFileExists = false
                 };
 
+                // Set the new view as the main view BEFORE setting data
                 gridControl1.MainView = newView;
+
+                // Now set the data source
+                gridControl1.DataSource = data;
+                newView.RefreshData();
+
+                // Apply additional configurations
                 AddPreviewLinkColumn(newView);
-                gridControl1.DataSource = data; // Here, we set the data directly instead of updatedDataTable
                 HighlightDuplicateRows(newView);
 
+                // Apply shipping method grouping with color coding
+                try
+                {
+                    newView.GroupByShippingMethod();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // Show a warning to the user using XtraMessageBox
+                    XtraMessageBox.Show($"Note: Shipping method grouping not available - {ex.Message}",
+                        "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Initialize helpers and event handlers
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
-                gridView1.KeyDown += gridView1_KeyDown;
+                newView.KeyDown += gridView1_KeyDown;
                 InitSoHyperLink();
+
                 // Set focus to gridControl1
                 gridControl1.Focus();
             }
@@ -833,7 +847,7 @@ namespace OrderManagerEF.Forms
         //Create Batch - DS AustPost
         private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintDSAustPost";
+            var tableName = "LabelstoPrintAustPostDS";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -885,7 +899,7 @@ namespace OrderManagerEF.Forms
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintDSAustPost";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintAustPostDS";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 
@@ -923,7 +937,7 @@ namespace OrderManagerEF.Forms
         //Create Batch - DS StarTrack
         private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var tableName = "LabelstoPrintDSStarTrack";
+            var tableName = "LabelstoPrintStarTrackDS";
             var manager = new LabelQueueManager(tableName, _configuration);
 
             if (manager.ConfirmTruncate())
@@ -975,7 +989,7 @@ namespace OrderManagerEF.Forms
                 {
                     conn.Open();
 
-                    var sql = "SELECT COUNT(*) FROM LabelstoPrintDSStarTrack";
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintStarTrackDS";
                     var cmd = new SqlCommand(sql, conn);
                     var rowCount = (int)cmd.ExecuteScalar();
 
@@ -989,7 +1003,7 @@ namespace OrderManagerEF.Forms
                         // If the user clicks Yes, continue with the operation
                         if (result == DialogResult.Yes)
                         {
-                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintDSStarTrack");
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintStarTrackDS");
                             jobRunner.RunJob();
 
                             // Show the row count in a message box

@@ -41,6 +41,12 @@
             barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem10 = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem11 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem16 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem17 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -51,20 +57,14 @@
             ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            gridControl1 = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPage6 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage7 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem16 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem17 = new DevExpress.XtraBars.BarButtonItem();
+            gridControl1 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -76,7 +76,7 @@
             ribbonControl1.ExpandCollapseItem.Id = 0;
             ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2, barButtonItem3, barButtonItem4, barButtonItem5, barButtonItem6, barButtonItem7, barButtonItem8, barButtonItem9, barButtonItem10, barButtonItem11, barButtonItem12, barButtonItem13, barButtonItem14, barButtonItem15, barButtonItem16, barButtonItem17 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            ribbonControl1.Margin = new System.Windows.Forms.Padding(4);
             ribbonControl1.MaxItemId = 18;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsMenuMinWidth = 495;
@@ -171,6 +171,48 @@
             barButtonItem11.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem11.ImageOptions.LargeImage");
             barButtonItem11.Name = "barButtonItem11";
             // 
+            // barButtonItem12
+            // 
+            barButtonItem12.Caption = "Create Batch";
+            barButtonItem12.Id = 12;
+            barButtonItem12.Name = "barButtonItem12";
+            barButtonItem12.ItemClick += barButtonItem12_ItemClick;
+            // 
+            // barButtonItem13
+            // 
+            barButtonItem13.Caption = "Show Batch";
+            barButtonItem13.Id = 13;
+            barButtonItem13.Name = "barButtonItem13";
+            barButtonItem13.ItemClick += barButtonItem13_ItemClick;
+            // 
+            // barButtonItem14
+            // 
+            barButtonItem14.Caption = "Process Batch";
+            barButtonItem14.Id = 14;
+            barButtonItem14.Name = "barButtonItem14";
+            barButtonItem14.ItemClick += barButtonItem14_ItemClick;
+            // 
+            // barButtonItem15
+            // 
+            barButtonItem15.Caption = "Create Batch";
+            barButtonItem15.Id = 15;
+            barButtonItem15.Name = "barButtonItem15";
+            barButtonItem15.ItemClick += barButtonItem15_ItemClick;
+            // 
+            // barButtonItem16
+            // 
+            barButtonItem16.Caption = "Show Batch";
+            barButtonItem16.Id = 16;
+            barButtonItem16.Name = "barButtonItem16";
+            barButtonItem16.ItemClick += barButtonItem16_ItemClick;
+            // 
+            // barButtonItem17
+            // 
+            barButtonItem17.Caption = "Process Batch";
+            barButtonItem17.Id = 17;
+            barButtonItem17.Name = "barButtonItem17";
+            barButtonItem17.ItemClick += barButtonItem17_ItemClick;
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
@@ -187,7 +229,7 @@
             // 
             ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
             ribbonPage2.Name = "ribbonPage2";
-            ribbonPage2.Text = "Labels";
+            ribbonPage2.Text = "StarShipIT";
             // 
             // ribbonPageGroup3
             // 
@@ -235,36 +277,6 @@
             ribbonPageGroup8.Name = "ribbonPageGroup8";
             ribbonPageGroup8.Text = "Actions";
             // 
-            // gridControl1
-            // 
-            gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            gridControl1.Location = new System.Drawing.Point(0, 231);
-            gridControl1.MainView = gridView1;
-            gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            gridControl1.MenuManager = ribbonControl1;
-            gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(2001, 836);
-            gridControl1.TabIndex = 1;
-            gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
-            // 
-            // gridView1
-            // 
-            gridView1.DetailHeight = 512;
-            gridView1.GridControl = gridControl1;
-            gridView1.Name = "gridView1";
-            gridView1.OptionsEditForm.PopupEditFormWidth = 1200;
-            // 
-            // ribbonPage3
-            // 
-            ribbonPage3.Name = "ribbonPage3";
-            ribbonPage3.Text = "ribbonPage3";
-            // 
-            // ribbonPage5
-            // 
-            ribbonPage5.Name = "ribbonPage5";
-            ribbonPage5.Text = "ribbonPage5";
-            // 
             // ribbonPage6
             // 
             ribbonPage6.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2 });
@@ -293,47 +305,35 @@
             ribbonPageGroup9.Name = "ribbonPageGroup9";
             ribbonPageGroup9.Text = "ribbonPageGroup9";
             // 
-            // barButtonItem12
+            // gridControl1
             // 
-            barButtonItem12.Caption = "Create Batch";
-            barButtonItem12.Id = 12;
-            barButtonItem12.Name = "barButtonItem12";
-            barButtonItem12.ItemClick += barButtonItem12_ItemClick;
+            gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            gridControl1.Location = new System.Drawing.Point(0, 231);
+            gridControl1.MainView = gridView1;
+            gridControl1.Margin = new System.Windows.Forms.Padding(4);
+            gridControl1.MenuManager = ribbonControl1;
+            gridControl1.Name = "gridControl1";
+            gridControl1.Size = new System.Drawing.Size(2001, 836);
+            gridControl1.TabIndex = 1;
+            gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
-            // barButtonItem13
+            // gridView1
             // 
-            barButtonItem13.Caption = "Show Batch";
-            barButtonItem13.Id = 13;
-            barButtonItem13.Name = "barButtonItem13";
-            barButtonItem13.ItemClick += barButtonItem13_ItemClick;
+            gridView1.DetailHeight = 512;
+            gridView1.GridControl = gridControl1;
+            gridView1.Name = "gridView1";
+            gridView1.OptionsEditForm.PopupEditFormWidth = 1200;
             // 
-            // barButtonItem14
+            // ribbonPage3
             // 
-            barButtonItem14.Caption = "Process Batch";
-            barButtonItem14.Id = 14;
-            barButtonItem14.Name = "barButtonItem14";
-            barButtonItem14.ItemClick += barButtonItem14_ItemClick;
+            ribbonPage3.Name = "ribbonPage3";
+            ribbonPage3.Text = "ribbonPage3";
             // 
-            // barButtonItem15
+            // ribbonPage5
             // 
-            barButtonItem15.Caption = "Create Batch";
-            barButtonItem15.Id = 15;
-            barButtonItem15.Name = "barButtonItem15";
-            barButtonItem15.ItemClick += barButtonItem15_ItemClick;
-            // 
-            // barButtonItem16
-            // 
-            barButtonItem16.Caption = "Show Batch";
-            barButtonItem16.Id = 16;
-            barButtonItem16.Name = "barButtonItem16";
-            barButtonItem16.ItemClick += barButtonItem16_ItemClick;
-            // 
-            // barButtonItem17
-            // 
-            barButtonItem17.Caption = "Process Batch";
-            barButtonItem17.Id = 17;
-            barButtonItem17.Name = "barButtonItem17";
-            barButtonItem17.ItemClick += barButtonItem17_ItemClick;
+            ribbonPage5.Name = "ribbonPage5";
+            ribbonPage5.Text = "ribbonPage5";
             // 
             // WebstoreUnder5Form
             // 
@@ -342,7 +342,7 @@
             ClientSize = new System.Drawing.Size(2001, 1067);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
-            Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            Margin = new System.Windows.Forms.Padding(4);
             Name = "WebstoreUnder5Form";
             Ribbon = ribbonControl1;
             Text = "WebstoreUnder5Form";
