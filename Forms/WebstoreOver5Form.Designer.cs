@@ -55,6 +55,12 @@
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPage5 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage6 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage7 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPage8 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage9 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -62,13 +68,16 @@
             // 
             // ribbonControl1
             // 
+            ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 44, 45, 44);
             ribbonControl1.ExpandCollapseItem.Id = 0;
             ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, barButtonItem1, barButtonItem2, barButtonItem3, barButtonItem4, barButtonItem5, barButtonItem6, barButtonItem7, barButtonItem8, barButtonItem9, barButtonItem10, barButtonItem11 });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
+            ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             ribbonControl1.MaxItemId = 12;
             ribbonControl1.Name = "ribbonControl1";
-            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage4 });
-            ribbonControl1.Size = new System.Drawing.Size(408, 158);
+            ribbonControl1.OptionsMenuMinWidth = 495;
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage4, ribbonPage6, ribbonPage8 });
+            ribbonControl1.Size = new System.Drawing.Size(1309, 231);
             // 
             // barButtonItem1
             // 
@@ -190,7 +199,6 @@
             // 
             // ribbonPageGroup5
             // 
-            ribbonPageGroup5.ItemLinks.Add(barButtonItem4);
             ribbonPageGroup5.ItemLinks.Add(barButtonItem5);
             ribbonPageGroup5.ItemLinks.Add(barButtonItem6);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
@@ -225,18 +233,22 @@
             // gridControl1
             // 
             gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridControl1.Location = new System.Drawing.Point(0, 158);
+            gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            gridControl1.Location = new System.Drawing.Point(0, 231);
             gridControl1.MainView = gridView1;
+            gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             gridControl1.MenuManager = ribbonControl1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(408, 383);
+            gridControl1.Size = new System.Drawing.Size(1309, 911);
             gridControl1.TabIndex = 1;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
             // gridView1
             // 
+            gridView1.DetailHeight = 512;
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            gridView1.OptionsEditForm.PopupEditFormWidth = 1200;
             // 
             // ribbonPage3
             // 
@@ -248,13 +260,46 @@
             ribbonPage5.Name = "ribbonPage5";
             ribbonPage5.Text = "ribbonPage5";
             // 
+            // ribbonPage6
+            // 
+            ribbonPage6.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup8 });
+            ribbonPage6.Name = "ribbonPage6";
+            ribbonPage6.Text = "LabelsAustPost";
+            // 
+            // ribbonPageGroup8
+            // 
+            ribbonPageGroup8.Name = "ribbonPageGroup8";
+            ribbonPageGroup8.Text = "ribbonPageGroup8";
+            // 
+            // ribbonPage7
+            // 
+            ribbonPage7.Name = "ribbonPage7";
+            ribbonPage7.Text = "ribbonPage7";
+            // 
+            // ribbonPage8
+            // 
+            ribbonPage8.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup9 });
+            ribbonPage8.Name = "ribbonPage8";
+            ribbonPage8.Text = "StarTrack Labels";
+            // 
+            // ribbonPageGroup9
+            // 
+            ribbonPageGroup9.Name = "ribbonPageGroup9";
+            ribbonPageGroup9.Text = "ribbonPageGroup9";
+            // 
+            // ribbonPage9
+            // 
+            ribbonPage9.Name = "ribbonPage9";
+            ribbonPage9.Text = "ribbonPage9";
+            // 
             // WebstoreOver5Form
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(408, 541);
+            ClientSize = new System.Drawing.Size(1309, 1142);
             Controls.Add(gridControl1);
             Controls.Add(ribbonControl1);
+            Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             Name = "WebstoreOver5Form";
             Ribbon = ribbonControl1;
             Text = "WebstoreOver5Form";
@@ -293,5 +338,11 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup7;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage6;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup8;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage8;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup9;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage7;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage9;
     }
 }

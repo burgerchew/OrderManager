@@ -832,5 +832,184 @@ namespace OrderManagerEF.Forms
             }
         }
 
+        // CSC AustPost Label Queue Events (buttons 13, 14, 15)
+
+        //Create Batch - CSC AustPost
+        private void barButtonItem13_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintCSCAustPost";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - CSC AustPost
+        private void barButtonItem14_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - CSC AustPost
+        private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSCAustPost";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the CSC AustPost job and download " + rowCount + " labels?",
+                            "Confirm CSC AustPost Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintCSCAustPost");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("CSC AustPost job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The CSC AustPost Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting CSC AustPost job: {ex.Message}");
+            }
+        }
+
+        // CSC StarTrack Label Queue Events (buttons 16, 17, 18)
+
+        //Create Batch - CSC StarTrack
+        private void barButtonItem16_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintCSCStarTrack";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - CSC StarTrack
+        private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - CSC StarTrack
+        private void barButtonItem18_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintCSCStarTrack";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the CSC StarTrack job and download " + rowCount + " labels?",
+                            "Confirm CSC StarTrack Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintCSCStarTrack");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("CSC StarTrack job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The CSC StarTrack Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting CSC StarTrack job: {ex.Message}");
+            }
+        }
     }
 }

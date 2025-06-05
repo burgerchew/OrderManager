@@ -164,7 +164,7 @@ namespace OrderManagerEF
             }
         }
 
-    
+
 
         private void UpdateFileStatusForData(List<RubiesOrderData> data)
         {
@@ -174,7 +174,7 @@ namespace OrderManagerEF
             }
         }
 
-    
+
         private FileExistenceGridViewHelper InitializeFileExistenceHelper(FileExistenceGridView gridView)
         {
             var fileExistenceGridViewHelper = new FileExistenceGridViewHelper(gridView);
@@ -690,6 +690,186 @@ namespace OrderManagerEF
 
                         command.ExecuteNonQuery();
                     }
+            }
+        }
+
+        // AustPost Label Queue Events (buttons 12, 13, 14)
+
+        //Create Batch - AustPost
+        private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintRUBAustPost";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - AustPost
+        private void barButtonItem13_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - AustPost
+        private void barButtonItem14_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintRUBAustPost";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the AustPost job and download " + rowCount + " labels?",
+                            "Confirm AustPost Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintRUBAustPost");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("AustPost job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The AustPost Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting AustPost job: {ex.Message}");
+            }
+        }
+
+        // StarTrack Label Queue Events (buttons 15, 16, 17)
+
+        //Create Batch - StarTrack
+        private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintRUBStarTrack";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - StarTrack
+        private void barButtonItem16_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - StarTrack
+        private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintRUBStarTrack";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the StarTrack job and download " + rowCount + " labels?",
+                            "Confirm StarTrack Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintRUBStarTrack");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("StarTrack job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The StarTrack Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting StarTrack job: {ex.Message}");
             }
         }
     }

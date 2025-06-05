@@ -117,7 +117,7 @@ namespace OrderManagerEF.Forms
 
             try
             {
-  
+
 
                 var data = _context.DSOrderDatas.ToList();
 
@@ -460,7 +460,7 @@ namespace OrderManagerEF.Forms
             e.Handled = true;
         }
 
-
+        //Create Batch
         private void barButtonItem4_ItemClick(object sender, ItemClickEventArgs e)
         {
             var tableName = "LabelstoPrintDS";
@@ -498,28 +498,18 @@ namespace OrderManagerEF.Forms
             manager.CloseConnection();
         }
 
-        private bool CheckZShipmentID(FileExistenceGridView gridView)
+    
+
+
+        //Show Batch Form
+        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
         {
-            // Assuming ZshipmentID is the column name
-            var zShipmentIDColumnName = "ZShipmentID";
-
-            var allRowsHaveShipmentID = true;
-
-            foreach (var rowHandle in gridView.GetSelectedRows())
-            {
-                var zShipmentIDValue = gridView.GetRowCellValue(rowHandle, zShipmentIDColumnName)?.ToString();
-
-                if (string.IsNullOrEmpty(zShipmentIDValue) || zShipmentIDValue.Trim().Length == 0)
-                {
-                    allRowsHaveShipmentID = false;
-                    break;
-                }
-            }
-
-            return allRowsHaveShipmentID;
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
         }
 
 
+        //Process Batch
         private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
@@ -566,12 +556,25 @@ namespace OrderManagerEF.Forms
 
 
 
-
-
-        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
+        private bool CheckZShipmentID(FileExistenceGridView gridView)
         {
-            var newForm = new BatchForm(_configuration, _context);
-            newForm.Show();
+            // Assuming ZshipmentID is the column name
+            var zShipmentIDColumnName = "ZShipmentID";
+
+            var allRowsHaveShipmentID = true;
+
+            foreach (var rowHandle in gridView.GetSelectedRows())
+            {
+                var zShipmentIDValue = gridView.GetRowCellValue(rowHandle, zShipmentIDColumnName)?.ToString();
+
+                if (string.IsNullOrEmpty(zShipmentIDValue) || zShipmentIDValue.Trim().Length == 0)
+                {
+                    allRowsHaveShipmentID = false;
+                    break;
+                }
+            }
+
+            return allRowsHaveShipmentID;
         }
 
 
@@ -825,5 +828,184 @@ namespace OrderManagerEF.Forms
             }
         }
 
+        // DS AustPost Label Queue Events (buttons 12, 13, 14)
+
+        //Create Batch - DS AustPost
+        private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintDSAustPost";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - DS AustPost
+        private void barButtonItem13_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - DS AustPost
+        private void barButtonItem14_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintDSAustPost";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the DS AustPost job and download " + rowCount + " labels?",
+                            "Confirm DS AustPost Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintDSAustPost");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("DS AustPost job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The DS AustPost Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting DS AustPost job: {ex.Message}");
+            }
+        }
+
+        // DS StarTrack Label Queue Events (buttons 15, 16, 17)
+
+        //Create Batch - DS StarTrack
+        private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var tableName = "LabelstoPrintDSStarTrack";
+            var manager = new LabelQueueManager(tableName, _configuration);
+
+            if (manager.ConfirmTruncate())
+            {
+                manager.TruncateTable();
+
+                var gridView = gridControl1.FocusedView as FileExistenceGridView;
+                var columnMappings = new Dictionary<string, string>
+        {
+            { "AccountingRef", "SalesOrder" },
+            { "TradingRef", "OrderNumber" },
+            { "CustomerCode", "CustomerCode" },
+            { "EntryDateTime", "Date" }
+        };
+
+                string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
+
+                if (!CheckZShipmentID(gridView))
+                    if (XtraMessageBox.Show(
+                            "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
+                            "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        return;
+
+                manager.InsertData(gridView, columnMappings, parameterNames);
+
+                var rowCount = gridView.GetSelectedRows().Length;
+                manager.ShowRowCountMessage(rowCount);
+            }
+
+            manager.CloseConnection();
+        }
+
+        //Show Batch Form - DS StarTrack
+        private void barButtonItem16_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var newForm = new BatchForm(_configuration, _context);
+            newForm.Show();
+        }
+
+        //Process Batch - DS StarTrack
+        private void barButtonItem17_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                // create an SQL connection
+                var connectionString = _configuration.GetConnectionString("RubiesConnectionString");
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    var sql = "SELECT COUNT(*) FROM LabelstoPrintDSStarTrack";
+                    var cmd = new SqlCommand(sql, conn);
+                    var rowCount = (int)cmd.ExecuteScalar();
+
+                    if (rowCount > 0)
+                    {
+                        // Show a message box asking the user if they want to continue
+                        var result = XtraMessageBox.Show(
+                            "Are you sure you want to run the DS StarTrack job and download " + rowCount + " labels?",
+                            "Confirm DS StarTrack Job Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // If the user clicks Yes, continue with the operation
+                        if (result == DialogResult.Yes)
+                        {
+                            var jobRunner = new SqlAgentJobRunner("HVSERVER02\\ABM", "msdb", "LabelPrintDSStarTrack");
+                            jobRunner.RunJob();
+
+                            // Show the row count in a message box
+                            XtraMessageBox.Show("DS StarTrack job started successfully! Number of labels queued: " + rowCount);
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Warning: The DS StarTrack Queue does not contain any rows!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error starting DS StarTrack job: {ex.Message}");
+            }
+        }
     }
 }
