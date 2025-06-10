@@ -157,6 +157,9 @@ namespace OrderManagerEF.Forms
                 newView.KeyDown += gridView1_KeyDown;
                 InitSoHyperLink();
 
+                // Enable dynamic group row coloring (for the "ZShipping Method: 7C55" rows)
+                newView.EnableDynamicGroupRowColoring();
+
                 // Set focus to gridControl1
                 gridControl1.Focus();
             }
@@ -843,7 +846,6 @@ namespace OrderManagerEF.Forms
         }
 
         // DS AustPost Label Queue Events (buttons 12, 13, 14)
-
         //Create Batch - DS AustPost
         private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -853,15 +855,22 @@ namespace OrderManagerEF.Forms
             if (manager.ConfirmTruncate())
             {
                 manager.TruncateTable();
-
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                // Use the shared validation method for AustPost batch (excludes FPP)
+                if (!gridView.ValidateForAustPostBatch())
+                {
+                    manager.CloseConnection();
+                    return;
+                }
+
                 var columnMappings = new Dictionary<string, string>
-        {
-            { "AccountingRef", "SalesOrder" },
-            { "TradingRef", "OrderNumber" },
-            { "CustomerCode", "CustomerCode" },
-            { "EntryDateTime", "Date" }
-        };
+                {
+                    { "AccountingRef", "SalesOrder" },
+                    { "TradingRef", "OrderNumber" },
+                    { "CustomerCode", "CustomerCode" },
+                    { "EntryDateTime", "Date" }
+                };
 
                 string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
 
@@ -869,10 +878,12 @@ namespace OrderManagerEF.Forms
                     if (XtraMessageBox.Show(
                             "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
                             "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    {
+                        manager.CloseConnection();
                         return;
+                    }
 
                 manager.InsertData(gridView, columnMappings, parameterNames);
-
                 var rowCount = gridView.GetSelectedRows().Length;
                 manager.ShowRowCountMessage(rowCount);
             }
@@ -933,7 +944,6 @@ namespace OrderManagerEF.Forms
         }
 
         // DS StarTrack Label Queue Events (buttons 15, 16, 17)
-
         //Create Batch - DS StarTrack
         private void barButtonItem15_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -943,15 +953,22 @@ namespace OrderManagerEF.Forms
             if (manager.ConfirmTruncate())
             {
                 manager.TruncateTable();
-
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                // Use the shared validation method for StarTrack batch (excludes 7C55)
+                if (!gridView.ValidateForStarTrackBatch())
+                {
+                    manager.CloseConnection();
+                    return;
+                }
+
                 var columnMappings = new Dictionary<string, string>
-        {
-            { "AccountingRef", "SalesOrder" },
-            { "TradingRef", "OrderNumber" },
-            { "CustomerCode", "CustomerCode" },
-            { "EntryDateTime", "Date" }
-        };
+                {
+                    { "AccountingRef", "SalesOrder" },
+                    { "TradingRef", "OrderNumber" },
+                    { "CustomerCode", "CustomerCode" },
+                    { "EntryDateTime", "Date" }
+                };
 
                 string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
 
@@ -959,10 +976,12 @@ namespace OrderManagerEF.Forms
                     if (XtraMessageBox.Show(
                             "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
                             "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    {
+                        manager.CloseConnection();
                         return;
+                    }
 
                 manager.InsertData(gridView, columnMappings, parameterNames);
-
                 var rowCount = gridView.GetSelectedRows().Length;
                 manager.ShowRowCountMessage(rowCount);
             }

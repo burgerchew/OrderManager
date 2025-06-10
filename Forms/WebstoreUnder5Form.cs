@@ -131,6 +131,9 @@ namespace OrderManagerEF
                 _fileExistenceGridViewHelper = InitializeFileExistenceHelper(newView);
                 gridView1.KeyDown += gridView1_KeyDown;
                 InitSoHyperLink();
+
+                // Enable dynamic group row coloring (for the "ZShipping Method: 7C55" rows)
+                newView.EnableDynamicGroupRowColoring();
             }
             finally
             {
@@ -694,7 +697,6 @@ namespace OrderManagerEF
         }
 
         // AustPost Label Queue Events (buttons 12, 13, 14)
-
         //Create Batch - AustPost
         private void barButtonItem12_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -704,15 +706,22 @@ namespace OrderManagerEF
             if (manager.ConfirmTruncate())
             {
                 manager.TruncateTable();
-
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                // Use the shared validation method for AustPost batch (excludes FPP)
+                if (!gridView.ValidateForAustPostBatch())
+                {
+                    manager.CloseConnection();
+                    return;
+                }
+
                 var columnMappings = new Dictionary<string, string>
-        {
-            { "AccountingRef", "SalesOrder" },
-            { "TradingRef", "OrderNumber" },
-            { "CustomerCode", "CustomerCode" },
-            { "EntryDateTime", "Date" }
-        };
+                {
+                    { "AccountingRef", "SalesOrder" },
+                    { "TradingRef", "OrderNumber" },
+                    { "CustomerCode", "CustomerCode" },
+                    { "EntryDateTime", "Date" }
+                };
 
                 string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
 
@@ -720,10 +729,12 @@ namespace OrderManagerEF
                     if (XtraMessageBox.Show(
                             "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
                             "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    {
+                        manager.CloseConnection();
                         return;
+                    }
 
                 manager.InsertData(gridView, columnMappings, parameterNames);
-
                 var rowCount = gridView.GetSelectedRows().Length;
                 manager.ShowRowCountMessage(rowCount);
             }
@@ -794,15 +805,22 @@ namespace OrderManagerEF
             if (manager.ConfirmTruncate())
             {
                 manager.TruncateTable();
-
                 var gridView = gridControl1.FocusedView as FileExistenceGridView;
+
+                // Use the shared validation method for StarTrack batch (excludes 7C55)
+                if (!gridView.ValidateForStarTrackBatch())
+                {
+                    manager.CloseConnection();
+                    return;
+                }
+
                 var columnMappings = new Dictionary<string, string>
-        {
-            { "AccountingRef", "SalesOrder" },
-            { "TradingRef", "OrderNumber" },
-            { "CustomerCode", "CustomerCode" },
-            { "EntryDateTime", "Date" }
-        };
+                {
+                    { "AccountingRef", "SalesOrder" },
+                    { "TradingRef", "OrderNumber" },
+                    { "CustomerCode", "CustomerCode" },
+                    { "EntryDateTime", "Date" }
+                };
 
                 string[] parameterNames = { "@column1", "@column2", "@column3", "@column4" };
 
@@ -810,10 +828,12 @@ namespace OrderManagerEF
                     if (XtraMessageBox.Show(
                             "This record does not have a ShipmentID and will not generate a label. Are you sure you wish to continue?",
                             "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    {
+                        manager.CloseConnection();
                         return;
+                    }
 
                 manager.InsertData(gridView, columnMappings, parameterNames);
-
                 var rowCount = gridView.GetSelectedRows().Length;
                 manager.ShowRowCountMessage(rowCount);
             }
