@@ -52,15 +52,14 @@
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage6 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage7 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage4 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -80,7 +79,7 @@
             ribbonControl1.MaxItemId = 18;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsMenuMinWidth = 495;
-            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage4, ribbonPage6, ribbonPage7 });
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage6, ribbonPage7, ribbonPage4 });
             ribbonControl1.Size = new System.Drawing.Size(2001, 231);
             // 
             // barButtonItem1
@@ -175,6 +174,8 @@
             // 
             barButtonItem12.Caption = "Create Batch";
             barButtonItem12.Id = 12;
+            barButtonItem12.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem12.ImageOptions.Image");
+            barButtonItem12.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem12.ImageOptions.LargeImage");
             barButtonItem12.Name = "barButtonItem12";
             barButtonItem12.ItemClick += barButtonItem12_ItemClick;
             // 
@@ -182,6 +183,8 @@
             // 
             barButtonItem13.Caption = "Show Batch";
             barButtonItem13.Id = 13;
+            barButtonItem13.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem13.ImageOptions.Image");
+            barButtonItem13.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem13.ImageOptions.LargeImage");
             barButtonItem13.Name = "barButtonItem13";
             barButtonItem13.ItemClick += barButtonItem13_ItemClick;
             // 
@@ -189,6 +192,8 @@
             // 
             barButtonItem14.Caption = "Process Batch";
             barButtonItem14.Id = 14;
+            barButtonItem14.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem14.ImageOptions.Image");
+            barButtonItem14.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem14.ImageOptions.LargeImage");
             barButtonItem14.Name = "barButtonItem14";
             barButtonItem14.ItemClick += barButtonItem14_ItemClick;
             // 
@@ -196,6 +201,8 @@
             // 
             barButtonItem15.Caption = "Create Batch";
             barButtonItem15.Id = 15;
+            barButtonItem15.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem15.ImageOptions.Image");
+            barButtonItem15.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem15.ImageOptions.LargeImage");
             barButtonItem15.Name = "barButtonItem15";
             barButtonItem15.ItemClick += barButtonItem15_ItemClick;
             // 
@@ -203,6 +210,8 @@
             // 
             barButtonItem16.Caption = "Show Batch";
             barButtonItem16.Id = 16;
+            barButtonItem16.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem16.ImageOptions.Image");
+            barButtonItem16.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem16.ImageOptions.LargeImage");
             barButtonItem16.Name = "barButtonItem16";
             barButtonItem16.ItemClick += barButtonItem16_ItemClick;
             // 
@@ -210,6 +219,8 @@
             // 
             barButtonItem17.Caption = "Process Batch";
             barButtonItem17.Id = 17;
+            barButtonItem17.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("barButtonItem17.ImageOptions.Image");
+            barButtonItem17.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("barButtonItem17.ImageOptions.LargeImage");
             barButtonItem17.Name = "barButtonItem17";
             barButtonItem17.ItemClick += barButtonItem17_ItemClick;
             // 
@@ -227,7 +238,7 @@
             // 
             // ribbonPage2
             // 
-            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5, ribbonPageGroup6 });
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup3, ribbonPageGroup5 });
             ribbonPage2.Name = "ribbonPage2";
             ribbonPage2.Text = "StarShipIT";
             // 
@@ -242,40 +253,6 @@
             ribbonPageGroup5.ItemLinks.Add(barButtonItem3);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
             ribbonPageGroup5.Text = "Filter By ShipmentID";
-            // 
-            // ribbonPageGroup6
-            // 
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem4);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem5);
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem6);
-            ribbonPageGroup6.Name = "ribbonPageGroup6";
-            ribbonPageGroup6.Text = "Batch";
-            // 
-            // ribbonPage4
-            // 
-            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
-            ribbonPage4.Name = "ribbonPage4";
-            ribbonPage4.Text = "Pickslips";
-            // 
-            // ribbonPageGroup4
-            // 
-            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
-            ribbonPageGroup4.Name = "ribbonPageGroup4";
-            ribbonPageGroup4.Text = "Sort";
-            // 
-            // ribbonPageGroup7
-            // 
-            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
-            ribbonPageGroup7.Name = "ribbonPageGroup7";
-            ribbonPageGroup7.Text = "Hold";
-            // 
-            // ribbonPageGroup8
-            // 
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
-            ribbonPageGroup8.Name = "ribbonPageGroup8";
-            ribbonPageGroup8.Text = "Actions";
             // 
             // ribbonPage6
             // 
@@ -304,6 +281,32 @@
             ribbonPageGroup9.ItemLinks.Add(barButtonItem17);
             ribbonPageGroup9.Name = "ribbonPageGroup9";
             ribbonPageGroup9.Text = "ribbonPageGroup9";
+            // 
+            // ribbonPage4
+            // 
+            ribbonPage4.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup4, ribbonPageGroup7, ribbonPageGroup8 });
+            ribbonPage4.Name = "ribbonPage4";
+            ribbonPage4.Text = "Pickslips";
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barButtonItem7);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            ribbonPageGroup4.Text = "Sort";
+            // 
+            // ribbonPageGroup7
+            // 
+            ribbonPageGroup7.ItemLinks.Add(barButtonItem8);
+            ribbonPageGroup7.Name = "ribbonPageGroup7";
+            ribbonPageGroup7.Text = "Hold";
+            // 
+            // ribbonPageGroup8
+            // 
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem9);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem10);
+            ribbonPageGroup8.ItemLinks.Add(barButtonItem11);
+            ribbonPageGroup8.Name = "ribbonPageGroup8";
+            ribbonPageGroup8.Text = "Actions";
             // 
             // gridControl1
             // 
@@ -374,7 +377,6 @@
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage2;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage4;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup7;
